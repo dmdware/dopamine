@@ -29,7 +29,8 @@
 #define WIDGET_BUTTON				3
 #define WIDGET_VIEWLAYER			4
 #define WIDGET_TEXT					5
-#define WIDGETS						6
+#define WIDGET_LINK					6
+#define WIDGETS						7
 
 struct wg
 {
@@ -39,9 +40,7 @@ struct wg
 	struct wg* parent;
 	float pos[4];
 	float crop[4];
-	
-	dbool over;
-	dbool ldown;	//was the left mouse button pressed while over this (i.e. drag)?
+
 	char name[16];
 
 	dbool opened;

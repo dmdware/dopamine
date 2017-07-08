@@ -109,6 +109,7 @@
     <ClInclude Include="..\..\..\source\gui\widgets\button.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\editbox.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\image.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\link.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\text.h" />
     <ClInclude Include="..\..\..\source\jpeg\cderror.h" />
     <ClInclude Include="..\..\..\source\jpeg\cdjpeg.h" />
@@ -363,6 +364,7 @@
     <ClCompile Include="..\..\..\source\gui\widgets\button.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\editbox.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\image.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\link.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\text.c" />
     <ClCompile Include="..\..\..\source\jpeg\jaricom.c" />
     <ClCompile Include="..\..\..\source\jpeg\jcapimin.c" />

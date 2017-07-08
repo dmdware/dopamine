@@ -18,6 +18,7 @@
 #include "widgets/button.h"
 #include "widgets/image.h"
 #include "widgets/text.h"
+#include "widgets/link.h"
 
 void (*wgsubdraw[WIDGETS]) (wg* bw);
 void (*wgsubdrawover[WIDGETS]) (wg* bw);
@@ -31,6 +32,7 @@ void wginits()
 	wgsubdraw[WIDGET_BUTTON] = bwgdraw;
 	wgsubdraw[WIDGET_VIEWLAYER] = NULL;
 	wgsubdraw[WIDGET_TEXT] = twgdraw;
+	wgsubdraw[WIDGET_LINK] = hpldraw;
 
 	wgsubdrawover[WIDGET_GUI] = NULL;
 	wgsubdrawover[WIDGET_IMAGE] = NULL;
@@ -38,6 +40,7 @@ void wginits()
 	wgsubdrawover[WIDGET_BUTTON] = bwgdrawover;
 	wgsubdrawover[WIDGET_VIEWLAYER] = NULL;
 	wgsubdrawover[WIDGET_TEXT] = NULL;
+	wgsubdrawover[WIDGET_LINK] = NULL;
 
 	wgsubinev[WIDGET_GUI] = wgginev;
 	wgsubinev[WIDGET_IMAGE] = NULL;
@@ -45,6 +48,7 @@ void wginits()
 	wgsubinev[WIDGET_BUTTON] = bwginev;
 	wgsubinev[WIDGET_VIEWLAYER] = NULL;
 	wgsubinev[WIDGET_TEXT] = NULL;
+	wgsubinev[WIDGET_LINK] = hplinev;
 }
 
 void wginit(wg* w)
@@ -52,7 +56,6 @@ void wginit(wg* w)
 	w->parent = NULL;
 	w->name[0] = 0;
 	w->opened = ecfalse;
-	w->ldown = ecfalse;
 	w->reframefunc = NULL;
 	w->hidden = ecfalse;
 	w->extra = NULL;

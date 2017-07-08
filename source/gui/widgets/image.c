@@ -40,7 +40,6 @@ void imwinit(imw *i,
 	i->texc[1] = textop;
 	i->texc[2] = texright;
 	i->texc[3] = texbottom;
-	bw->ldown = ecfalse;
 	i->rgba[0] = r;
 	i->rgba[1] = g;
 	i->rgba[2] = b;

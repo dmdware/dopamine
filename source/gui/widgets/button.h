@@ -27,6 +27,8 @@ struct bwg
 	float rgba[4];
 
 	char* label;
+	dbool over;
+	dbool ldown;	//was the left mouse button pressed while over this (i.e. drag)?
 
 	void (*clickfunc)();
 	void (*clickfunc2)(int p);

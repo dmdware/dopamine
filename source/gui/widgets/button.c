@@ -31,8 +31,8 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->font = f;
 
 	length = endx(b->tooltip, richlen(b->tooltip), b->font, bw->pos, ecfalse);
-	bw->over = ecfalse;
-	bw->ldown = ecfalse;
+	b->over = ecfalse;
+	b->ldown = ecfalse;
 
 	if(style == BUST_LEFTIMAGE)
 		createtex(&b->texi, filepath, ectrue, ecfalse, ecfalse);
@@ -48,6 +48,7 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->outfunc = out;
 	b->param = parm;
 	b->clickfunc3 = click3;
+	b->ldown = ecfalse;
 	wgreframe(bw);
 }
 
@@ -61,7 +62,7 @@ void bwginev(wg *bw, inev* ie)
 	{
 		//mousemove();
 
-		if(bw->over && bw->ldown)
+		if(b->over && b->ldown)
 		{
 			if(b->clickfunc != NULL)
 				b->clickfunc();
@@ -73,29 +74,29 @@ void bwginev(wg *bw, inev* ie)
 				b->clickfunc3(bw);
 
 			//over = ecfalse;
-			bw->ldown = ecfalse;
+			b->ldown = ecfalse;
 
 			ie->intercepted = ectrue;
 			
 			return;	// intercept mouse event
 		}
 
-		if(bw->ldown)
+		if(b->ldown)
 		{
-			bw->ldown = ecfalse;
+			b->ldown = ecfalse;
 			ie->intercepted = ectrue;
 			return;
 		}
 
-		bw->over = ecfalse;
+		b->over = ecfalse;
 	}
 	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
-		if(bw->over)
+		if(b->over)
 		{
-			bw->ldown = ectrue;
+			b->ldown = ectrue;
 			ie->intercepted = ectrue;
 			return;	// intercept mouse event
 		}
@@ -107,10 +108,10 @@ void bwginev(wg *bw, inev* ie)
 		}
 		else
 		{
-			if(bw->over && b->outfunc != NULL)
+			if(b->over && b->outfunc != NULL)
 				b->outfunc();
 
-			bw->over = ecfalse;
+			b->over = ecfalse;
 		}
 
 		if(!ie->intercepted)
@@ -122,7 +123,7 @@ void bwginev(wg *bw, inev* ie)
 				if(b->overfunc2 != NULL)
 					b->overfunc2(b->param);
 
-				bw->over = ectrue;
+				b->over = ectrue;
 
 				ie->intercepted = ectrue;
 				return;
@@ -169,7 +170,7 @@ void bwgdraw(wg *bw)
 		glUniform1f(s->slot[SSLOT_WIDTH], (float)g_currw);
 		glUniform1f(s->slot[SSLOT_HEIGHT], (float)g_currh);
 
-		if(bw->over)
+		if(b->over)
 		{
 			for(i=0; i<3; ++i)
 			{
@@ -209,7 +210,7 @@ void bwgdraw(wg *bw)
 		glUniform1f(s->slot[SSLOT_WIDTH], (float)g_currw);
 		glUniform1f(s->slot[SSLOT_HEIGHT], (float)g_currh);
 
-		if(bw->over)
+		if(b->over)
 		{
 			for(i=0; i<3; i++)
 			{
@@ -244,7 +245,7 @@ void bwgdrawover(wg *bw)
 
 	b = (bwg*)bw;
 
-	if(bw->over)
+	if(b->over)
 	{
 		tpos[0] = (float)g_mouse.x;
 		tpos[1] = (float)g_mouse.y;
