@@ -190,7 +190,7 @@
 
 #ifdef PLAT_WIN
 #ifndef MATCHMAKER
-#include <gl/glaux.h>
+#include "../gl/glaux.h"
 #endif
 #endif
 
@@ -234,7 +234,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glaux.lib")
+#pragma comment(lib, __FILE__"../gl/glaux.lib")
 //#pragma comment(lib, "libjpeg.lib")
 //#pragma comment(lib, "libpng15.lib")
 //#pragma comment(lib, "zlib.lib")
