@@ -16,7 +16,7 @@ struct twg
 typedef struct twg twg;
 
 void twginit(twg *tw, wg *parent, const char *n, const char *t, int f, void (*reframef)(wg *w), dbool shdw, float r, float g, float b, float a, dbool multiline);
-void twgdraw(twg *tw);
+void twgdraw(wg *bw);
 void twgchval(twg *tw, const char *newv);
 
 #endif

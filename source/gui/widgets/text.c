@@ -24,13 +24,13 @@ void twginit(twg *tw, wg *parent, const char *n, const char *t, int f, void (*re
 	wgreframe(bw);
 }
 
-void twgdraw(twg *tw)
+void twgdraw(wg *bw)
 {
-	wg *bw;
+	twg *tw;
 	float cp[4];
 	glshader *s;
 	
-	bw = &tw->base;
+	tw = (twg*)bw;
 
 	subcrop(bw->pos, bw->crop, cp);
 	drawt(tw->font, bw->pos, cp, tw->text, tw->rgba, 0, -1, tw->shadow, tw->multiline);

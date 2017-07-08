@@ -17,6 +17,7 @@
 #include "../sys/debug.h"
 #include "widgets/button.h"
 #include "widgets/image.h"
+#include "widgets/text.h"
 
 void (*wgsubdraw[WIDGETS]) (wg* bw);
 void (*wgsubdrawover[WIDGETS]) (wg* bw);
@@ -29,7 +30,7 @@ void wginits()
 	wgsubdraw[WIDGET_EDITBOX] = NULL;
 	wgsubdraw[WIDGET_BUTTON] = bwgdraw;
 	wgsubdraw[WIDGET_VIEWLAYER] = NULL;
-	wgsubdraw[WIDGET_TEXT] = NULL;
+	wgsubdraw[WIDGET_TEXT] = twgdraw;
 
 	wgsubdrawover[WIDGET_GUI] = NULL;
 	wgsubdrawover[WIDGET_IMAGE] = NULL;

@@ -21,7 +21,7 @@ struct bwg
 	unsigned int bgtex;
 	unsigned int bgovertex;
 	char* tooltip;
-	int font;
+	char font;
 
 	int param;
 	float rgba[4];
@@ -42,7 +42,7 @@ typedef struct bwg bwg;
 
 void bwginit(bwg *b, wg* parent, 
 				 const char* name, const char* filepath, const char* label, 
-				 const char* tooltip, int f, int style, void (*reframef)(wg* w), 
+				 const char* tooltip, char f, char style, void (*reframef)(wg* w),
 				 void (*click)(), void (*click2)(int p), void (*overf)(), 
 				 void (*overf2)(int p), void (*out)(), int parm, void (*click3)(wg* w));
 void bwgdraw(wg *bw);

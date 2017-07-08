@@ -11,7 +11,7 @@
 #include "../richtext.h"
 
 void bwginit(bwg *b, wg* parent, const char* name, const char* filepath, 
-				 const char* label, const char* tooltip, int f, int style,
+				 const char* label, const char* tooltip, char f, char style,
 				 void (*reframef)(wg* w), void (*click)(), void (*click2)(int p), 
 				 void (*overf)(), void (*overf2)(int p), void (*out)(), int parm, 
 				 void (*click3)(wg* w))
