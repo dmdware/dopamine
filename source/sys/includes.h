@@ -17,7 +17,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <commdlg.h>
-#include <dirent.h>
+#include "../dirent/dirent.h"
 #include <WinDef.h>
 //#include "../../../libs/win/dirent-1.20.1/include/dirent.h"
 #include <assert.h>
