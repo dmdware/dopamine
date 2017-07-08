@@ -1,0 +1,739 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CECE012A-0DC0-46CF-ACB6-46C095EE0830}</ProjectGuid>
+    <RootNamespace>app</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.26419.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /y "$(TargetDir)$(TargetName).exe" "$(SolutionDir)../../../testfolder/$(TargetName).exe"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\algo\bool.h" />
+    <ClInclude Include="..\..\..\source\algo\list.h" />
+    <ClInclude Include="..\..\..\source\algo\vector.h" />
+    <ClInclude Include="..\..\..\source\app\appmain.h" />
+    <ClInclude Include="..\..\..\source\glew\GL\glew.h" />
+    <ClInclude Include="..\..\..\source\glew\GL\wglew.h" />
+    <ClInclude Include="..\..\..\source\gui\cursor.h" />
+    <ClInclude Include="..\..\..\source\gui\draw2d.h" />
+    <ClInclude Include="..\..\..\source\gui\font.h" />
+    <ClInclude Include="..\..\..\source\gui\gui.h" />
+    <ClInclude Include="..\..\..\source\gui\icon.h" />
+    <ClInclude Include="..\..\..\source\gui\inevent.h" />
+    <ClInclude Include="..\..\..\source\gui\layouts\appgui.h" />
+    <ClInclude Include="..\..\..\source\gui\richtext.h" />
+    <ClInclude Include="..\..\..\source\gui\viewlayer.h" />
+    <ClInclude Include="..\..\..\source\gui\widget.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\button.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\editbox.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\image.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\text.h" />
+    <ClInclude Include="..\..\..\source\jpeg\cderror.h" />
+    <ClInclude Include="..\..\..\source\jpeg\cdjpeg.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jconfig.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jdct.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jerror.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jinclude.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jmemsys.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jmorecfg.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jpegint.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jpeglib.h" />
+    <ClInclude Include="..\..\..\source\jpeg\jversion.h" />
+    <ClInclude Include="..\..\..\source\jpeg\transupp.h" />
+    <ClInclude Include="..\..\..\source\math\3dmath.h" />
+    <ClInclude Include="..\..\..\source\math\camf.h" />
+    <ClInclude Include="..\..\..\source\math\camfx.h" />
+    <ClInclude Include="..\..\..\source\math\fixfrac.h" />
+    <ClInclude Include="..\..\..\source\math\fixmath.h" />
+    <ClInclude Include="..\..\..\source\math\fixtrig.h" />
+    <ClInclude Include="..\..\..\source\math\matf.h" />
+    <ClInclude Include="..\..\..\source\math\matfx.h" />
+    <ClInclude Include="..\..\..\source\math\plane3f.h" />
+    <ClInclude Include="..\..\..\source\math\quatf.h" />
+    <ClInclude Include="..\..\..\source\math\quatfx.h" />
+    <ClInclude Include="..\..\..\source\math\vec2f.h" />
+    <ClInclude Include="..\..\..\source\math\vec2i.h" />
+    <ClInclude Include="..\..\..\source\math\vec3f.h" />
+    <ClInclude Include="..\..\..\source\math\vec3fx.h" />
+    <ClInclude Include="..\..\..\source\math\vec3i.h" />
+    <ClInclude Include="..\..\..\source\math\vec4f.h" />
+    <ClInclude Include="..\..\..\source\net\net.h" />
+    <ClInclude Include="..\..\..\source\png\png.h" />
+    <ClInclude Include="..\..\..\source\png\pngconf.h" />
+    <ClInclude Include="..\..\..\source\png\pngdebug.h" />
+    <ClInclude Include="..\..\..\source\png\pnginfo.h" />
+    <ClInclude Include="..\..\..\source\png\pnglibconf.h" />
+    <ClInclude Include="..\..\..\source\png\pngpriv.h" />
+    <ClInclude Include="..\..\..\source\png\pngstruct.h" />
+    <ClInclude Include="..\..\..\source\render\anim.h" />
+    <ClInclude Include="..\..\..\source\render\shader.h" />
+    <ClInclude Include="..\..\..\source\render\sprite.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\directsound\SDL_directsound.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\disk\SDL_diskaudio.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\dummy\SDL_dummyaudio.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\SDL_audiodev_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\SDL_audio_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\SDL_sysaudio.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\SDL_wave.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\winmm\SDL_winmm.h" />
+    <ClInclude Include="..\..\..\source\sdl\audio\xaudio2\SDL_xaudio2.h" />
+    <ClInclude Include="..\..\..\source\sdl\core\windows\SDL_directx.h" />
+    <ClInclude Include="..\..\..\source\sdl\core\windows\SDL_windows.h" />
+    <ClInclude Include="..\..\..\source\sdl\core\windows\SDL_xinput.h" />
+    <ClInclude Include="..\..\..\source\sdl\dynapi\SDL_dynapi.h" />
+    <ClInclude Include="..\..\..\source\sdl\dynapi\SDL_dynapi_overrides.h" />
+    <ClInclude Include="..\..\..\source\sdl\dynapi\SDL_dynapi_procs.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\blank_cursor.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\default_cursor.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\scancodes_windows.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_clipboardevents_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_dropevents_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_events_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_gesture_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_keyboard_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_mouse_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_sysevents.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_touch_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\events\SDL_windowevents_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\haptic\SDL_haptic_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\haptic\SDL_syshaptic.h" />
+    <ClInclude Include="..\..\..\source\sdl\haptic\windows\SDL_dinputhaptic_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\haptic\windows\SDL_windowshaptic_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\haptic\windows\SDL_xinputhaptic_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_assert.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_atomic.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_audio.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_bits.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_blendmode.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_clipboard.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_android.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_iphoneos.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_macosx.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_minimal.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_pandora.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_psp.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_windows.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_winrt.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_config_wiz.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_copying.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_cpuinfo.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_egl.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_endian.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_error.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_events.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_filesystem.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_gamecontroller.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_gesture.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_haptic.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_hints.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_keyboard.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_keycode.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_loadso.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_log.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_main.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_messagebox.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_mouse.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_mutex.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_name.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengl.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles2.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles2_gl2.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles2_gl2ext.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles2_gl2platform.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengles2_khrplatform.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_opengl_glext.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_pixels.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_platform.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_power.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_quit.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_rect.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_render.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_revision.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_rwops.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_scancode.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_shape.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_stdinc.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_surface.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_system.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_syswm.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_assert.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_common.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_compare.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_crc32.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_font.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_fuzzer.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_harness.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_images.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_log.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_md5.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_test_random.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_thread.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_timer.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_touch.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_types.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_version.h" />
+    <ClInclude Include="..\..\..\source\sdl\include\SDL_video.h" />
+    <ClInclude Include="..\..\..\source\sdl\joystick\SDL_gamecontrollerdb.h" />
+    <ClInclude Include="..\..\..\source\sdl\joystick\SDL_sysjoystick.h" />
+    <ClInclude Include="..\..\..\source\sdl\joystick\windows\SDL_dinputjoystick_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\joystick\windows\SDL_windowsjoystick_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\joystick\windows\SDL_xinputjoystick_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\libm\math_libm.h" />
+    <ClInclude Include="..\..\..\source\sdl\libm\math_private.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\opengles2\SDL_gles2funcs.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\opengles2\SDL_shaders_gles2.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\opengl\SDL_glfuncs.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\opengl\SDL_shaders_gl.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\SDL_d3dmath.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\SDL_sysrender.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\SDL_yuv_sw_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_blendfillrect.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_blendline.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_blendpoint.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_draw.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_drawline.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_drawpoint.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_render_sw_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\render\software\SDL_rotate.h" />
+    <ClInclude Include="..\..\..\source\sdl\SDL_assert_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\SDL_error_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\SDL_internal.h" />
+    <ClInclude Include="..\..\..\source\sdl\SDL_joystick.h" />
+    <ClInclude Include="..\..\..\source\sdl\thread\SDL_thread_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\thread\windows\SDL_systhread_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\timer\SDL_timer_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\dummy\SDL_nullevents_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\dummy\SDL_nullframebuffer_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\dummy\SDL_nullvideo.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_blit.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_blit_auto.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_blit_copy.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_blit_slow.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_egl_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_pixels_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_rect_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_RLEaccel_c.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_shape_internals.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\SDL_sysvideo.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_vkeys.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsclipboard.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsevents.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsframebuffer.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowskeyboard.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsmessagebox.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsmodes.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsmouse.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsopengl.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsopengles.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsshape.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowsvideo.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\SDL_windowswindow.h" />
+    <ClInclude Include="..\..\..\source\sdl\video\windows\wmmsg.h" />
+    <ClInclude Include="..\..\..\source\sim\fab.h" />
+    <ClInclude Include="..\..\..\source\sim\part.h" />
+    <ClInclude Include="..\..\..\source\sim\simdef.h" />
+    <ClInclude Include="..\..\..\source\sim\simflow.h" />
+    <ClInclude Include="..\..\..\source\sim\simvars.h" />
+    <ClInclude Include="..\..\..\source\sim\user.h" />
+    <ClInclude Include="..\..\..\source\sim\walk.h" />
+    <ClInclude Include="..\..\..\source\sound\sound.h" />
+    <ClInclude Include="..\..\..\source\sys\debug.h" />
+    <ClInclude Include="..\..\..\source\sys\includes.h" />
+    <ClInclude Include="..\..\..\source\sys\platform.h" />
+    <ClInclude Include="..\..\..\source\sys\syswin.h" />
+    <ClInclude Include="..\..\..\source\sys\texture.h" />
+    <ClInclude Include="..\..\..\source\sys\utils.h" />
+    <ClInclude Include="..\..\..\source\tommath\tommath.h" />
+    <ClInclude Include="..\..\..\source\tommath\tommath_class.h" />
+    <ClInclude Include="..\..\..\source\tommath\tommath_private.h" />
+    <ClInclude Include="..\..\..\source\tommath\tommath_superclass.h" />
+    <ClInclude Include="..\..\..\source\utf8\utf8.h" />
+    <ClInclude Include="..\..\..\source\zlib\crc32.h" />
+    <ClInclude Include="..\..\..\source\zlib\deflate.h" />
+    <ClInclude Include="..\..\..\source\zlib\gzguts.h" />
+    <ClInclude Include="..\..\..\source\zlib\inffast.h" />
+    <ClInclude Include="..\..\..\source\zlib\inffixed.h" />
+    <ClInclude Include="..\..\..\source\zlib\inflate.h" />
+    <ClInclude Include="..\..\..\source\zlib\inftrees.h" />
+    <ClInclude Include="..\..\..\source\zlib\trees.h" />
+    <ClInclude Include="..\..\..\source\zlib\zconf.h" />
+    <ClInclude Include="..\..\..\source\zlib\zlib.h" />
+    <ClInclude Include="..\..\..\source\zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\algo\list.c" />
+    <ClCompile Include="..\..\..\source\algo\vector.c" />
+    <ClCompile Include="..\..\..\source\app\appmain.c" />
+    <ClCompile Include="..\..\..\source\glew\glew.c" />
+    <ClCompile Include="..\..\..\source\gui\cursor.c" />
+    <ClCompile Include="..\..\..\source\gui\draw2d.c" />
+    <ClCompile Include="..\..\..\source\gui\font.c" />
+    <ClCompile Include="..\..\..\source\gui\gui.c" />
+    <ClCompile Include="..\..\..\source\gui\icon.c" />
+    <ClCompile Include="..\..\..\source\gui\inevent.c" />
+    <ClCompile Include="..\..\..\source\gui\layouts\appgui.c" />
+    <ClCompile Include="..\..\..\source\gui\richtext.c" />
+    <ClCompile Include="..\..\..\source\gui\viewlayer.c" />
+    <ClCompile Include="..\..\..\source\gui\widget.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\button.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\editbox.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\image.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\text.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jaricom.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcapimin.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcapistd.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcarith.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jccoefct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jccolor.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcdctmgr.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jchuff.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcinit.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcmainct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcmarker.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcmaster.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcomapi.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcparam.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcprepct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jcsample.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jctrans.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdapimin.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdapistd.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdarith.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdatadst.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdatasrc.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdcoefct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdcolor.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jddctmgr.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdhuff.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdinput.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdmainct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdmarker.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdmaster.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdmerge.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdpostct.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdsample.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jdtrans.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jerror.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jfdctflt.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jfdctfst.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jfdctint.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jidctflt.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jidctfst.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jidctint.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jmemansi.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jmemmgr.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jquant1.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jquant2.c" />
+    <ClCompile Include="..\..\..\source\jpeg\jutils.c" />
+    <ClCompile Include="..\..\..\source\math\3dmath.c" />
+    <ClCompile Include="..\..\..\source\math\camf.c" />
+    <ClCompile Include="..\..\..\source\math\camfx.c" />
+    <ClCompile Include="..\..\..\source\math\fixfrac.c" />
+    <ClCompile Include="..\..\..\source\math\fixmath.c" />
+    <ClCompile Include="..\..\..\source\math\fixtrig.c" />
+    <ClCompile Include="..\..\..\source\math\matf.c" />
+    <ClCompile Include="..\..\..\source\math\matfx.c" />
+    <ClCompile Include="..\..\..\source\math\plane3f.c" />
+    <ClCompile Include="..\..\..\source\math\quatf.c" />
+    <ClCompile Include="..\..\..\source\math\quatfx.c" />
+    <ClCompile Include="..\..\..\source\math\vec2f.c" />
+    <ClCompile Include="..\..\..\source\math\vec3f.c" />
+    <ClCompile Include="..\..\..\source\math\vec3fx.c" />
+    <ClCompile Include="..\..\..\source\math\vec3i.c" />
+    <ClCompile Include="..\..\..\source\math\vec4f.c" />
+    <ClCompile Include="..\..\..\source\net\net.c" />
+    <ClCompile Include="..\..\..\source\png\png.c" />
+    <ClCompile Include="..\..\..\source\png\pngerror.c" />
+    <ClCompile Include="..\..\..\source\png\pngget.c" />
+    <ClCompile Include="..\..\..\source\png\pngmem.c" />
+    <ClCompile Include="..\..\..\source\png\pngpread.c" />
+    <ClCompile Include="..\..\..\source\png\pngread.c" />
+    <ClCompile Include="..\..\..\source\png\pngrio.c" />
+    <ClCompile Include="..\..\..\source\png\pngrtran.c" />
+    <ClCompile Include="..\..\..\source\png\pngrutil.c" />
+    <ClCompile Include="..\..\..\source\png\pngset.c" />
+    <ClCompile Include="..\..\..\source\png\pngtrans.c" />
+    <ClCompile Include="..\..\..\source\png\pngwio.c" />
+    <ClCompile Include="..\..\..\source\png\pngwrite.c" />
+    <ClCompile Include="..\..\..\source\png\pngwtran.c" />
+    <ClCompile Include="..\..\..\source\png\pngwutil.c" />
+    <ClCompile Include="..\..\..\source\render\anim.c" />
+    <ClCompile Include="..\..\..\source\render\shader.c" />
+    <ClCompile Include="..\..\..\source\render\sprite.c" />
+    <ClCompile Include="..\..\..\source\sdl\atomic\SDL_atomic.c" />
+    <ClCompile Include="..\..\..\source\sdl\atomic\SDL_spinlock.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\directsound\SDL_directsound.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\disk\SDL_diskaudio.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\dummy\SDL_dummyaudio.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_audio.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_audiocvt.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_audiodev.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_audiotypecvt.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_mixer.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\SDL_wave.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\winmm\SDL_winmm.c" />
+    <ClCompile Include="..\..\..\source\sdl\audio\xaudio2\SDL_xaudio2.c" />
+    <ClCompile Include="..\..\..\source\sdl\core\windows\SDL_windows.c" />
+    <ClCompile Include="..\..\..\source\sdl\core\windows\SDL_xinput.c" />
+    <ClCompile Include="..\..\..\source\sdl\cpuinfo\SDL_cpuinfo.c" />
+    <ClCompile Include="..\..\..\source\sdl\dynapi\SDL_dynapi.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_clipboardevents.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_dropevents.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_events.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_gesture.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_keyboard.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_mouse.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_quit.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_touch.c" />
+    <ClCompile Include="..\..\..\source\sdl\events\SDL_windowevents.c" />
+    <ClCompile Include="..\..\..\source\sdl\filesystem\windows\SDL_sysfilesystem.c" />
+    <ClCompile Include="..\..\..\source\sdl\file\SDL_rwops.c" />
+    <ClCompile Include="..\..\..\source\sdl\haptic\SDL_haptic.c" />
+    <ClCompile Include="..\..\..\source\sdl\haptic\windows\SDL_dinputhaptic.c" />
+    <ClCompile Include="..\..\..\source\sdl\haptic\windows\SDL_windowshaptic.c" />
+    <ClCompile Include="..\..\..\source\sdl\haptic\windows\SDL_xinputhaptic.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\SDL_gamecontroller.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\SDL_joystick.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\windows\SDL_dinputjoystick.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\windows\SDL_mmjoystick.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\windows\SDL_windowsjoystick.c" />
+    <ClCompile Include="..\..\..\source\sdl\joystick\windows\SDL_xinputjoystick.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\e_atan2.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\e_log.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\e_pow.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\e_rem_pio2.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\e_sqrt.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\k_cos.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\k_rem_pio2.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\k_sin.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\k_tan.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_atan.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_copysign.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_cos.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_fabs.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_floor.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_scalbn.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_sin.c" />
+    <ClCompile Include="..\..\..\source\sdl\libm\s_tan.c" />
+    <ClCompile Include="..\..\..\source\sdl\loadso\windows\SDL_sysloadso.c" />
+    <ClCompile Include="..\..\..\source\sdl\main\windows\SDL_windows_main.c" />
+    <ClCompile Include="..\..\..\source\sdl\power\SDL_power.c" />
+    <ClCompile Include="..\..\..\source\sdl\power\windows\SDL_syspower.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\direct3d11\SDL_render_d3d11.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\direct3d\SDL_render_d3d.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\opengles2\SDL_render_gles2.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\opengles2\SDL_shaders_gles2.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\opengl\SDL_render_gl.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\opengl\SDL_shaders_gl.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\SDL_d3dmath.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\SDL_render.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\SDL_yuv_mmx.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\SDL_yuv_sw.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_blendfillrect.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_blendline.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_blendpoint.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_drawline.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_drawpoint.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_render_sw.c" />
+    <ClCompile Include="..\..\..\source\sdl\render\software\SDL_rotate.c" />
+    <ClCompile Include="..\..\..\source\sdl\SDL.c" />
+    <ClCompile Include="..\..\..\source\sdl\SDL_assert.c" />
+    <ClCompile Include="..\..\..\source\sdl\SDL_error.c" />
+    <ClCompile Include="..\..\..\source\sdl\SDL_hints.c" />
+    <ClCompile Include="..\..\..\source\sdl\SDL_log.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_getenv.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_iconv.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_malloc.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_qsort.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_stdlib.c" />
+    <ClCompile Include="..\..\..\source\sdl\stdlib\SDL_string.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\generic\SDL_syscond.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\SDL_thread.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\windows\SDL_sysmutex.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\windows\SDL_syssem.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\windows\SDL_systhread.c" />
+    <ClCompile Include="..\..\..\source\sdl\thread\windows\SDL_systls.c" />
+    <ClCompile Include="..\..\..\source\sdl\timer\SDL_timer.c" />
+    <ClCompile Include="..\..\..\source\sdl\timer\windows\SDL_systimer.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\dummy\SDL_nullevents.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\dummy\SDL_nullframebuffer.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\dummy\SDL_nullvideo.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_0.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_1.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_A.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_auto.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_copy.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_N.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_blit_slow.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_bmp.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_clipboard.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_egl.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_fillrect.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_pixels.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_rect.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_RLEaccel.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_shape.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_stretch.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_surface.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\SDL_video.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsclipboard.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsevents.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsframebuffer.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowskeyboard.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsmessagebox.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsmodes.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsmouse.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsopengl.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsopengles.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsshape.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowsvideo.c" />
+    <ClCompile Include="..\..\..\source\sdl\video\windows\SDL_windowswindow.c" />
+    <ClCompile Include="..\..\..\source\sim\fab.c" />
+    <ClCompile Include="..\..\..\source\sim\part.c" />
+    <ClCompile Include="..\..\..\source\sim\simdef.c" />
+    <ClCompile Include="..\..\..\source\sim\simflow.c" />
+    <ClCompile Include="..\..\..\source\sim\simvars.c" />
+    <ClCompile Include="..\..\..\source\sim\user.c" />
+    <ClCompile Include="..\..\..\source\sim\walk.c" />
+    <ClCompile Include="..\..\..\source\sound\sound.c" />
+    <ClCompile Include="..\..\..\source\sys\debug.c" />
+    <ClCompile Include="..\..\..\source\sys\includes.c" />
+    <ClCompile Include="..\..\..\source\sys\syswin.c" />
+    <ClCompile Include="..\..\..\source\sys\texture.c" />
+    <ClCompile Include="..\..\..\source\sys\utils.c" />
+    <ClCompile Include="..\..\..\source\tommath\bncore.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_error.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_fast_mp_invmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_fast_mp_montgomery_reduce.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_fast_s_mp_mul_digs.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_fast_s_mp_mul_high_digs.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_fast_s_mp_sqr.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_2expt.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_abs.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_add.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_addmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_add_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_and.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_clamp.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_clear.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_clear_multi.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_cmp.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_cmp_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_cmp_mag.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_cnt_lsb.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_copy.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_count_bits.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_div.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_div_2.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_div_2d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_div_3.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_div_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_dr_is_modulus.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_dr_reduce.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_dr_setup.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_exch.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_export.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_exptmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_exptmod_fast.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_expt_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_expt_d_ex.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_exteuclid.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_fread.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_fwrite.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_gcd.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_get_int.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_get_long.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_get_long_long.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_grow.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_import.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init_copy.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init_multi.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init_set.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init_set_int.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_init_size.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_invmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_invmod_slow.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_is_square.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_jacobi.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_karatsuba_mul.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_karatsuba_sqr.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_lcm.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_lshd.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mod_2d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mod_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_montgomery_calc_normalization.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_montgomery_reduce.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_montgomery_setup.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mul.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mulmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mul_2.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mul_2d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_mul_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_neg.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_n_root.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_n_root_ex.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_or.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_fermat.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_is_divisible.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_is_prime.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_miller_rabin.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_next_prime.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_rabin_miller_trials.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_prime_random_ex.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_radix_size.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_radix_smap.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_rand.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_read_radix.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_read_signed_bin.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_read_unsigned_bin.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_2k.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_2k_l.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_2k_setup.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_2k_setup_l.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_is_2k.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_is_2k_l.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_reduce_setup.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_rshd.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_set.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_set_int.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_set_long.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_set_long_long.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_shrink.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_signed_bin_size.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sqr.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sqrmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sqrt.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sqrtmod_prime.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sub.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_submod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_sub_d.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_toom_mul.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_toom_sqr.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_toradix.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_toradix_n.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_to_signed_bin.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_to_signed_bin_n.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_to_unsigned_bin.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_to_unsigned_bin_n.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_unsigned_bin_size.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_xor.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_mp_zero.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_prime_tab.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_reverse.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_add.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_exptmod.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_mul_digs.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_mul_high_digs.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_sqr.c" />
+    <ClCompile Include="..\..\..\source\tommath\bn_s_mp_sub.c" />
+    <ClCompile Include="..\..\..\source\utf8\utf8.c" />
+    <ClCompile Include="..\..\..\source\zlib\adler32.c" />
+    <ClCompile Include="..\..\..\source\zlib\compress.c" />
+    <ClCompile Include="..\..\..\source\zlib\crc32.c" />
+    <ClCompile Include="..\..\..\source\zlib\deflate.c" />
+    <ClCompile Include="..\..\..\source\zlib\gzclose.c" />
+    <ClCompile Include="..\..\..\source\zlib\gzlib.c" />
+    <ClCompile Include="..\..\..\source\zlib\gzread.c" />
+    <ClCompile Include="..\..\..\source\zlib\gzwrite.c" />
+    <ClCompile Include="..\..\..\source\zlib\infback.c" />
+    <ClCompile Include="..\..\..\source\zlib\inffast.c" />
+    <ClCompile Include="..\..\..\source\zlib\inflate.c" />
+    <ClCompile Include="..\..\..\source\zlib\inftrees.c" />
+    <ClCompile Include="..\..\..\source\zlib\trees.c" />
+    <ClCompile Include="..\..\..\source\zlib\uncompr.c" />
+    <ClCompile Include="..\..\..\source\zlib\zutil.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
