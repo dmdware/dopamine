@@ -33,4 +33,6 @@
 
 extern unsigned int g_cursor[CU_STATES];
 
+void loadcursors();
+
 #endif

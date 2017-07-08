@@ -31,6 +31,7 @@ HINSTANCE g_hinst = NULL;
 void loadsysres()
 {
 	loadfonts();
+	loadcursors();
 }
 
 void upload()
