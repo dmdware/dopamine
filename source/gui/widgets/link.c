@@ -12,8 +12,24 @@
 #include "link.h"
 #include "text.h"
 
+void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*reframef)(wg* w), void(*click)())
+{
+	m_parent = parent;
+	m_type = WIDGET_LINK;
+	m_name = name;
+	m_over = false;
+	m_ldown = false;
+	m_text = t;
+	m_font = f;
+	reframefunc = reframef;
+	clickfunc = click;
+	reframe();
 
-void Link::draw()
+
+	pstrset(&tw->text, t);
+}
+
+void hpldraw(wg* bw)
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -41,7 +57,7 @@ void Link::draw()
 	//glEnable(GL_TEXTURE_2D);
 }
 
-void Link::inev(InEv* ie)
+void hplinev(wg* bw, inev* ie)
 {
 	Player* py = &g_player[g_localP];
 

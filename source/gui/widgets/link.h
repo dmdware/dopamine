@@ -23,30 +23,10 @@ struct hpl
 	void(*clickfunc)();
 };
 
-typedef struct imw imw;
+typedef struct hpl hpl;
 
-class Link : public Widget
-{
-public:
-	Link(Widget* parent, const char* name, const RichText t, int32_t f, void (*reframef)(Widget* w), void (*click)()) : Widget()
-	{
-		m_parent = parent;
-		m_type = WIDGET_LINK;
-		m_name = name;
-		m_over = false;
-		m_ldown = false;
-		m_text = t;
-		m_font = f;
-		reframefunc = reframef;
-		clickfunc = click;
-		reframe();
-
-
-		pstrset(&tw->text, t);
-	}
-
-	void draw();
-	void inev(InEv* ie);
-};
+void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*reframef)(wg* w), void(*click)());
+void hpldraw(wg* bw);
+void hplinev(wg* bw, inev* ie);
 
 #endif
