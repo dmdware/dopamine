@@ -45,9 +45,9 @@ void bwginit(bwg *b, wg* parent,
 				 const char* tooltip, int f, int style, void (*reframef)(wg* w), 
 				 void (*click)(), void (*click2)(int p), void (*overf)(), 
 				 void (*overf2)(int p), void (*out)(), int parm, void (*click3)(wg* w));
-void bwgdraw(bwg *b);
-void bwgdrawover(bwg *b);
-void bwginev2(bwg *b, inev* ie);
+void bwgdraw(wg *bw);
+void bwgdrawover(wg *bw);
+void bwginev(wg *bw, inev* ie);
 void cenlab(bwg *w);
 
 #endif

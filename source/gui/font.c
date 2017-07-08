@@ -948,8 +948,6 @@ int endx(const char *text, int lastg, int fnt, float *inframe, dbool multiline)
 			highx = x;
 	}
 
-	fflush(g_applog);
-
 	return highx;
 }
 

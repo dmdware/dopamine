@@ -98,8 +98,12 @@ void wggdraw2(wgg *gui)
 	glEnable(GL_DEPTH_TEST);
 }
 
-void wgginev2(wgg *gui, inev* ie)
+void wgginev(wg *bw, inev* ie)
 {
+	wgg *gui;
+
+	gui = (wgg*)bw;
+
 	if(!ie->intercepted)
 	{
 		if(ie->type == INEV_MOUSEMOVE && gui->mousemovefunc) gui->mousemovefunc(ie);

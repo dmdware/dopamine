@@ -4,7 +4,7 @@
 #define APPVER				0
 
 #define CFGFILE			"config.ini"
-#define APPTIT				"T"
+#define APPTIT				"Subfield"
 
 #define APPMODE_LOGO		0
 #define APPMODE_INTRO		1

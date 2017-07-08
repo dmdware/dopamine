@@ -404,6 +404,8 @@ void appinit()
 	fullpath("log.txt", full);
 	g_applog = fopen(full, "wb");
 
+	wginits();
+
 #ifdef PLAT_LINUX
 	signal(SIGINT, sigcall);
 #endif

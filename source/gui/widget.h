@@ -29,6 +29,7 @@
 #define WIDGET_BUTTON				3
 #define WIDGET_VIEWLAYER			4
 #define WIDGET_TEXT					5
+#define WIDGETS						6
 
 struct wg
 {
@@ -112,5 +113,6 @@ void wglosefocus(wg *w);
 
 void subcrop(float *src1, float *src2, float *ndest);
 void szfs(wg *w);
+void wginits();
 
 #endif

@@ -37,7 +37,7 @@ void imwinit(imw *i,
 				float textop, 
 				float texright, 
 				float texbottom);
-	
-void imwdraw(imw *i);
+
+void imwdraw(wg *bw);
 
 #endif

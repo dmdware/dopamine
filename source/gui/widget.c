@@ -16,6 +16,35 @@
 #include "icon.h"
 #include "../sys/debug.h"
 #include "widgets/button.h"
+#include "widgets/image.h"
+
+void (*wgsubdraw[WIDGETS]) (wg* bw);
+void (*wgsubdrawover[WIDGETS]) (wg* bw);
+void (*wgsubinev[WIDGETS]) (wg *bw, inev* ie);
+
+void wginits()
+{
+	wgsubdraw[WIDGET_GUI] = NULL;
+	wgsubdraw[WIDGET_IMAGE] = imwdraw;
+	wgsubdraw[WIDGET_EDITBOX] = NULL;
+	wgsubdraw[WIDGET_BUTTON] = bwgdraw;
+	wgsubdraw[WIDGET_VIEWLAYER] = NULL;
+	wgsubdraw[WIDGET_TEXT] = NULL;
+
+	wgsubdrawover[WIDGET_GUI] = NULL;
+	wgsubdrawover[WIDGET_IMAGE] = NULL;
+	wgsubdrawover[WIDGET_EDITBOX] = NULL;
+	wgsubdrawover[WIDGET_BUTTON] = bwgdrawover;
+	wgsubdrawover[WIDGET_VIEWLAYER] = NULL;
+	wgsubdrawover[WIDGET_TEXT] = NULL;
+
+	wgsubinev[WIDGET_GUI] = wgginev;
+	wgsubinev[WIDGET_IMAGE] = NULL;
+	wgsubinev[WIDGET_EDITBOX] = NULL;
+	wgsubinev[WIDGET_BUTTON] = bwginev;
+	wgsubinev[WIDGET_VIEWLAYER] = NULL;
+	wgsubinev[WIDGET_TEXT] = NULL;
+}
 
 void wginit(wg* w)
 {
@@ -106,14 +135,8 @@ void wgdraw(wg *w)
 	lnode *i;
 	wg *iw;
 
-	switch(w->type)
-	{
-	case WIDGET_BUTTON:
-		bwgdraw((bwg*)w);
-		break;
-	default:
-		break;
-	}
+	if (wgsubdraw[w->type])
+		wgsubdraw[w->type](w);
 
 	for(i=w->sub.head; i; i=i->next)
 	{
@@ -137,6 +160,9 @@ void wgdrawover(wg *w)
 {	
 	lnode *i;
 	wg *iw;
+
+	if (wgsubdrawover[w->type])
+		wgsubdrawover[w->type](w);
 
 	for(i=w->sub.head; i; i=i->next)
 	{
@@ -170,15 +196,8 @@ void wginev(wg *w, inev* ie)
 		wginev(iw, ie);
 	}
 
-	switch(w->type)
-	{
-	case WIDGET_BUTTON:
-		bwginev2((bwg*)w, ie);
-		break;
-	case WIDGET_GUI:
-		wgginev2((wgg*)w, ie);
-		break;
-	}
+	if (wgsubinev[w->type])
+		wgsubinev[w->type](w, ie);
 }
 
 void wgtofront(wg *w)

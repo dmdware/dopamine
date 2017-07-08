@@ -52,19 +52,19 @@ void imwinit(imw *i,
 	wgreframe(bw);
 }
 
-void imwdraw(imw *i)
+void imwdraw(wg *bw)
 {
 	glshader *s;
-	wg *bw;
+	imw *i;
 	gltex *tex;
 
-	bw = (wg*)i;
+	i = (imw*)bw;
 	s = g_shader+g_cursh;
 	tex = g_tex+i->texi;
 
 	glUniform4fv(s->slot[SSLOT_COLOR], 1, i->rgba);
-	drawim(tex->texname, 
-		bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], 
+	drawim(tex->texname,
+		bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3],
 		i->texc[0], i->texc[1], i->texc[2], i->texc[3], 
 		bw->crop);
 	glUniform4f(s->slot[SSLOT_COLOR], 1, 1, 1, 1);

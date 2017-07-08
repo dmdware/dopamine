@@ -51,11 +51,11 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	wgreframe(bw);
 }
 
-void bwginev2(bwg *b, inev* ie)
+void bwginev(wg *bw, inev* ie)
 {
-	wg *bw;
+	bwg *b;
 
-	bw = (wg*)b;
+	b = (bwg*)bw;
 
 	if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
@@ -131,9 +131,9 @@ void bwginev2(bwg *b, inev* ie)
 	}
 }
 
-void bwgdraw(bwg *b)
+void bwgdraw(wg *bw)
 {
-	wg *bw;
+	bwg *b;
 	glshader *s;
 	float midcolor[] = {0.7f,0.7f,0.7f,0.8f};
 	float lightcolor[] = {0.8f,0.8f,0.8f,0.8f};
@@ -148,7 +148,7 @@ void bwgdraw(bwg *b)
 	font *f;
 	gltex *tex, *bgtex, *bgovertex;
 
-	bw = (wg*)b;
+	b = (bwg*)bw;
 	f = g_font+b->font;
 	tex = g_tex+b->texi;
 	bgovertex = g_tex+b->bgovertex;
@@ -237,12 +237,12 @@ void bwgdraw(bwg *b)
 	}
 }
 
-void bwgdrawover(bwg *b)
+void bwgdrawover(wg *bw)
 {
 	float tpos[4];
-	wg *bw;
+	bwg *b;
 
-	bw = (wg*)b;
+	b = (bwg*)bw;
 
 	if(bw->over)
 	{

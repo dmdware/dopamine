@@ -270,8 +270,9 @@ typedef int16_t WORD;
 #define _isnan(x) (x!=x)
 #endif
 
-#define ZERO_MEM(x)		memset(x,0,sizeof(x))
+#define ZERO_MEM(x)					memset(x,0,sizeof(x))
 typedef unsigned int uint;
+#define ARRSZ(x)					(sizeof(x)/sizeof(x[0]))
 #define ARRAY_SIZE_IN_ELEMENTS(x)	ARRSZ(x)
 
 #ifdef PLAT_MAC
