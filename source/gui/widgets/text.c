@@ -13,7 +13,7 @@ void twginit(twg *tw, wg *parent, const char *n, const char *t, int f, void (*re
 	tw->text = NULL;
 	pstrset(&tw->text, t);
 	tw->font = f;
-	bw->reframefunc = reframef;
+	bw->reframef = reframef;
 	tw->rgba[0] = r;
 	tw->rgba[1] = g;
 	tw->rgba[2] = b;

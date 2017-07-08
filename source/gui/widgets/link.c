@@ -12,7 +12,7 @@
 #include "link.h"
 #include "text.h"
 
-void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*reframef)(wg* w), void(*click)())
+void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*reframef)(wg* w), void(*click)(), void *e, void(*freef)(wg* w))
 {
 	wg* bw;
 
@@ -27,9 +27,17 @@ void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*re
 	hl->ldown = ecfalse;
 	pstrset(&hl->text, t);
 	hl->font = f;
-	bw->reframefunc = reframef;
-	hl->clickfunc = click;
+	bw->reframef = reframef;
+	hl->clickf = click;
+	bw->extra = e;
+	hl->freef = freef;
 	wgreframe(bw);
+}
+
+void hplfree(hpl* hl)
+{
+	if(hl->freef)
+		hl->freef(hl);
 }
 
 void hpldraw(wg* bw)
@@ -69,8 +77,8 @@ void hplinev(wg* bw, inev* ie)
 		
 		if(hl->over && hl->ldown)
 		{
-			if(hl->clickfunc != NULL)
-				hl->clickfunc();
+			if(hl->clickf != NULL)
+				hl->clickf();
 
 			hl->over = ecfalse;
 			hl->ldown = ecfalse;

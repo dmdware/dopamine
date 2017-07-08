@@ -30,7 +30,7 @@ struct bwg
 	dbool over;
 	dbool ldown;	//was the left mouse button pressed while over this (i.e. drag)?
 
-	void (*clickfunc)();
+	void (*clickf)();
 	void (*clickfunc2)(int p);
 	void (*overfunc)();
 	void (*overfunc2)(int p);

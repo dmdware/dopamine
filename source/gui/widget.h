@@ -76,7 +76,7 @@ struct wg
 	RichText label;
 	dbool popup;
 
-	void (*clickfunc)();
+	void (*clickf)();
 	void (*clickfunc2)(int p);
 	void (*overfunc)();
 	void (*overfunc2)(int p);
@@ -87,7 +87,7 @@ struct wg
 	
 		*/
 
-	void (*reframefunc)(struct wg* w);
+	void (*reframef)(struct wg* w);
 };
 
 typedef struct wg wg;

@@ -35,7 +35,7 @@ void imwinit(imw *i,
 	bw->type = WIDGET_IMAGE;
 	strcpy(bw->name, nm);
 	createtex(&i->texi, filepath, clamp, ecfalse, ecfalse);
-	bw->reframefunc = reframef;
+	bw->reframef = reframef;
 	i->texc[0] = texleft;
 	i->texc[1] = textop;
 	i->texc[2] = texright;

@@ -23,6 +23,6 @@ void vwinit(vw *v, const char* n, wg* parent)
 	bw->type = WIDGET_VIEWLAYER;
 	bw->parent = parent;
 	bw->hidden = ectrue;
-	bw->reframefunc = szfs;
+	bw->reframef = szfs;
 	wgreframe(bw);
 }

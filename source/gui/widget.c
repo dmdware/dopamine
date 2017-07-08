@@ -56,7 +56,7 @@ void wginit(wg* w)
 	w->parent = NULL;
 	w->name[0] = 0;
 	w->opened = ecfalse;
-	w->reframefunc = NULL;
+	w->reframef = NULL;
 	w->hidden = ecfalse;
 	w->extra = NULL;
 
@@ -112,8 +112,8 @@ void wgreframe(wg *w)	//resized or moved
 	lnode *i;
 	wg *iw;
 
-	if(w->reframefunc)
-		w->reframefunc(w);
+	if(w->reframef)
+		w->reframef(w);
 
 	if(w->parent)
 	{

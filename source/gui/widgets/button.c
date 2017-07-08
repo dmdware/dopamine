@@ -40,8 +40,8 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->bgtex = 0;
 	b->bgovertex = 0;
 
-	bw->reframefunc = reframef;
-	b->clickfunc = click;
+	bw->reframef = reframef;
+	b->clickf = click;
 	b->clickfunc2 = click2;
 	b->overfunc = overf;
 	b->overfunc2 = overf2;
@@ -64,8 +64,8 @@ void bwginev(wg *bw, inev* ie)
 
 		if(b->over && b->ldown)
 		{
-			if(b->clickfunc != NULL)
-				b->clickfunc();
+			if(b->clickf != NULL)
+				b->clickf();
 
 			if(b->clickfunc2 != NULL)
 				b->clickfunc2(b->param);

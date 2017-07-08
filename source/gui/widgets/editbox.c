@@ -32,7 +32,7 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 	bw->opened = ecfalse;
 	bw->passw = pw;
 	bw->maxlen = maxl;
-	bw->reframefunc = reframef;
+	bw->reframef = reframef;
 	bw->submitfunc = submitf;
 	bw->changefunc = NULL;
 	bw->changefunc2 = NULL;
