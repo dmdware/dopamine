@@ -119,7 +119,7 @@ void preb()
 		{
 			if(lastspace < 0)
 			{
-				nextlb = imax(j, i+1);
+				nextlb = maxi(j, i+1);
 				return;
 			}
 

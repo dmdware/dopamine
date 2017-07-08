@@ -24,11 +24,11 @@ void corslash(char *s);
 void exepath(char* exe);
 void makerel(const char* full, char* rel);
 
-float fmax(const float a, const float b);
-float fmin(const float a, const float b);
+float maxf(const float a, const float b);
+float minf(const float a, const float b);
 
-int imax(const int x, const int y);
-int imin(const int x, const int y);
+int maxi(const int x, const int y);
+int mini(const int x, const int y);
 
 #define enmax(a,b) (((a)>(b))?(a):(b))
 #define enmin(a,b) (((a)<(b))?(a):(b))

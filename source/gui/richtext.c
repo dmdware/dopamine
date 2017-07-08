@@ -185,7 +185,7 @@ void parsetags(char **ndest, char *src, int *caret)
 			iconc = fromglyph(k, &adv);
 			pstradd(&tempdest, iconc);
 			if(caret && *caret > ci)
-				(*caret) -= imin(taglen,*caret-ci);
+				(*caret) -= mini(taglen,*caret-ci);
 			srci+=taglen;
 			ci+=taglen;
 			desti+=strlen(iconc);

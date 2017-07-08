@@ -528,18 +528,18 @@ texdata* loadtex(const char* full)
 
 	low[i] = 0;
 
-	if( (i>=4 && strstr(low+i-4, ".jpg")) || 
-		(i>=3 && strstr(low+i-3, ".jpeg")) || 
-		(i>=3 && strstr(low+i-3, ".jpe")) )
+	if( (i>=3+1 && strstr(low+i-3-1, ".jpg")) ||
+		(i>=4+1 && strstr(low+i-4-1, ".jpeg")) ||
+		(i>=3+1 && strstr(low+i-3-1, ".jpe")) )
 	{
 		return loadjpg(full);
 	}
-	else if(i>=3 && strstr(low+i-3, ".png"))
+	else if(i>=3+1 && strstr(low+i-3-1, ".png"))
 	{
 		return loadpng(full);
 	}
 
-	fprintf(g_applog, "Unrecognized texture file extension: %s. Only .jpg .png are accepted. \r\n", full);
+	fprintf(g_applog, "Unrecognized texture file extension: %s. Only .jpg .png are accepted. \r\n", low);
 
 	return NULL;
 }
@@ -1178,10 +1178,10 @@ void paz(png_color_16 Colors[PNG_MAX_PALETTE_LENGTH],
 	}
 
 	for(pi=0; pi<PNG_MAX_PALETTE_LENGTH; ++pi)
-		avga[pi] /= imax(1, 2000 * mentions[pi] / 255);
+		avga[pi] /= maxi(1, 2000 * mentions[pi] / 255);
 
 	for(pi=0; pi<PNG_MAX_PALETTE_LENGTH; ++pi)
-		Trans[pi] = imax(0, imin(255, avga[pi]));
+		Trans[pi] = maxi(0, mini(255, avga[pi]));
 
 	free(closest);
 

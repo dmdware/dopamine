@@ -14,19 +14,19 @@
 
 float clipf(float n, float lower, float upper)
 {
-	return fmax(lower, fmin(n, upper));
+	return maxf(lower, minf(n, upper));
 }
 
 int clipi(int n, int lower, int upper)
 {
-	return imax(lower, imin(n, upper));
+	return maxi(lower, mini(n, upper));
 }
 
-v3f vmin(float minf, v3f v)
+v3f vmin(float mf, v3f v)
 {
-	v.x = fmin(minf, v.x);
-	v.y = fmin(minf, v.y);
-	v.z = fmin(minf, v.z);
+	v.x = minf(mf, v.x);
+	v.y = minf(mf, v.y);
+	v.z = minf(mf, v.z);
 	return v;
 }
 

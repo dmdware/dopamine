@@ -3904,7 +3904,7 @@ png_build_16bit_table(png_structrp png_ptr, png_uint_16pp *ptable,
    /* CSE the division and work round wacky GCC warnings (see the comments
     * in png_gamma_8bit_correct for where these come from.)
     */
-   PNG_CONST double fmax = 1./(((png_int_32)1 << (16U - shift))-1);
+   PNG_CONST double maxf = 1./(((png_int_32)1 << (16U - shift))-1);
 #endif
    PNG_CONST unsigned int max = (1U << (16U - shift))-1U;
    PNG_CONST unsigned int max_by_2 = 1U << (15U-shift);
@@ -3940,7 +3940,7 @@ png_build_16bit_table(png_structrp png_ptr, png_uint_16pp *ptable,
                /* See png_gamma_8bit_correct for why the cast to (int) is
                 * required here.
                 */
-               double d = floor(65535.*pow(ig*fmax, gamma_val*.00001)+.5);
+               double d = floor(65535.*pow(ig*maxf, gamma_val*.00001)+.5);
                sub_table[j] = (png_uint_16)d;
 #           else
                if (shift != 0)

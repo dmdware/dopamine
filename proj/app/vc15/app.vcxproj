@@ -321,7 +321,6 @@
     <ClInclude Include="..\..\..\source\sim\simflow.h" />
     <ClInclude Include="..\..\..\source\sim\simvars.h" />
     <ClInclude Include="..\..\..\source\sim\user.h" />
-    <ClInclude Include="..\..\..\source\sim\walk.h" />
     <ClInclude Include="..\..\..\source\sound\sound.h" />
     <ClInclude Include="..\..\..\source\sys\debug.h" />
     <ClInclude Include="..\..\..\source\sys\includes.h" />
@@ -581,7 +580,6 @@
     <ClCompile Include="..\..\..\source\sim\simflow.c" />
     <ClCompile Include="..\..\..\source\sim\simvars.c" />
     <ClCompile Include="..\..\..\source\sim\user.c" />
-    <ClCompile Include="..\..\..\source\sim\walk.c" />
     <ClCompile Include="..\..\..\source\sound\sound.c" />
     <ClCompile Include="..\..\..\source\sys\debug.c" />
     <ClCompile Include="..\..\..\source\sys\includes.c" />

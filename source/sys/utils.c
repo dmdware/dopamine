@@ -304,23 +304,23 @@ void warm(const char* title, const char* m)
 	//SDL_ShowCursor(ecfalse);
 }
 
-float fmax(const float a, const float b)
+float maxf(const float a, const float b)
 {
 	return (((a)>(b))?(a):(b));
 }
 
-float fmin(const float a, const float b)
+float minf(const float a, const float b)
 {
 	return (((a)<(b))?(a):(b));
 }
 
-int imax(const int x, const int y)
+int maxi(const int x, const int y)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html#IntegerMinOrMax
 	return x ^ ((x ^ y) & -(x < y)); // max(x, y)
 }
 
-int imin(const int x, const int y)
+int mini(const int x, const int y)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html#IntegerMinOrMax
 	return y ^ ((x ^ y) & -(x < y)); // min(x, y)

@@ -5,6 +5,7 @@
 
 void queuesimres()
 {
+#if 0
 	float prefab[FABX][FABX];
 	int x, y;
 return;
@@ -25,4 +26,5 @@ return;
 			
 		}
 	}
+#endif
 }

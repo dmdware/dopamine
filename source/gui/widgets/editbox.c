@@ -109,7 +109,7 @@ void ebwframeup(ebw *eb)
 
 		if(g_mouse.x >= pos[2]-5)
 		{
-			scroll[0] -= fmax(1, f->gheight/4.0f);
+			scroll[0] -= maxf(1, f->gheight/4.0f);
 
 			val = ebwdrawvalue(eb);
 			vallen = strlen(val);
@@ -130,7 +130,7 @@ void ebwframeup(ebw *eb)
 		}
 		else if(g_mouse.x <= pos[0]+5)
 		{
-			scroll[0] += fmax(1, f->gheight/4.0f);
+			scroll[0] += maxf(1, f->gheight/4.0f);
 
 			if(scroll[0] > 0.0f)
 				scroll[0] = 0.0f;
