@@ -198,7 +198,7 @@ void bwgdraw(bwg *b)
 		textleft = bw->pos[0]+minsz+1;
 
 		//TODO rewrite font.cpp/h to better deal with cropping
-		drawt(b->font, b->tpos, bw->crop, b->label, NULL, richlen(b->label), -1, ectrue, ecfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, ectrue, ecfalse);
 	}
 	else if(b->style == BUST_LINEBASED)
 	{
@@ -233,8 +233,7 @@ void bwgdraw(bwg *b)
 
 		//TODO fix resolution change on settings reload on mobile
 
-		cenlab(b);
-		drawt(b->font, b->tpos, bw->crop, b->label, NULL, richlen(b->label), -1, ectrue, ecfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, ectrue, ecfalse);
 	}
 }
 
@@ -252,7 +251,7 @@ void bwgdrawover(bwg *b)
 		tpos[2] = tpos[0] + 256;
 		tpos[3] = tpos[1] + 53;
 
-		drawt(b->font, tpos, bw->crop, b->tooltip, NULL, richlen(b->tooltip), -1, ectrue, ecfalse);
+		drawt(b->font, tpos, bw->crop, b->tooltip, NULL, 0, -1, ectrue, ecfalse);
 	}
 }
 

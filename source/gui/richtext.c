@@ -268,6 +268,7 @@ int richlen(const char *in)
 		} else {
 			//if ((flags & UTF8_IGNORE_ERROR) == 0)
 			//	return (0);
+			total++;
 			continue;
 		}
 
@@ -276,6 +277,7 @@ int richlen(const char *in)
 			//if ((flags & UTF8_IGNORE_ERROR) == 0)
 			//	return (0);
 			n = 1;
+			total++;
 			continue;	/*skip */
 		}
 
@@ -291,7 +293,8 @@ int richlen(const char *in)
 			if (i != n) {
 	//			if ((flags & UTF8_IGNORE_ERROR) == 0)
 	//				return (0);
-				n = 1;
+				n = 1; 
+				total++;
 				continue;	/*skip */
 			}
 		}
@@ -321,8 +324,10 @@ int richlen(const char *in)
 				//out--;
 			}
 		}
-		//else if (out == _BOM && (flags & UTF8_SKIP_BOM) != 0) 
-		else
+		else if (out == _BOM 
+			//&& (flags & UTF8_SKIP_BOM) != 0
+			) 
+		//else
 		{
 			total--;
 			//out--;

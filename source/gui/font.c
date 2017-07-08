@@ -854,8 +854,10 @@ void drawt(int fnt, float *inframe, float *incrop, char *text, float *color, int
 	}
 
 	textlayer((int)inframe[0], (int)inframe[1]);
+
 	if(caret == 0)
 		drawcar();
+
 	for(; g_rtext[i]; i+=adv)
 	{
 		if(multiline && i == nextlb)
@@ -926,7 +928,7 @@ int linei(char *text, int fnt, float *inframe, int getline)
 int endx(const char *text, int lastg, int fnt, float *inframe, dbool multiline)
 {
 	int highx, adv;
-	
+
 	startt(text, fnt, 0, (int)inframe[0], inframe, inframe);
 	textlayer((int)inframe[0], (int)inframe[1]);
 
@@ -945,6 +947,8 @@ int endx(const char *text, int lastg, int fnt, float *inframe, dbool multiline)
 		if(x > highx)
 			highx = x;
 	}
+
+	fflush(g_applog);
 
 	return highx;
 }
@@ -1025,8 +1029,8 @@ void loadfonts()
 	loadfont(FONT_ARIAL10, "fonts/arial10s");
 	loadfont(FONT_GULIM32, "fonts/gulim32");
 	loadfont(FONT_EUROSTILE16, "fonts/eurostile16");
-	loadfont(FONT_CALIBRILIGHT16, "fonts/calibrilight16s-full");
 #endif
 	//loadfont(FONT_CALIBRILIGHT16, "fonts/gulim16");
 	loadfont(FONT_TERMINAL10, "fonts/terminal10");
+	loadfont(FONT_CALIBRILIGHT16, "fonts/calibrilight16s-full");
 }

@@ -234,7 +234,7 @@ void draw()
 		lpos, ldir);
 #endif
 
-	drawt(MAINFONT8, frame, frame, "Test",
+	drawt(MAINFONT16, frame, frame, "Test",
 	white, 0, -1, ecfalse, ecfalse);
 
 	wgframeup(gui);
