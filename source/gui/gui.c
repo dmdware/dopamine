@@ -13,7 +13,7 @@
 #include "../render/shader.h"
 #include "../sys/texture.h"
 #include "../app/appmain.h"
-#include "viewlayer.h"
+#include "vl.h"
 #include "widgets/text.h"
 
 wgg g_gui;

@@ -3,7 +3,7 @@
 #ifndef RICHTEXT_H
 #define RICHTEXT_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "font.h"
 #include "../utf8/utf8.h"
 

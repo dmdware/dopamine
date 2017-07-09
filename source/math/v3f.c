@@ -9,7 +9,7 @@
 
 
 
-#include "vec3f.h"
+#include "v3f.h"
 
 void v3ftransform(v3f *v, const float *m)
 {

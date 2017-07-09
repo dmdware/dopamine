@@ -1,7 +1,7 @@
 #ifndef VEC4F_H
 #define VEC4F_H
 
-#include "vec3f.h"
+#include "v3f.h"
 #include "../algo/bool.h"
 #include "matf.h"
 

@@ -12,7 +12,7 @@
 #ifndef VEC3FX_H
 #define VEC3FX_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "fixfrac.h"
 
 struct v3x

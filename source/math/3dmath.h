@@ -1,12 +1,12 @@
 #ifndef MATH3D_H
 #define MATH3D_H
 
-#include "../sys/includes.h"
-#include "vec3f.h"
-#include "vec4f.h"
-#include "vec2f.h"
-#include "vec2i.h"
-#include "vec3i.h"
+#include "../sys/inc.h"
+#include "v3f.h"
+#include "v4f.h"
+#include "v2f.h"
+#include "v2i.h"
+#include "v3i.h"
 #include "camf.h"
 #include "plane3f.h"
 

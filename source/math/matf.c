@@ -1,7 +1,7 @@
 #include "matf.h"
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "quatf.h"
-#include "vec4f.h"
+#include "v4f.h"
 
 void mfset(mf *m, const float *matrix )
 {

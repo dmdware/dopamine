@@ -3,8 +3,8 @@
 #ifndef FIXFRAC_H
 #define FIXFRAC_H
 
-#include "../sys/includes.h"
-#include "../algo/vector.h"
+#include "../sys/inc.h"
+#include "../algo/vec.h"
 #include "../algo/bool.h"
 
 #define FX_PREC				67

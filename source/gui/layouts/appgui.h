@@ -12,10 +12,10 @@
 #ifndef APPGUI_H
 #define APPGUI_H
 
-#include "../../sys/includes.h"
-#include "../widget.h"
+#include "../../sys/inc.h"
+#include "../wg.h"
 
-struct vw;
+struct vl;
 struct wg;
 
 extern char g_lastsave[DMD_MAX_PATH+1];

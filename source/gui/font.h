@@ -1,7 +1,7 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "../algo/bool.h"
 
 #define MAX_CHARS	256

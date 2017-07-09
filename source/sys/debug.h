@@ -1,7 +1,7 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "includes.h"
+#include "inc.h"
 #include "../gui/richtext.h"
 #include "../algo/bool.h"
 

@@ -1,4 +1,4 @@
-#include "../widget.h"
+#include "../wg.h"
 #include "text.h"
 #include "../../sim/user.h"
 #include "../gui.h"

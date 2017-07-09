@@ -3,7 +3,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "../algo/bool.h"
 
 #define SSLOT_TEXTURE0			0

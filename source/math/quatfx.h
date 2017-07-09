@@ -12,7 +12,7 @@
 #ifndef QUATFX_H
 #define QUATFX_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "fixfrac.h"
 
 struct qx

@@ -3,7 +3,7 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "bool.h"
 
 struct lnode

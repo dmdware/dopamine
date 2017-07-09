@@ -1,7 +1,7 @@
 #ifndef ICON_H
 #define ICON_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 #define MAX_TAG		31	//not counting null terminator
 

@@ -9,7 +9,7 @@
 
 
 
-#include "inevent.h"
+#include "inev.h"
 
 
 void ininit(inev *ie)

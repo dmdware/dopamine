@@ -13,10 +13,10 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "includes.h"
-#include "../algo/vector.h"
+#include "inc.h"
+#include "../algo/vec.h"
 #include "../algo/bool.h"
-#include "../math/vec2i.h"
+#include "../math/v2i.h"
 
 struct gltex
 {

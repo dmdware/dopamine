@@ -14,7 +14,7 @@
 #ifndef FIXMATH_H
 #define FIXMATH_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 #define RATIO_DENOM		1000
 

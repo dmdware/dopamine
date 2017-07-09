@@ -12,13 +12,13 @@
 #ifndef VIEWLAYER_H
 #define VIEWLAYER_H
 
-#include "widget.h"
+#include "wg.h"
 
-struct vw
+struct vl
 {
 	wg base;
 };
 
-typedef struct vw vw;
+typedef struct vl vl;
 
 #endif

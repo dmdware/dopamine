@@ -12,7 +12,7 @@
 #ifndef LINK_H
 #define LINK_H
 
-#include "../widget.h"
+#include "../wg.h"
 
 //hyperlink
 struct hpl

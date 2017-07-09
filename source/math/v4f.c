@@ -1,7 +1,7 @@
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "matf.h"
-#include "vec4f.h"
-#include "vec3f.h"
+#include "v4f.h"
+#include "v3f.h"
 
 void v4ftransform(v4f *v, const mf *m)
 {

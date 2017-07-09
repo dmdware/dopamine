@@ -12,8 +12,8 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "../sys/includes.h"
-#include "widget.h"
+#include "../sys/inc.h"
+#include "wg.h"
 
 struct wgg
 {

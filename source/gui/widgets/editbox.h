@@ -1,7 +1,7 @@
 #ifndef EDITBOX_H
 #define EDITBOX_H
 
-#include "../widget.h"
+#include "../wg.h"
 
 #if 0
 struct ebw

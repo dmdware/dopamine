@@ -9,7 +9,7 @@
 
 
 
-#include "widget.h"
+#include "wg.h"
 #include "gui.h"
 #include "font.h"
 #include "../sys/syswin.h"

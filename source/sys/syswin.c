@@ -3,7 +3,7 @@
 
 #include "syswin.h"
 #include "../algo/bool.h"
-#include "../gui/widget.h"
+#include "../gui/wg.h"
 #include "../gui/gui.h"
 #include "../render/shader.h"
 

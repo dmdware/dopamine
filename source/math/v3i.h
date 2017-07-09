@@ -12,7 +12,7 @@
 #ifndef VEC3I_H
 #define VEC3I_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 
 struct v3i

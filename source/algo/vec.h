@@ -3,7 +3,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 struct vector
 {

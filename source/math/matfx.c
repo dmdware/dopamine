@@ -1,7 +1,7 @@
 #include "matfx.h"
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "quatf.h"
-#include "vec4f.h"
+#include "v4f.h"
 
 #if 0
 void mxinit(mx *m)

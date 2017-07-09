@@ -7,7 +7,7 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
-#include "platform.h"
+#include "plat.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 #define _USE_MATH_DEFINES

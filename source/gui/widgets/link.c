@@ -5,7 +5,7 @@
 
 
 
-#include "../widget.h"
+#include "../wg.h"
 #include "button.h"
 #include "editbox.h"
 #include "image.h"

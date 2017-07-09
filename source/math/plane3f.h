@@ -1,7 +1,7 @@
 #ifndef PLANE3F_H
 #define PLANE3F_H
 
-#include "vec3f.h"
+#include "v3f.h"
 
 
 struct p3f

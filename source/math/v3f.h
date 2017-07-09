@@ -12,7 +12,7 @@
 #ifndef VEC3F_H
 #define VEC3F_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 struct v3f
 {

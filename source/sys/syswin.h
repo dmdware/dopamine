@@ -5,10 +5,10 @@
 #ifndef SYSWIN_H
 #define SYSWIN_H
 
-#include "includes.h"
-#include "../math/vec2i.h"
+#include "inc.h"
+#include "../math/v2i.h"
 #include "../math/camf.h"
-#include "../algo/vector.h"
+#include "../algo/vec.h"
 #include "../algo/list.h"
 #include "../gui/cursor.h"
 

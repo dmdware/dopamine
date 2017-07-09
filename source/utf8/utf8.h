@@ -22,7 +22,7 @@
 #ifndef UTF8_H
 #define UTF8_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 
 #define _NXT	0x80

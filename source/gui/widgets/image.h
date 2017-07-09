@@ -9,7 +9,7 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "../widget.h"
+#include "../wg.h"
 #include "../../algo/bool.h"
 
 struct imw

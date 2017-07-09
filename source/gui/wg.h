@@ -19,7 +19,7 @@
 #include "../sys/syswin.h"
 #include "draw2d.h"
 #include "richtext.h"
-#include "inevent.h"
+#include "inev.h"
 
 #define MAX_OPTIONS_SHOWN	7
 

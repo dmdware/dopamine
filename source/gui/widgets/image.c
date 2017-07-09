@@ -6,7 +6,7 @@
 
 
 
-#include "../widget.h"
+#include "../wg.h"
 #include "image.h"
 #include "text.h"
 #include "../../sys/debug.h"

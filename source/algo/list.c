@@ -2,7 +2,7 @@
 
 #include "bool.h"
 #include "list.h"
-#include "../gui/widget.h"
+#include "../gui/wg.h"
 #include "../sys/utils.h"
 
 void linit(list *l)

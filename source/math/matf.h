@@ -1,7 +1,7 @@
 #ifndef MATF_H
 #define MATF_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "quatf.h"
 
 struct qf;

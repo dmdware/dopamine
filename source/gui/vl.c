@@ -11,9 +11,9 @@
 
 #include "gui.h"
 #include "../sys/texture.h"
-#include "viewlayer.h"
+#include "vl.h"
 
-void vwinit(vw *v, const char* n, wg* parent)
+void vwinit(vl *v, const char* n, wg* parent)
 {
 	wg *bw;
 	bw = (wg*)v;

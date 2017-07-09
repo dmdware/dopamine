@@ -3,7 +3,7 @@
 #ifndef PART_H
 #define PART_H
 
-#include "../math/vec3f.h"
+#include "../math/v3f.h"
 
 struct part3f
 {

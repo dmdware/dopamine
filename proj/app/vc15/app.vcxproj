@@ -92,7 +92,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\source\algo\bool.h" />
     <ClInclude Include="..\..\..\source\algo\list.h" />
-    <ClInclude Include="..\..\..\source\algo\vector.h" />
+    <ClInclude Include="..\..\..\source\algo\vec.h" />
     <ClInclude Include="..\..\..\source\app\appmain.h" />
     <ClInclude Include="..\..\..\source\glew\GL\glew.h" />
     <ClInclude Include="..\..\..\source\glew\GL\wglew.h" />
@@ -101,16 +101,17 @@
     <ClInclude Include="..\..\..\source\gui\font.h" />
     <ClInclude Include="..\..\..\source\gui\gui.h" />
     <ClInclude Include="..\..\..\source\gui\icon.h" />
-    <ClInclude Include="..\..\..\source\gui\inevent.h" />
+    <ClInclude Include="..\..\..\source\gui\inev.h" />
     <ClInclude Include="..\..\..\source\gui\layouts\appgui.h" />
     <ClInclude Include="..\..\..\source\gui\richtext.h" />
-    <ClInclude Include="..\..\..\source\gui\viewlayer.h" />
-    <ClInclude Include="..\..\..\source\gui\widget.h" />
+    <ClInclude Include="..\..\..\source\gui\vl.h" />
+    <ClInclude Include="..\..\..\source\gui\wg.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\button.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\editbox.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\image.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\link.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\text.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\vp.h" />
     <ClInclude Include="..\..\..\source\jpeg\cderror.h" />
     <ClInclude Include="..\..\..\source\jpeg\cdjpeg.h" />
     <ClInclude Include="..\..\..\source\jpeg\jconfig.h" />
@@ -134,12 +135,12 @@
     <ClInclude Include="..\..\..\source\math\plane3f.h" />
     <ClInclude Include="..\..\..\source\math\quatf.h" />
     <ClInclude Include="..\..\..\source\math\quatfx.h" />
-    <ClInclude Include="..\..\..\source\math\vec2f.h" />
-    <ClInclude Include="..\..\..\source\math\vec2i.h" />
-    <ClInclude Include="..\..\..\source\math\vec3f.h" />
-    <ClInclude Include="..\..\..\source\math\vec3fx.h" />
-    <ClInclude Include="..\..\..\source\math\vec3i.h" />
-    <ClInclude Include="..\..\..\source\math\vec4f.h" />
+    <ClInclude Include="..\..\..\source\math\v2f.h" />
+    <ClInclude Include="..\..\..\source\math\v2i.h" />
+    <ClInclude Include="..\..\..\source\math\v3f.h" />
+    <ClInclude Include="..\..\..\source\math\v3fx.h" />
+    <ClInclude Include="..\..\..\source\math\v3i.h" />
+    <ClInclude Include="..\..\..\source\math\v4f.h" />
     <ClInclude Include="..\..\..\source\net\net.h" />
     <ClInclude Include="..\..\..\source\png\png.h" />
     <ClInclude Include="..\..\..\source\png\pngconf.h" />
@@ -324,8 +325,8 @@
     <ClInclude Include="..\..\..\source\sim\user.h" />
     <ClInclude Include="..\..\..\source\sound\sound.h" />
     <ClInclude Include="..\..\..\source\sys\debug.h" />
-    <ClInclude Include="..\..\..\source\sys\includes.h" />
-    <ClInclude Include="..\..\..\source\sys\platform.h" />
+    <ClInclude Include="..\..\..\source\sys\inc.h" />
+    <ClInclude Include="..\..\..\source\sys\plat.h" />
     <ClInclude Include="..\..\..\source\sys\syswin.h" />
     <ClInclude Include="..\..\..\source\sys\texture.h" />
     <ClInclude Include="..\..\..\source\sys\utils.h" />
@@ -348,7 +349,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\algo\list.c" />
-    <ClCompile Include="..\..\..\source\algo\vector.c" />
+    <ClCompile Include="..\..\..\source\algo\vec.c" />
     <ClCompile Include="..\..\..\source\app\appmain.c" />
     <ClCompile Include="..\..\..\source\glew\glew.c" />
     <ClCompile Include="..\..\..\source\gui\cursor.c" />
@@ -356,16 +357,17 @@
     <ClCompile Include="..\..\..\source\gui\font.c" />
     <ClCompile Include="..\..\..\source\gui\gui.c" />
     <ClCompile Include="..\..\..\source\gui\icon.c" />
-    <ClCompile Include="..\..\..\source\gui\inevent.c" />
+    <ClCompile Include="..\..\..\source\gui\inev.c" />
     <ClCompile Include="..\..\..\source\gui\layouts\appgui.c" />
     <ClCompile Include="..\..\..\source\gui\richtext.c" />
-    <ClCompile Include="..\..\..\source\gui\viewlayer.c" />
-    <ClCompile Include="..\..\..\source\gui\widget.c" />
+    <ClCompile Include="..\..\..\source\gui\vl.c" />
+    <ClCompile Include="..\..\..\source\gui\wg.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\button.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\editbox.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\image.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\link.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\text.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\vp.c" />
     <ClCompile Include="..\..\..\source\jpeg\jaricom.c" />
     <ClCompile Include="..\..\..\source\jpeg\jcapimin.c" />
     <ClCompile Include="..\..\..\source\jpeg\jcapistd.c" />
@@ -423,11 +425,11 @@
     <ClCompile Include="..\..\..\source\math\plane3f.c" />
     <ClCompile Include="..\..\..\source\math\quatf.c" />
     <ClCompile Include="..\..\..\source\math\quatfx.c" />
-    <ClCompile Include="..\..\..\source\math\vec2f.c" />
-    <ClCompile Include="..\..\..\source\math\vec3f.c" />
-    <ClCompile Include="..\..\..\source\math\vec3fx.c" />
-    <ClCompile Include="..\..\..\source\math\vec3i.c" />
-    <ClCompile Include="..\..\..\source\math\vec4f.c" />
+    <ClCompile Include="..\..\..\source\math\v2f.c" />
+    <ClCompile Include="..\..\..\source\math\v3f.c" />
+    <ClCompile Include="..\..\..\source\math\v3fx.c" />
+    <ClCompile Include="..\..\..\source\math\v3i.c" />
+    <ClCompile Include="..\..\..\source\math\v4f.c" />
     <ClCompile Include="..\..\..\source\net\net.c" />
     <ClCompile Include="..\..\..\source\png\png.c" />
     <ClCompile Include="..\..\..\source\png\pngerror.c" />
@@ -584,7 +586,7 @@
     <ClCompile Include="..\..\..\source\sim\user.c" />
     <ClCompile Include="..\..\..\source\sound\sound.c" />
     <ClCompile Include="..\..\..\source\sys\debug.c" />
-    <ClCompile Include="..\..\..\source\sys\includes.c" />
+    <ClCompile Include="..\..\..\source\sys\inc.c" />
     <ClCompile Include="..\..\..\source\sys\syswin.c" />
     <ClCompile Include="..\..\..\source\sys\texture.c" />
     <ClCompile Include="..\..\..\source\sys\utils.c" />

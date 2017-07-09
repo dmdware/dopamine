@@ -1,7 +1,7 @@
 #ifndef MATFX_H
 #define MATFX_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "quatfx.h"
 #include "fixfrac.h"
 

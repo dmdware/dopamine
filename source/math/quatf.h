@@ -12,7 +12,7 @@
 #ifndef QUATF_H
 #define QUATF_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 
 struct qf
 {

@@ -15,7 +15,7 @@
 
 #include "../sys/texture.h"
 #include "../algo/bool.h"
-#include "../algo/vector.h"
+#include "../algo/vec.h"
 
 struct spt
 {

@@ -1,4 +1,4 @@
-#include "../widget.h"
+#include "../wg.h"
 #include "button.h"
 #include "text.h"
 

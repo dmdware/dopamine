@@ -2,7 +2,7 @@
 #ifndef CAMF_H
 #define CAMF_H
 
-#include "vec3i.h"
+#include "v3i.h"
 #include "../algo/bool.h"
 #include "quatf.h"
 

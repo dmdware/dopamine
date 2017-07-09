@@ -2,10 +2,10 @@
 
 
 
-#include "../widget.h"
+#include "../wg.h"
 #include "button.h"
 #include "../icon.h"
-#include "../widget.h"
+#include "../wg.h"
 #include "../gui.h"
 #include "../font.h"
 #include "../richtext.h"

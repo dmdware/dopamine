@@ -12,7 +12,7 @@
 #ifndef INEV_H
 #define INEV_H
 
-#include "../sys/includes.h"
+#include "../sys/inc.h"
 #include "../algo/bool.h"
 
 #define INEV_MOUSEMOVE		0
