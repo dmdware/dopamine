@@ -42,15 +42,8 @@ void wgfree(wg *w)
 {
 	wgfreech(w);
 	lfree(&w->sub);
-	//free(w->extra);
-	//w->extra = NULL;
-
-	switch(w->type)
-	{
-	//case WIDGET_EDITBOX:
-		//editbox_free((editbox*)w);
-	//	break;
-	}
+	if (wgsubf[w->type])
+		wgsubf[w->type](w);
 }
 
 void wgchcall(wg *w, wg* ch, char type, void* data)
