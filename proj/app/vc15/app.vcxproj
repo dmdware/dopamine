@@ -103,6 +103,7 @@
     <ClInclude Include="..\..\..\source\gui\icon.h" />
     <ClInclude Include="..\..\..\source\gui\inev.h" />
     <ClInclude Include="..\..\..\source\gui\layouts\appgui.h" />
+    <ClInclude Include="..\..\..\source\gui\layouts\vpwrap.h" />
     <ClInclude Include="..\..\..\source\gui\richtext.h" />
     <ClInclude Include="..\..\..\source\gui\vl.h" />
     <ClInclude Include="..\..\..\source\gui\wg.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="..\..\..\source\gui\icon.c" />
     <ClCompile Include="..\..\..\source\gui\inev.c" />
     <ClCompile Include="..\..\..\source\gui\layouts\appgui.c" />
+    <ClCompile Include="..\..\..\source\gui\layouts\vpwrap.c" />
     <ClCompile Include="..\..\..\source\gui\richtext.c" />
     <ClCompile Include="..\..\..\source\gui\vl.c" />
     <ClCompile Include="..\..\..\source\gui\wg.c" />

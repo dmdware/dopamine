@@ -16,31 +16,32 @@ struct vp
 {
 	wg base;
 
-	void(*drawf)(int p, int x, int y, int w, int h);
-	dbool(*ldownf)(int p, int relx, int rely, int w, int h);
-	dbool(*lupf)(int p, int relx, int rely, int w, int h);
-	dbool(*mmovef)(int p, int relx, int rely, int w, int h);
-	dbool(*rdownf)(int p, int relx, int rely, int w, int h);
-	dbool(*rupf)(int p, int relx, int rely, int w, int h);
-	dbool(*mousewf)(int p, int d);
-	dbool(*mdownf)(int p, int relx, int rely, int w, int h);
-	dbool(*mupf)(int p, int relx, int rely, int w, int h);
+	void(*drawf)(void *e, int x, int y, int w, int h);
+	dbool(*ldownf)(void *e, int relx, int rely, int w, int h);
+	dbool(*lupf)(void *e, int relx, int rely, int w, int h);
+	dbool(*mmovef)(void *e, int relx, int rely, int w, int h);
+	dbool(*rdownf)(void *e, int relx, int rely, int w, int h);
+	dbool(*rupf)(void *e, int relx, int rely, int w, int h);
+	dbool(*mousewf)(void *e, int d);
+	dbool(*mdownf)(void *e, int relx, int rely, int w, int h);
+	dbool(*mupf)(void *e, int relx, int rely, int w, int h);
 	void(*freef)(wg* w);
 	dbool ldown;
+	dbool over;
 };
 
 typedef struct vp vp;
 
 void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
-	void(*drawf)(int p, int x, int y, int w, int h),
-	dbool(*ldownf)(int p, int relx, int rely, int w, int h),
-	dbool(*lupf)(int p, int relx, int rely, int w, int h),
-	dbool(*mmovef)(int p, int relx, int rely, int w, int h),
-	dbool(*rdownf)(int p, int relx, int rely, int w, int h),
-	dbool(*rupf)(int p, int relx, int rely, int w, int h),
-	dbool(*mousewf)(int p, int d),
-	dbool(*mdownf)(int p, int relx, int rely, int w, int h),
-	dbool(*mupf)(int p, int relx, int rely, int w, int h),
+	void(*drawf)(void *e, int x, int y, int w, int h),
+	dbool(*ldownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*lupf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mmovef)(void *e, int relx, int rely, int w, int h),
+	dbool(*rdownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*rupf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mousewf)(void *e, int d),
+	dbool(*mdownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mupf)(void *e, int relx, int rely, int w, int h),
 	void *e, void(*freef)(wg* w));
 void vpin(wg *w, inev *ie);
 void vpdraw(wg *w);

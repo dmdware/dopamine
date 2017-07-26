@@ -9,15 +9,15 @@
 #include "vp.h"
 
 void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
-	void(*drawf)(int p, int x, int y, int w, int h),
-	dbool(*ldownf)(int p, int relx, int rely, int w, int h),
-	dbool(*lupf)(int p, int relx, int rely, int w, int h),
-	dbool(*mmovef)(int p, int relx, int rely, int w, int h),
-	dbool(*rdownf)(int p, int relx, int rely, int w, int h),
-	dbool(*rupf)(int p, int relx, int rely, int w, int h),
-	dbool(*mousewf)(int p, int d),
-	dbool(*mdownf)(int p, int relx, int rely, int w, int h),
-	dbool(*mupf)(int p, int relx, int rely, int w, int h),
+	void(*drawf)(void *e, int x, int y, int w, int h),
+	dbool(*ldownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*lupf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mmovef)(void *e, int relx, int rely, int w, int h),
+	dbool(*rdownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*rupf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mousewf)(void *e, int d),
+	dbool(*mdownf)(void *e, int relx, int rely, int w, int h),
+	dbool(*mupf)(void *e, int relx, int rely, int w, int h),
 	void *e, void(*freef)(wg* w))
 {
 	wg *bw;
@@ -40,6 +40,7 @@ void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
 	v->mupf = mupf;
 	v->freef = freef;
 	v->ldown = dfalse;
+	v->over = dfalse;
 	wgreframe(bw);
 }
 
@@ -53,196 +54,129 @@ void vpfree(wg* w)
 
 void vpin(wg *w, inev *ie)
 {
-}
+	vp* v = (vp*)w;
 
-void vpdraw(wg *w)
-{
-}
-
-#if 0
-Viewport::Viewport()
-{
-	m_parent = NULL;
-	m_type = WIDGET_VIEWPORT;
-	m_name = "";
-	reframefunc = NULL;
-	m_ldown = false;
-	m_param = -1;
-	drawf = NULL;
-	ldownf = NULL;
-	lupf = NULL;
-	mmovef = NULL;
-	rdownf = NULL;
-	rupf = NULL;
-	mousewf = NULL;
-	//reframe();
-}
-
-
-Viewport::Viewport(Widget* parent, const char* n, void (*reframef)(Widget* thisw),
-                     void (*drawf)(int p, int x, int y, int w, int h),
-                     dbool (*ldownf)(int p, int x, int y, int w, int h),
-                     dbool (*lupf)(int p, int x, int y, int w, int h),
-                     dbool (*mmovef)(int p, int x, int y, int w, int h),
-                     dbool (*rdownf)(int p, int relx, int rely, int w, int h),
-                     dbool (*rupf)(int p, int relx, int rely, int w, int h),
-                     dbool (*mousewf)(int p, int d),
-                     dbool (*mdownf)(int p, int relx, int rely, int w, int h),
-                     dbool (*mupf)(int p, int relx, int rely, int w, int h),
-                     int parm)
-{
-    m_parent = parent;
-    m_type = WIDGET_VIEWPORT;
-    m_name = n;
-    reframefunc = reframef;
-    m_ldown = false;
-    m_param = parm;
-    drawf = drawf;
-    ldownf = ldownf;
-    lupf = lupf;
-    mmovef = mmovef;
-    rdownf = rdownf;
-    rupf = rupf;
-    mousewf = mousewf;
-    mdownf = mdownf;
-    mupf = mupf;
-    reframe();
-}
-
-void Viewport::draw()
-{
-	//Log(m_pos[0]<<","<<m_pos[1]<<","<<m_pos[2]<<","<<m_pos[3]);
-
-	int w = (int)( m_pos[2] - m_pos[0] );
-	int h = (int)( m_pos[3] - m_pos[1] );
-
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glViewport(m_pos[0], (int)(g_height-m_pos[3]), w, h);
-	glUniform1f(g_shader[SHADER_ORTHO].m_slot[SSLOT_WIDTH], (float)w);
-	glUniform1f(g_shader[SHADER_ORTHO].m_slot[SSLOT_HEIGHT], (float)h);
-
-
-	EndS();
-	
-#if 1
-	CHECKGLERROR();
-
-	if(drawf != NULL)
-		drawf(m_param, m_pos[0], m_pos[1], w, h);
-
-	CHECKGLERROR();
-#endif
-
-	//glViewport(0, 0, g_width, g_height);
-	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
-	//glUniform1f(g_shader[SHADER_ORTHO].m_slot[SSLOT_WIDTH], (float)g_width);
-	//glUniform1f(g_shader[SHADER_ORTHO].m_slot[SSLOT_HEIGHT], (float)g_height);
-
-	CHECKGLERROR();
-	Ortho(g_width, g_height, 1, 1, 1, 1);
-}
-
-void Viewport::in(InEv* ie)
-{
-	if(ie->type == INEV_MOUSEMOVE)
+	if (ie->type == INEV_MOUSEMOVE)
 	{
-		if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[3])
+		if (g_mouse.x >= w->pos[0] && g_mouse.x <= w->pos[2] && g_mouse.y >= w->pos[1] && g_mouse.y <= w->pos[3])
 		{
-			if(!ie->intercepted)
-				m_over = true;
+			if (!ie->intercepted)
+				v->over = dtrue;
 		}
 		else
-			m_over = false;
+			v->over = dfalse;
 	}
-	
-	if(ie->type == INEV_MOUSEMOVE && !ie->intercepted)
-	{
-		if(g_mouse.x >= m_pos[0] && g_mouse.x <= m_pos[2] && g_mouse.y >= m_pos[1] && g_mouse.y <= m_pos[3])
-			m_over = true;
-		else
-			m_over = false;
 
-		if(m_over && mmovef != NULL)
+	if (ie->type == INEV_MOUSEMOVE && !ie->intercepted)
+	{
+		if (g_mouse.x >= w->pos[0] && g_mouse.x <= w->pos[2] && g_mouse.y >= w->pos[1] && g_mouse.y <= w->pos[3])
+			v->over = dtrue;
+		else
+			v->over = dfalse;
+
+		if (v->over && v->mmovef != NULL)
 		{
-			int relx = g_mouse.x - (int)m_pos[0];
-			int rely = g_mouse.y - (int)m_pos[1];
-			int w = (int)( m_pos[2] - m_pos[0] );
-			int h = (int)( m_pos[3] - m_pos[1] );
-			/* ie->intercepted = */ mmovef(m_param, relx, rely, w, h);
+			int relx = g_mouse.x - (int)w->pos[0];
+			int rely = g_mouse.y - (int)w->pos[1];
+			int wd = (int)(w->pos[2] - w->pos[0]);
+			int ht = (int)(w->pos[3] - w->pos[1]);
+			/* ie->intercepted = v->*/ v->mmovef(w->extra, relx, rely, wd, ht);
 		}
 
 		return;
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//InfoMess("vpld", "vpld");
 
-		if(!m_over)
+		if (!v->over)
 			return;
 
-		if(ldownf != NULL)
+		if (v->ldownf != NULL)
 		{
-			int relx = g_mouse.x - (int)m_pos[0];
-			int rely = g_mouse.y - (int)m_pos[1];
-			int w = (int)( m_pos[2] - m_pos[0] );
-			int h = (int)( m_pos[3] - m_pos[1] );
-			ie->intercepted = ldownf(m_param, relx, rely, w, h);
+			int relx = g_mouse.x - (int)w->pos[0];
+			int rely = g_mouse.y - (int)w->pos[1];
+			int wd = (int)(w->pos[2] - w->pos[0]);
+			int ht = (int)(w->pos[3] - w->pos[1]);
+			ie->intercepted = v->ldownf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//InfoMess("vplu", "vplu");
 
-		if(!m_over)
+		if (!v->over)
 			return;
 
-		if(lupf != NULL)
+		if (v->lupf != NULL)
 		{
-			int relx = g_mouse.x - (int)m_pos[0];
-			int rely = g_mouse.y - (int)m_pos[1];
-			int w = (int)( m_pos[2] - m_pos[0] );
-			int h = (int)( m_pos[3] - m_pos[1] );
-			ie->intercepted = lupf(m_param, relx, rely, w, h);
+			int relx = g_mouse.x - (int)w->pos[0];
+			int rely = g_mouse.y - (int)w->pos[1];
+			int wd = (int)(w->pos[2] - w->pos[0]);
+			int ht = (int)(w->pos[3] - w->pos[1]);
+			ie->intercepted = v->lupf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_RIGHT && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_RIGHT && !ie->intercepted)
 	{
-		if(!m_over)
+		if (!v->over)
 			return;
 
-		if(rdownf != NULL)
+		if (v->rdownf != NULL)
 		{
-			int relx = g_mouse.x - (int)m_pos[0];
-			int rely = g_mouse.y - (int)m_pos[1];
-			int w = (int)( m_pos[2] - m_pos[0] );
-			int h = (int)( m_pos[3] - m_pos[1] );
-			ie->intercepted = rdownf(m_param, relx, rely, w, h);
+			int relx = g_mouse.x - (int)w->pos[0];
+			int rely = g_mouse.y - (int)w->pos[1];
+			int wd = (int)(w->pos[2] - w->pos[0]);
+			int ht = (int)(w->pos[3] - w->pos[1]);
+			ie->intercepted = v->rdownf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_RIGHT && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_RIGHT && !ie->intercepted)
 	{
-		if(!m_over)
+		if (!v->over)
 			return;
 
-		if(rupf != NULL)
+		if (v->rupf != NULL)
 		{
-			int relx = g_mouse.x - (int)m_pos[0];
-			int rely = g_mouse.y - (int)m_pos[1];
-			int w = (int)( m_pos[2] - m_pos[0] );
-			int h = (int)( m_pos[3] - m_pos[1] );
-			ie->intercepted = rupf(m_param, relx, rely, w, h);
+			int relx = g_mouse.x - (int)w->pos[0];
+			int rely = g_mouse.y - (int)w->pos[1];
+			int wd = (int)(w->pos[2] - w->pos[0]);
+			int ht = (int)(w->pos[3] - w->pos[1]);
+			ie->intercepted = v->rupf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if(ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
 	{
-		if(!m_over)
+		if (!v->over)
 			return;
 
-		if(mousewf != NULL)
+		if (v->mousewf != NULL)
 		{
-			ie->intercepted = mousewf(m_param, ie->amount);
+			ie->intercepted = v->mousewf(w->extra, ie->amount);
 		}
 	}
 }
-#endif
+
+void vpdraw(wg *w)
+{
+	int wd, ht;
+	int viewport[4];
+	glshader* s;
+	vp* v = (vp*)w;
+
+	wd = (int)(w->pos[2] - w->pos[0]);
+	ht = (int)(w->pos[3] - w->pos[1]);
+
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glViewport(w->pos[0], (int)(g_height - w->pos[3]), wd, ht);
+	s = g_shader + g_cursh;
+	glUniform1f(s->slot[SSLOT_WIDTH], (float)wd);
+	glUniform1f(s->slot[SSLOT_HEIGHT], (float)ht);
+	endsh();
+
+	if (v->drawf)
+		v->drawf(-1, w->pos[0], w->pos[1], w->pos[2], w->pos[3]);
+
+	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+	flatview(g_width, g_height, 1, 1, 1, 1);
+}
