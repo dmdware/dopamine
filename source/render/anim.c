@@ -8,7 +8,7 @@ dbool playanim(int* frame, int first, int last, dbool loop, int rate)
     if(*frame < first || *frame >= last)
     {
        *frame = first;
-        return ecfalse;
+        return dfalse;
     }
 
     *frame += rate;
@@ -20,10 +20,10 @@ dbool playanim(int* frame, int first, int last, dbool loop, int rate)
 		else
 			*frame = last;
 
-        return ectrue;
+        return dtrue;
     }
 
-    return ecfalse;
+    return dfalse;
 }
 
 //Play animation backwards
@@ -32,7 +32,7 @@ dbool playanimb(int* frame, int first, int last, dbool loop, int rate)
     if(*frame < first-1 || *frame > last)
     {
         *frame = last;
-        return ecfalse;
+        return dfalse;
     }
 
     *frame -= rate;
@@ -44,8 +44,8 @@ dbool playanimb(int* frame, int first, int last, dbool loop, int rate)
 		else
 			*frame = first;
 
-        return ectrue;
+        return dtrue;
     }
 
-    return ecfalse;
+    return dfalse;
 }

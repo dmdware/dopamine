@@ -167,7 +167,7 @@ void parsetags(char **ndest, char *src, int *caret)
 	{
 		for(icon=0; icon<ICONS; ++icon)
 		{
-			match = ectrue;
+			match = dtrue;
 			tag = g_icon[icon].tag;
 			taglen = strlen(tag);
 			if(!taglen)
@@ -176,7 +176,7 @@ void parsetags(char **ndest, char *src, int *caret)
 			{
 				if(tag[iconi] == src[iconi+srci])
 					continue;
-				match = ecfalse;
+				match = dfalse;
 				break;
 			}
 			if(!match)

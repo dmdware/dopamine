@@ -155,7 +155,7 @@ void lswap(list *l, lnode *a, lnode *b)
 
 //TODO make more efficient
 //compare func answers the question "does a go before b?"
-//IMPORTANT: MUST return ectrue (1) for values that are equal with regards to order in compare func
+//IMPORTANT: MUST return dtrue (1) for values that are equal with regards to order in compare func
 //otherwise, infinite loop will occur!
 void lsort(list *l, dbool (*comparefunc)(void *a, void *b))
 {
@@ -164,7 +164,7 @@ void lsort(list *l, dbool (*comparefunc)(void *a, void *b))
 	it = l->head;
 	returnit = NULL;
 	
-	while(ectrue)
+	while(dtrue)
 	{
 		if(!returnit)
 		{

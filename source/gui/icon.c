@@ -21,7 +21,7 @@ void defi(int type, char *relative, char *tag)
 	i = &g_icon[type];
 
 	strcpy(i->tag, tag);
-	createtex(&i->texi, relative, ectrue, ecfalse, ecfalse);
+	createtex(&i->texi, relative, dtrue, dfalse, dfalse);
 	t = &g_tex[i->texi];
 	i->w = t->width;
 	i->h = t->height;

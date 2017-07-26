@@ -9,8 +9,8 @@
 
 
 
-#ifndef VIEWLAYER_H
-#define VIEWLAYER_H
+#ifndef VL_H
+#define VL_H
 
 #include "wg.h"
 

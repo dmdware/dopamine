@@ -282,18 +282,18 @@ void inglsl()
 
 	loadsh(SH_ORTHO, SHTEXT[SH_ORTHO][0], SHTEXT[SH_ORTHO][1], 
 		SHTEXT[SH_ORTHO][2], SHTEXT[SH_ORTHO][3], 
-		ectrue, ecfalse);
+		dtrue, dfalse);
 	loadsh(SH_COLOR2D, SHTEXT[SH_COLOR2D][0], SHTEXT[SH_COLOR2D][1], 
 		SHTEXT[SH_COLOR2D][2], SHTEXT[SH_COLOR2D][3], 
-		ecfalse, ecfalse);
+		dfalse, dfalse);
 	loadsh(SH_COLOR3D, SHTEXT[SH_COLOR3D][0], SHTEXT[SH_COLOR3D][1], 
 		SHTEXT[SH_COLOR3D][2], SHTEXT[SH_COLOR3D][3], 
-		ecfalse, ecfalse);
+		dfalse, dfalse);
 
 	return;
 
 quit:
-	g_quit = ectrue;
+	g_quit = dtrue;
 }
 
 void loadsh(int shader, 

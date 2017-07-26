@@ -9,8 +9,8 @@
 
 
 
-#ifndef VEC3I_H
-#define VEC3I_H
+#ifndef V3I_H
+#define V3I_H
 
 #include "../sys/inc.h"
 

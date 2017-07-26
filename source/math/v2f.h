@@ -1,5 +1,5 @@
-#ifndef VEC2F_H
-#define VEC2F_H
+#ifndef V2F_H
+#define V2F_H
 
 #include "../algo/bool.h"
 

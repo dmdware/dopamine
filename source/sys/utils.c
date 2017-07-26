@@ -285,23 +285,23 @@ void errm(const char* title, const char* m)
 {
 	fprintf(g_applog, "%s: %s\r\n", title, m);
 	fflush(g_applog);
-	//SDL_ShowCursor(ectrue);
+	//SDL_ShowCursor(dtrue);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, m, NULL);
-	//SDL_ShowCursor(ecfalse);
+	//SDL_ShowCursor(dfalse);
 }
 
 void infm(const char* title, const char* m)
 {
-	//SDL_ShowCursor(ectrue);
+	//SDL_ShowCursor(dtrue);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, title, m, NULL);
-	//SDL_ShowCursor(ecfalse);
+	//SDL_ShowCursor(dfalse);
 }
 
 void warm(const char* title, const char* m)
 {
-	//SDL_ShowCursor(ectrue);
+	//SDL_ShowCursor(dtrue);
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title, m, NULL);
-	//SDL_ShowCursor(ecfalse);
+	//SDL_ShowCursor(dfalse);
 }
 
 float maxf(const float a, const float b)

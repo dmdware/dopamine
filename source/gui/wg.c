@@ -19,45 +19,20 @@
 #include "widgets/image.h"
 #include "widgets/text.h"
 #include "widgets/link.h"
+#include "widgets/vp.h"
 
-void (*wgsubdraw[WIDGETS]) (wg* bw);
-void (*wgsubdrawover[WIDGETS]) (wg* bw);
-void (*wgsubinev[WIDGETS]) (wg *bw, inev* ie);
-
-void wginits()
-{
-	wgsubdraw[WIDGET_GUI] = NULL;
-	wgsubdraw[WIDGET_IMAGE] = imwdraw;
-	wgsubdraw[WIDGET_EDITBOX] = NULL;
-	wgsubdraw[WIDGET_BUTTON] = bwgdraw;
-	wgsubdraw[WIDGET_VIEWLAYER] = NULL;
-	wgsubdraw[WIDGET_TEXT] = twgdraw;
-	wgsubdraw[WIDGET_LINK] = hpldraw;
-
-	wgsubdrawover[WIDGET_GUI] = NULL;
-	wgsubdrawover[WIDGET_IMAGE] = NULL;
-	wgsubdrawover[WIDGET_EDITBOX] = NULL;
-	wgsubdrawover[WIDGET_BUTTON] = bwgdrawover;
-	wgsubdrawover[WIDGET_VIEWLAYER] = NULL;
-	wgsubdrawover[WIDGET_TEXT] = NULL;
-	wgsubdrawover[WIDGET_LINK] = NULL;
-
-	wgsubinev[WIDGET_GUI] = wgginev;
-	wgsubinev[WIDGET_IMAGE] = NULL;
-	wgsubinev[WIDGET_EDITBOX] = NULL;
-	wgsubinev[WIDGET_BUTTON] = bwginev;
-	wgsubinev[WIDGET_VIEWLAYER] = NULL;
-	wgsubinev[WIDGET_TEXT] = NULL;
-	wgsubinev[WIDGET_LINK] = hplinev;
-}
+void(*wgsubd[WIDGETS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw};
+void(*wgsubdo[WIDGETS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawover,NULL,NULL,NULL,NULL };
+void(*wgsubin[WIDGETS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin};
+void(*wgsubf[WIDGETS]) (wg *bw) = {NULL,NULL,NULL,NULL,NULL,NULL,hplfree,vpfree};
 
 void wginit(wg* w)
 {
 	w->parent = NULL;
 	w->name[0] = 0;
-	w->opened = ecfalse;
+	w->opened = dfalse;
 	w->reframef = NULL;
-	w->hidden = ecfalse;
+	w->hidden = dfalse;
 	w->extra = NULL;
 
 	linit(&w->sub);
@@ -67,8 +42,8 @@ void wgfree(wg *w)
 {
 	wgfreech(w);
 	lfree(&w->sub);
-	free(w->extra);
-	w->extra = NULL;
+	//free(w->extra);
+	//w->extra = NULL;
 
 	switch(w->type)
 	{
@@ -114,6 +89,13 @@ void wgreframe(wg *w)	//resized or moved
 
 	if(w->reframef)
 		w->reframef(w);
+	else
+	{
+		w->pos[0] = 0;
+		w->pos[1] = 0;
+		w->pos[2] = (float)g_width - 1;
+		w->pos[3] = (float)g_height - 1;
+	}
 
 	if(w->parent)
 	{
@@ -139,8 +121,8 @@ void wgdraw(wg *w)
 	lnode *i;
 	wg *iw;
 
-	if (wgsubdraw[w->type])
-		wgsubdraw[w->type](w);
+	if (wgsubd[w->type])
+		wgsubd[w->type](w);
 
 	for(i=w->sub.head; i; i=i->next)
 	{
@@ -165,8 +147,8 @@ void wgdrawover(wg *w)
 	lnode *i;
 	wg *iw;
 
-	if (wgsubdrawover[w->type])
-		wgsubdrawover[w->type](w);
+	if (wgsubdo[w->type])
+		wgsubdo[w->type](w);
 
 	for(i=w->sub.head; i; i=i->next)
 	{
@@ -179,7 +161,7 @@ void wgdrawover(wg *w)
 	}
 }
 
-void wginev(wg *w, inev* ie)
+void wgin(wg *w, inev* ie)
 {
 	lnode *i;
 	wg *iw;
@@ -197,11 +179,11 @@ void wginev(wg *w, inev* ie)
 		if(iw->hidden)
 			continue;
 		
-		wginev(iw, ie);
+		wgin(iw, ie);
 	}
 
-	if (wgsubinev[w->type])
-		wgsubinev[w->type](w, ie);
+	if (wgsubin[w->type])
+		wgsubin[w->type](w, ie);
 }
 
 void wgtofront(wg *w)
@@ -269,13 +251,13 @@ void wglosefocus(wg *w)
 
 void wghide(wg *w)
 {
-	w->hidden = ectrue;
+	w->hidden = dtrue;
 	wglosefocus(w);
 }
 
 void wgshow(wg *w)
 {
-	w->hidden = ecfalse;
+	w->hidden = dfalse;
 	/* necessary for window wgs: */
 	//tofront();	//can't break list iterator, might shift
 

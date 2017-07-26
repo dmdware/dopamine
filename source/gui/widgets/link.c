@@ -23,8 +23,8 @@ void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*re
 	bw->parent = parent;
 	bw->type = WIDGET_LINK;
 	strcpy(bw->name, n);
-	hl->over = ecfalse;
-	hl->ldown = ecfalse;
+	hl->over = dfalse;
+	hl->ldown = dfalse;
 	pstrset(&hl->text, t);
 	hl->font = f;
 	bw->reframef = reframef;
@@ -34,8 +34,10 @@ void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*re
 	wgreframe(bw);
 }
 
-void hplfree(hpl* hl)
+void hplfree(wg* w)
 {
+	hpl *hl = (hpl*)w;
+
 	if(hl->freef)
 		hl->freef(hl);
 }
@@ -57,12 +59,12 @@ void hpldraw(wg* bw)
 		color[2] = 0.8f;
 	}
 
-	drawt(hl->font, bw->pos, bw->crop, hl->text, color, 0, -1, ectrue, ecfalse);
+	drawt(hl->font, bw->pos, bw->crop, hl->text, color, 0, -1, dtrue, dfalse);
 	s = g_shader+g_cursh;
 	glUniform4f(s->slot[SSLOT_COLOR], 1, 1, 1, 1);
 }
 
-void hplinev(wg* bw, inev* ie)
+void hplin(wg* bw, inev* ie)
 {
 	hpl *hl;
 	int x;
@@ -80,15 +82,15 @@ void hplinev(wg* bw, inev* ie)
 			if(hl->clickf != NULL)
 				hl->clickf();
 
-			hl->over = ecfalse;
-			hl->ldown = ecfalse;
+			hl->over = dfalse;
+			hl->ldown = dfalse;
 
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			return;	// intercept mouse event
 		}
 
-		hl->over = ecfalse;
-		hl->ldown = ecfalse;
+		hl->over = dfalse;
+		hl->ldown = dfalse;
 	}
 	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
@@ -96,14 +98,14 @@ void hplinev(wg* bw, inev* ie)
 
 		if(hl->over)
 		{
-			hl->ldown = ectrue;
-			ie->intercepted = ectrue;
+			hl->ldown = dtrue;
+			ie->intercepted = dtrue;
 			return;	// intercept mouse event
 		}
 	}
 	else if(ie->type == INEV_MOUSEMOVE)
 	{
-		x = endx(hl->text, richlen(hl->text), hl->font, bw->pos, ecfalse);
+		x = endx(hl->text, richlen(hl->text), hl->font, bw->pos, dfalse);
 		if(g_mouse.x >= bw->pos[0] && g_mouse.y >= bw->pos[1] &&
 		                g_mouse.x <= x &&	//
 		                g_mouse.y <= bw->pos[1]+f->gheight)
@@ -111,7 +113,7 @@ void hplinev(wg* bw, inev* ie)
 		}
 		else
 		{
-			hl->over = ecfalse;
+			hl->over = dfalse;
 		}
 
 		if(!ie->intercepted)
@@ -120,13 +122,13 @@ void hplinev(wg* bw, inev* ie)
 			g_mouse.x <= x &&	//
 			                g_mouse.y <= bw->pos[1]+f->gheight)
 			{
-				hl->over = ectrue;
+				hl->over = dtrue;
 
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 			}
 			else
 			{
-				hl->over = ecfalse;
+				hl->over = dfalse;
 			}
 		}
 	}

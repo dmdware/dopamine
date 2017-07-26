@@ -24,12 +24,12 @@ public:
 	dbool operator==(const p3f p) const
 	{
 		//if(fabs(normal.x - p.normal.x) <= EPSILON && fabs(normal.y - p.normal.y) <= EPSILON && fabs(normal.z - p.normal.z) <= EPSILON && fabs(d - p.d) <= EPSILON)
-		//	return ectrue;
+		//	return dtrue;
 
 		if(normal.x == p.normal.x && normal.y == p.normal.y && normal.z == p.normal.z && d == p.d)
-			return ectrue;
+			return dtrue;
 
-		return ecfalse;
+		return dfalse;
 	}
 
 	p3f();

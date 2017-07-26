@@ -36,7 +36,7 @@ static float crop[4];
 static int glyphi;	//RichText part's [i] index
 static unsigned int k;
 static float currcolor[4];
-static dbool debugtest = ecfalse;
+static dbool debugtest = dfalse;
 
 void glyph_init(glyph *g)
 {
@@ -371,7 +371,7 @@ void loadfont(int i, char *fontfile)
 	strcpy(extfile, fontfile);
 	findtexext(extfile);
 
-	createtex(&f->texin, extfile, ectrue, ecfalse, ecfalse);
+	createtex(&f->texin, extfile, dtrue, dfalse, dfalse);
 	f->width = (float)g_tex[f->texin].width;
 	f->height = (float)g_tex[f->texin].height;
 
@@ -1013,7 +1013,7 @@ int matg(char *text, int fnt, float *inframe, int matchx, int matchy, dbool mult
 
 int textw(int fnt, float *inframe, const char *text)
 {
-	return endx(text, richlen(text), fnt, inframe, ecfalse) - (int)inframe[0];
+	return endx(text, richlen(text), fnt, inframe, dfalse) - (int)inframe[0];
 }
 
 void loadfonts()

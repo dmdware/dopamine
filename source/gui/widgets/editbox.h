@@ -21,7 +21,7 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 void ebwdraw(ebw *eb);
 char *ebwdrawvalue(ebw *eb);
 void ebwframeup(ebw *eb);
-void ebwinev(ebw *eb, inev *ie);
+void ebwin(ebw *eb, inev *ie);
 void ebwplacestr(ebw *eb, const char *str);
 void ebwchval(ebw *eb, const char *str);
 dbool ebwdelnext(ebw *eb);

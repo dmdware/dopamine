@@ -29,7 +29,7 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 	free(bw->val);
 	strset(&bw->val, t);
 	bw->caret = strlen(bw->val);
-	bw->opened = ecfalse;
+	bw->opened = dfalse;
 	bw->passw = pw;
 	bw->maxlen = maxl;
 	bw->reframef = reframef;
@@ -40,7 +40,7 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 	bw->scroll[0] = 0;
 	bw->highl[0] = 0;
 	bw->highl[1] = 0;
-	createtex(bw->frametex, "gui/frame.jpg", ectrue, ecfalse);
+	createtex(bw->frametex, "gui/frame.jpg", dtrue, dfalse);
 	bw->param = parm;
 	eb->multiline = multiline;
 	wgreframe(bw);
@@ -82,7 +82,7 @@ void ebwdraw(ebw *eb)
 	tpos[0] = bw->pos[0] + bw->scroll[0];
 	tpos[1] = bw->pos[1];
 	
-	DrawText(bw->font, tpos, cp, val, NULL, 0, bw->opened ? bw->caret : -1, ectrue, eb->multiline);
+	DrawText(bw->font, tpos, cp, val, NULL, 0, bw->opened ? bw->caret : -1, dtrue, eb->multiline);
 	high(bw->font, tpos, cp, val, bw->highl[0], bw->highl[1], eb->multiline);
 	
 	free(val);
@@ -105,7 +105,7 @@ void ebwframeup(ebw *eb)
 	
 	if(bw->ldown)
 	{
-		movedcar = ecfalse;
+		movedcar = dfalse;
 
 		if(g_mouse.x >= pos[2]-5)
 		{
@@ -116,7 +116,7 @@ void ebwframeup(ebw *eb)
 			
 			tpos[0] = pos[0] + scroll[0];
 			tpos[1] = pos[1];
-			endx = endx(val, vallen, bw->font, tpos, ecfalse);
+			endx = endx(val, vallen, bw->font, tpos, dfalse);
 
 			if(endx < pos[2])
 				scroll[0] += pos[2] - endx;
@@ -124,7 +124,7 @@ void ebwframeup(ebw *eb)
 			if(scroll[0] > 0.0f)
 				scroll[0] = 0.0f;
 
-			movedcar = ectrue;
+			movedcar = dtrue;
 			
 			free(val);
 		}
@@ -135,7 +135,7 @@ void ebwframeup(ebw *eb)
 			if(scroll[0] > 0.0f)
 				scroll[0] = 0.0f;
 
-			movedcar = ectrue;
+			movedcar = dtrue;
 		}
 
 		if(movedcar)
@@ -144,7 +144,7 @@ void ebwframeup(ebw *eb)
 			tpos[0] = pos[0] + scroll[0];
 			tpos[1] = pos[1];
 			//TODO check if new matg drag selection scroll works
-			newcaret = matg(val, bw->font, tpos, g_mouse.x, g_mouse.y, ecfalse);
+			newcaret = matg(val, bw->font, tpos, g_mouse.x, g_mouse.y, dfalse);
 
 			if(newcaret > bw->caret)
 			{
@@ -162,7 +162,7 @@ void ebwframeup(ebw *eb)
 	}
 }
 
-void ebwinev(ebw *eb, inev *ie)
+void ebwin(ebw *eb, inev *ie)
 {
 	wg *bw;
 	char *val;
@@ -198,22 +198,22 @@ void ebwinev(ebw *eb, inev *ie)
 					highl[1] = bw->caret;
 				}
 
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 
 			if(g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[3])
 			{
-				bw->over = ectrue;
+				bw->over = dtrue;
 
-				g_mouseoveraction = ectrue;
+				g_mouseoveraction = dtrue;
 
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 			else
 			{
-				bw->over = ecfalse;
+				bw->over = dfalse;
 
 				goto cleaup;
 			}
@@ -223,7 +223,7 @@ void ebwinev(ebw *eb, inev *ie)
 	{
 		if(bw->opened)
 		{
-			bw->opened = ecfalse;
+			bw->opened = dfalse;
 			highl[0] = highl[1] = 0;
 		}
 
@@ -231,7 +231,7 @@ void ebwinev(ebw *eb, inev *ie)
 		{
 			if(bw->over)
 			{
-				bw->ldown = ectrue;
+				bw->ldown = dtrue;
 				
 				tpos[0] = pos[0] + scroll[0];
 				tpos[1] = pos[1];
@@ -242,7 +242,7 @@ void ebwinev(ebw *eb, inev *ie)
 				highl[0] = 0;
 				highl[1] = 0;
 
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				
 				goto clean;
 			}
@@ -252,24 +252,24 @@ void ebwinev(ebw *eb, inev *ie)
 	{
 		if(bw->ldown)
 		{
-			bw->ldown = ecfalse;
+			bw->ldown = dfalse;
 
 			if(highl[1] > 0 && highl[0] != highl[1])
 			{
 				bw->caret = -1;
 			}
 
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			ebwgainfocus(eb);
 
 			goto clean;
 		}
 
-		bw->ldown = ecfalse;
+		bw->ldown = dfalse;
 
 		if(bw->opened)
 		{
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			goto clean;
 		}
 	}
@@ -295,7 +295,7 @@ void ebwinev(ebw *eb, inev *ie)
 			}
 			else if(bw->caret <= 0)
 			{
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 			else
@@ -321,7 +321,7 @@ void ebwinev(ebw *eb, inev *ie)
 			}
 			else if(bw->caret >= len)
 			{
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 			else
@@ -342,7 +342,7 @@ void ebwinev(ebw *eb, inev *ie)
 
 			if((highl[1] <= 0 || highl[0] == highl[1]) && caret >= len || len <= 0)
 			{
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 
@@ -357,7 +357,7 @@ void ebwinev(ebw *eb, inev *ie)
 
 			if((highl[1] <= 0 || highl[0] == highl[1]) && len <= 0)
 			{
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				goto clean;
 			}
 
@@ -368,17 +368,17 @@ void ebwinev(ebw *eb, inev *ie)
 		}
 		else if(ie->key == SDLK_LSHIFT || ie->key == SDLK_RSHIFT)
 		{
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			goto clean;
 		}
 		else if(ie->key == SDLK_CAPSLOCK)
 		{
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			goto clean;
 		}
 		else if(ie->key == SDLK_RETURN || ie->key == SDLK_RETURN2)
 		{
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			if(eb->multiline)
 			{
 				ebwplacestr(eb, "\n");
@@ -395,9 +395,9 @@ void ebwinev(ebw *eb, inev *ie)
 			bw->changefunc2(param);
 
 		if(bw->changefunc3 != NULL)
-			bw->changefunc3(ie->key, ie->scancode, ectrue, param);
+			bw->changefunc3(ie->key, ie->scancode, dtrue, param);
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 	}
 	else if(ie->type == INEV_KEYUP && !ie->intercepted)
 	{
@@ -405,16 +405,16 @@ void ebwinev(ebw *eb, inev *ie)
 			goto clean;
 
 		if(bw->changefunc3 != NULL)
-			bw->changefunc3(ie->key, ie->scancode, ecfalse, param);
+			bw->changefunc3(ie->key, ie->scancode, dfalse, param);
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 	}
 	else if(ie->type == INEV_TEXTIN && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 		
 		len = strlen(val);
 
@@ -430,16 +430,16 @@ void ebwinev(ebw *eb, inev *ie)
 			bw->changefunc2(param);
 
 		if(bw->changefunc3 != NULL)
-			bw->changefunc3(val[0], 0, ectrue, param);
+			bw->changefunc3(val[0], 0, dtrue, param);
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 	}
 	else if(ie->type == INEV_PASTE && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 		
 		len = strlen(val);
 
@@ -453,7 +453,7 @@ void ebwinev(ebw *eb, inev *ie)
 		if(!bw->opened)
 			goto clean;
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 		
 		len = strlen(val);
 
@@ -467,7 +467,7 @@ void ebwinev(ebw *eb, inev *ie)
 		if(!opened)
 			goto clean;
 
-		ie->intercepted = ectrue;
+		ie->intercepted = dtrue;
 		
 		len = strlen(val);
 		
@@ -555,7 +555,7 @@ void ebwplacestr(ebw *eb, const char *str)
 	drawval = ebwdrawvalue(eb);
 	tpos[0] = pos[0] + scroll[0];
 	tpos[1] = pos[1];
-	endx = endx(drawval, bw->caret, bw->font, tpos, ecfalse);
+	endx = endx(drawval, bw->caret, bw->font, tpos, dfalse);
 	free(drawval);
 	
 	if(endx >= pos[2])
@@ -602,7 +602,7 @@ dbool ebwdelnext(ebw *eb)
 		highl[0] = highl[1] = 0;
 	}
 	else if(bw->caret >= len || len <= 0)
-		return ectrue;
+		return dtrue;
 	else
 	{
 		nextl = nextlen(bw->val, bw->caret);
@@ -628,7 +628,7 @@ dbool ebwdelnext(ebw *eb)
 	else if(endx >= pos[2])
 		scroll[0] -= endx - pos[2] + 1;
 
-	return ectrue;
+	return dtrue;
 }
 
 dbool ebwdelprev(ebw *eb)
@@ -658,7 +658,7 @@ dbool ebwdelprev(ebw *eb)
 		highl[0] = highl[1] = 0;
 	}
 	else if(caret <= 0 || len <= 0)
-		return ectrue;
+		return dtrue;
 	else
 	{
 		prevl = prevlen(bw->val, bw->caret);
@@ -685,7 +685,7 @@ dbool ebwdelprev(ebw *eb)
 	else if(endx >= pos[2])
 		scroll[0] -= endx - pos[2] + 1;
 	
-	return ectrue;
+	return dtrue;
 }
 
 void ebwcopyval(ebw *eb)
@@ -739,7 +739,7 @@ void ebwselectall(ebw *eb)
 	drawval = ebwdrawvalue(eb);
 	tpos[0] = pos[0] + scroll[0];
 	tpos[1] = pos[1];
-	endx = endx(val, len, font, tpos, ecfalse);
+	endx = endx(val, len, font, tpos, dfalse);
 	free(drawval);
 
 	if(endx <= pos[2])
@@ -770,7 +770,7 @@ void ebwgainfocus(ebw *eb)
 			--g_kbfocus;
 		}
 
-		bw->opened = ectrue;
+		bw->opened = dtrue;
 		SDL_StartTextInput();
 		SDL_Rect r;
 		// TODO ???
@@ -797,7 +797,7 @@ void ebwlosefocus(ebw *eb)
 			--g_kbfocus;
 		}
 
-		bw->opened = ecfalse;
+		bw->opened = dfalse;
 	}
 }
 #endif

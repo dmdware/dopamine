@@ -10,9 +10,9 @@
 #ifndef MATCHMAKER
 #endif
 
-dbool g_quit = ecfalse;
-dbool g_bg = ecfalse;
-dbool g_fs = ectrue;
+dbool g_quit = dfalse;
+dbool g_bg = dfalse;
+dbool g_fs = dtrue;
 v2i g_selres;
 list g_ress; /* v2i */
 list g_bpps; /* char */
@@ -29,11 +29,11 @@ int g_height = INI_HEIGHT;
 int g_bpp = INI_BPP;
 v2i g_mouse;
 v2i g_mousestart;
-dbool g_keyin = ecfalse;
+dbool g_keyin = dfalse;
 dbool g_keys[SDL_NUM_SCANCODES] = {0};
 dbool g_mousekeys[5] = {0};
 float g_zoom = INI_ZOOM;
-dbool g_mouseout = ecfalse;
+dbool g_mouseout = dfalse;
 int g_curst = CU_DEFAULT;	//cursor state
 int g_kbfocus = 0;	//keyboad focus counter
 #endif
@@ -53,7 +53,7 @@ void enumdisp()
 	{
 		SDL_GetDisplayMode(0, i, &mode);
 
-		found = ecfalse;
+		found = dfalse;
 
 		for(rit=g_ress.head; rit; rit=rit->next)
 		{
@@ -62,7 +62,7 @@ void enumdisp()
 			if(rp->x == mode.w &&
 				rp->y == mode.h)
 			{
-				found = ectrue;
+				found = dtrue;
 				break;
 			}
 		}
@@ -129,10 +129,10 @@ dbool drawnext()
 	if(deltaTime >= desiredMSPF)
 	{
 		lastdrawtick = currentTime;
-		return ectrue;
+		return dtrue;
 	}
 
-	return ecfalse;
+	return dfalse;
 }
 
 
@@ -172,10 +172,10 @@ dbool upnext()
 	if(deltaTime >= desiredMSPF)
 	{
 		lastupdtick = currentTime;
-		return ectrue;
+		return dtrue;
 	}
 
-	return ecfalse;
+	return dfalse;
 }
 
 #ifndef MATCHMAKER
@@ -229,7 +229,7 @@ dbool initwin()
 	
 	inglsl();
 
-	return ectrue;
+	return dtrue;
 }
 
 SDL_bool isfs(SDL_Window *win)
@@ -339,7 +339,7 @@ dbool makewin(const char* title)
 	{
 		sprintf(msg, "Could not create window: %s\n", SDL_GetError());
 		errm("Error", msg);
-		return ecfalse;
+		return dfalse;
 	}
 
 	g_gx = SDL_GL_CreateContext(g_win);
@@ -348,7 +348,7 @@ dbool makewin(const char* title)
 	{
 		breakwin(title);
 		errm("Error", "Couldn't create GL context");
-		return ecfalse;
+		return dfalse;
 	}
 
 	SDL_GL_MakeCurrent(g_win, g_gx);
@@ -362,12 +362,12 @@ dbool makewin(const char* title)
 	{
 		breakwin(title);
 		errm("Error", "Initialization failed");
-		return ecfalse;
+		return dfalse;
 	}
 
 	cenmouse();
 
-	return ectrue;
+	return dtrue;
 }
 
 #endif

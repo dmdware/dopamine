@@ -42,7 +42,7 @@ const char* INNAME[] =
 
 void spinit(spt *s)
 {
-	s->on = ecfalse;
+	s->on = dfalse;
 	s->difftexi = 0;
 	s->teamtexi = 0;
 	s->pixels = NULL;
@@ -54,14 +54,14 @@ void spfree(spt *s)
 		ltexfree(s->pixels);
 	free(s->pixels);
 	s->pixels = NULL;
-	s->on = ecfalse;
+	s->on = dfalse;
 }
 
 void spatinit(spat *sl)
 {
 	sl->nsp = 0;
 	sl->sprites = NULL;
-	sl->on = ecfalse;
+	sl->on = dfalse;
 	sl->nslices = 1;
 	sl->full = NULL;
 }
@@ -71,7 +71,7 @@ void spatfree(spat *sl)
 	sl->nsp = 0;
 	free(sl->sprites);
 	sl->sprites = NULL;
-	sl->on = ecfalse;
+	sl->on = dfalse;
 	sl->nslices = 1;
 	free(sl->full);
 	sl->full = NULL;
@@ -140,10 +140,10 @@ dbool loadqsp()
 
 	if(g_lastloadsp >= g_spload.total)
 	{
-		return ecfalse;	// Done loading all
+		return dfalse;	// Done loading all
 	}
 
-	return ectrue;	// Not finished loading
+	return dtrue;	// Not finished loading
 }
 
 void queuesp(const char* relative, unsigned int* spin, dbool loadteam, dbool loaddepth)
@@ -205,11 +205,11 @@ dbool findsp(unsigned int *spin, const char* relative)
 		if(s->on && strcmp(s->full, full) == 0)
 		{
 			*spin = i;
-			return ectrue;
+			return dtrue;
 		}
 	}
 
-	return ecfalse;
+	return dfalse;
 }
 
 /*
@@ -233,15 +233,15 @@ dbool loadsp(const char* relative, unsigned int* spin, dbool loadteam, dbool loa
 	char pixfull[DMD_MAX_PATH+1];
 
 	if(findsp(spin, relative))
-		return ectrue;
+		return dtrue;
 
 	i = newsp();
 
 	if(i < 0)
-		return ecfalse;
+		return dfalse;
 
 	s = g_sp+i;
-	s->on = ectrue;
+	s->on = dtrue;
 	*spin = i;
 
 	fullpath(relative, full);
@@ -254,11 +254,11 @@ dbool loadsp(const char* relative, unsigned int* spin, dbool loadteam, dbool loa
 	sprintf(reldepth, "%s_depth.png", relative);
 	parsesp(reltxt, s);
 
-	createtex(&s->difftexi, reldiff, ectrue, ecfalse, ecfalse);
+	createtex(&s->difftexi, reldiff, dtrue, dfalse, dfalse);
 	if(loadteam)
-		createtex(&s->teamtexi, relteam, ectrue, ecfalse, ecfalse);
+		createtex(&s->teamtexi, relteam, dtrue, dfalse, dfalse);
 	if(loaddepth)
-		createtex(&s->depthtexi, reldepth, ectrue, ecfalse, ecfalse);
+		createtex(&s->depthtexi, reldepth, dtrue, dfalse, dfalse);
 	
 	fullpath(reldiff, pixfull);
 	s->pixels = loadtex(pixfull);
@@ -266,12 +266,12 @@ dbool loadsp(const char* relative, unsigned int* spin, dbool loadteam, dbool loa
 	if(!s->pixels)
 	{
 		fprintf(g_applog, "Failed to load sprite %s\r\n", relative);
-		return ecfalse;
+		return dfalse;
 	}
 	else
 		fprintf(g_applog, "%s\r\n", relative);
 
-	return ectrue;
+	return dtrue;
 }
 
 dbool loadspat(const char* relative, unsigned int* splin, dbool loadteam, dbool loaddepth, dbool queue)
@@ -309,10 +309,10 @@ dbool loadspat(const char* relative, unsigned int* splin, dbool loadteam, dbool 
 	i = newspat();
 
 	if(i < 0)
-		return ecfalse;
+		return dfalse;
 
 	sl = &g_spat[i];
-	sl->on = ectrue;
+	sl->on = dtrue;
 	*splin = i;
 	
 	fullpath(relative, full);
@@ -322,16 +322,16 @@ dbool loadspat(const char* relative, unsigned int* splin, dbool loadteam, dbool 
 	sprintf(txtpath, "%s_list.txt", full);
 
 	nsides = 1;
-	dorots = ecfalse;	//rotations
-	dosides = ecfalse;	//sides
-	doincls = ecfalse;	//inclines
-	doframes = ecfalse;	//frames
+	dorots = dfalse;	//rotations
+	dosides = dfalse;	//sides
+	doincls = dfalse;	//inclines
+	doframes = dfalse;	//frames
 	nframes = 1;
 
 	fp = fopen(txtpath, "r");
 
 	if(!fp)
-		return ecfalse;
+		return dfalse;
 
 	do
 	{
@@ -530,7 +530,7 @@ dbool loadspat(const char* relative, unsigned int* splin, dbool loadteam, dbool 
 			loadsp(combo, &sl->sprites[ci], loadteam, loaddepth);
 	}
 
-	return ectrue;
+	return dtrue;
 }
 
 int spref(spat* sl, int frame, int incline, int pitch, int yaw, int roll,

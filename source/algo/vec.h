@@ -1,7 +1,7 @@
 
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef VEC_H
+#define VEC_H
 
 #include "../sys/inc.h"
 

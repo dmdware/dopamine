@@ -22,8 +22,8 @@ vector g_texload; /* textoload */
 
 int g_lastloadtex = -1;
 
-dbool g_hidetexerr = ecfalse;
-dbool g_usepalette = ecfalse;
+dbool g_hidetexerr = dfalse;
+dbool g_usepalette = dfalse;
 int g_savebitdepth = 8;
 
 
@@ -41,14 +41,14 @@ void ltexfree(texdata *lt)
 void texinit(gltex *tex)
 {
 	tex->full = NULL;
-	tex->loaded = ecfalse;
+	tex->loaded = dfalse;
 }
 
 void texfree(gltex *tex)
 {
 	free(tex->full);
 	tex->full = NULL;
-	tex->loaded = ecfalse;
+	tex->loaded = dfalse;
 }
 
 texdata* loadjpg(const char *file)
@@ -241,9 +241,9 @@ texdata *loadpng(const char *file)
 #if 0
 			png_get_tRNS(png_ptr, info_ptr, &trans_alpha, &num_trans, &trans_color);
 			if (trans_alpha != NULL)
-				alphaFlag = ectrue;
+				alphaFlag = dtrue;
 			else
-				alphaFlag = ecfalse;
+				alphaFlag = dfalse;
 			if(alphaFlag)
 				ltex->channels = 4;
 #endif
@@ -331,11 +331,11 @@ dbool findtex(unsigned int *ti, const char* relative)
 		if(t->loaded && strcmp(t->full, c) == 0)
 		{
 			*ti = i;
-			return ectrue;
+			return dtrue;
 		}
 	}
 
-	return ecfalse;
+	return dfalse;
 }
 
 void freetex(int i)
@@ -349,7 +349,7 @@ void freetex(int i)
 
 	if(t->loaded)
 	{
-		t->loaded = ecfalse;
+		t->loaded = dfalse;
 		glDeleteTextures(1, &t->texname);
 	}
 }
@@ -387,12 +387,12 @@ dbool regtex(unsigned int texture,
 		if((int)*texin < 0)
 		{
 			texin = 0;	// Give a harmless texture index
-			return ecfalse;
+			return dfalse;
 		}
 	}
 
 	t = g_tex+*texin;
-	t->loaded = ectrue;
+	t->loaded = dtrue;
 	t->full = c;
 	t->texname = texture;
 	t->width = sizex;
@@ -401,7 +401,7 @@ dbool regtex(unsigned int texture,
 	t->clamp = clamp;
 	t->mipmaps = mipmaps;
 
-	return ectrue;
+	return dtrue;
 }
 
 void freetexs()
@@ -414,7 +414,7 @@ void freetexs()
 			continue;
 
 		glDeleteTextures(1, &g_tex[i].texname);
-		g_tex[i].loaded = ecfalse;	// Needed to reload textures. EDIT: not.
+		g_tex[i].loaded = dfalse;	// Needed to reload textures. EDIT: not.
 	}
 }
 
@@ -472,10 +472,10 @@ dbool loadqtex()
 
 	if(g_lastloadtex >= (int)g_texload.total)
 	{
-		return ecfalse;	// Done loading all textures
+		return dfalse;	// Done loading all textures
 	}
 
-	return ectrue;	// Not finished loading textures
+	return dtrue;	// Not finished loading textures
 }
 
 void queuetex(unsigned int* texin, const char* relative, dbool clamp, dbool mipmaps)
@@ -484,7 +484,7 @@ void queuetex(unsigned int* texin, const char* relative, dbool clamp, dbool mipm
 	toload.ptexin = texin;
 	strcpy(toload.relative, relative);
 	toload.clamp = clamp;
-	toload.reload = ecfalse;
+	toload.reload = dfalse;
 	toload.mipmaps = mipmaps;
 
 	vpub(&g_texload, &toload);
@@ -497,7 +497,7 @@ void reloadtex(unsigned int texin, const char* relative, dbool clamp, dbool mipm
 	toload.texin = texin;
 	strcpy(toload.relative, relative);
 	toload.clamp = clamp;
-	toload.reload = ectrue;
+	toload.reload = dtrue;
 	toload.mipmaps = mipmaps;
 
 	vpub(&g_texload, &toload);
@@ -551,9 +551,9 @@ dbool createtex2(texdata* pim, unsigned int* texname, dbool clamp, dbool mipmaps
 	dbool transp;
 
 	if(!pim)
-		return ecfalse;
+		return dfalse;
 	if(!pim->data)
-		return ecfalse;
+		return dfalse;
 
 	// Generate a texture with the associative texture ID stored in the array
 	glGenTextures(1, texname);
@@ -570,14 +570,14 @@ dbool createtex2(texdata* pim, unsigned int* texname, dbool clamp, dbool mipmaps
 	// Assume that the texture is a 24 bit RGB texture (We convert 16-bit ones to 24-bit)
 	infm = GL_RGB8;
 	textype = GL_RGB;
-	transp = ecfalse;
+	transp = dfalse;
 
 	// If the image is 32-bit (4 channels), then we need to specify GL_RGBA for an alpha
 	if(pim->channels == 4)
 	{
 		infm = GL_RGBA8;
 		textype = GL_RGBA;
-		transp = ectrue;
+		transp = dtrue;
 	}
 	//grayscale
 	else if(pim->channels == 1)
@@ -620,7 +620,7 @@ dbool createtex2(texdata* pim, unsigned int* texname, dbool clamp, dbool mipmaps
 		glerr(__FILE__, __LINE__);
 #else
 		//if(transp)
-		if(ectrue)
+		if(dtrue)
 		{
 			//linear filter, better for thin details with transparency
 
@@ -785,7 +785,7 @@ dbool createtex2(texdata* pim, unsigned int* texname, dbool clamp, dbool mipmaps
 #endif
 
 	glBindTexture(GL_TEXTURE_2D, -1);
-	return ectrue;
+	return dtrue;
 }
 
 dbool createtex(unsigned int *texin, const char* relative, dbool clamp, dbool mipmaps, dbool reload)
@@ -799,16 +799,16 @@ dbool createtex(unsigned int *texin, const char* relative, dbool clamp, dbool mi
 	CHECKGL();
 
 	if(!relative)
-		return ecfalse;
+		return dfalse;
 
 	if(!reload)
 		if(findtex(texin, relative))
-			return ectrue;
+			return dtrue;
 
 	fullpath(relative, full);
 	pim = loadtex(full);
 
-	// Make sure valid image data was given to pim, otherwise return ecfalse
+	// Make sure valid image data was given to pim, otherwise return dfalse
 	if(pim == NULL)
 	{
 		fprintf(g_applog, "Failed to load %s \r\n", relative);
@@ -816,21 +816,21 @@ dbool createtex(unsigned int *texin, const char* relative, dbool clamp, dbool mi
 		if(!reload)
 			*texin = 0;	// Give a harmless texture index
 
-		return ecfalse;
+		return dfalse;
 	}
 
 	if(!createtex2(pim, &texname, clamp, mipmaps))
 	{
 		ltexfree(pim);
 		free(pim);								// Free the image structure
-		return ecfalse;
+		return dfalse;
 	}
 
-	transp = ecfalse;
+	transp = dfalse;
 
 	if(pim->channels == 4)
 	{
-		transp = ectrue;
+		transp = dtrue;
 	}
 
 	regtex(texname, relative, transp, clamp, mipmaps, texin, reload, pim->sizex, pim->sizey);
@@ -843,7 +843,7 @@ dbool createtex(unsigned int *texin, const char* relative, dbool clamp, dbool mi
 	}
 
 	// Return a success
-	return ectrue;
+	return dtrue;
 }
 
 void reqxs()
@@ -968,7 +968,7 @@ boolean my_empty_output_buffer(j_compress_ptr cinfo)
 	vresize(&my_buffer, oldsize + BLOCK_SIZE);
 	cinfo->dest->next_output_byte = &my_buffer.items[oldsize];
 	cinfo->dest->free_in_buffer = my_buffer.total - oldsize;
-	return ectrue;
+	return dtrue;
 }
 
 void my_term_destination(j_compress_ptr cinfo)
@@ -987,7 +987,7 @@ dbool savejpg(const char* full, texdata* image, float quality)
 
 	if ((ouf = fopen(full, "wb")) == NULL)
 	{
-		return ecfalse;
+		return dfalse;
 	}
 
 	cinfo.err = jpeg_std_error(&jerr);
@@ -1009,7 +1009,7 @@ dbool savejpg(const char* full, texdata* image, float quality)
 	cinfo.dest->term_destination = &my_term_destination;
 
 	/*set the quality [0..100]  */
-	//have to use TRUE instead of ectrue or else doesn't work
+	//have to use TRUE instead of dtrue or else doesn't work
 	//in xcode which requires conversion to custom type boolean
 	//jpeg_set_quality (&cinfo, 100*quality, TRUE);
 	//jpeg_start_compress(&cinfo, TRUE);
@@ -1033,7 +1033,7 @@ dbool savejpg(const char* full, texdata* image, float quality)
 
 	vfree(&my_buffer);
 
-	return ectrue;
+	return dtrue;
 }
 
 static FILE* savepngfp = NULL;
@@ -1208,7 +1208,7 @@ dbool savepng(const char* full, texdata* image)
 	/* Open the file */
 	savepngfp = fopen(full, "wb");
 	if (savepngfp == NULL)
-		return ecfalse;
+		return dfalse;
 
 	/* Create and initialize the png_struct with the desired error handler
 	* functions.  If you want to use the default stderr and longjump method,
@@ -1222,7 +1222,7 @@ dbool savepng(const char* full, texdata* image)
 	if (png_ptr == NULL)
 	{
 		fclose(savepngfp);
-		return ecfalse;
+		return dfalse;
 	}
 
 	/* Allocate/initialize the image information data.  REQUIRED */
@@ -1231,7 +1231,7 @@ dbool savepng(const char* full, texdata* image)
 	{
 		fclose(savepngfp);
 		png_destroy_write_struct(&png_ptr,  NULL);
-		return ecfalse;
+		return dfalse;
 	}
 
 	color_type = PNG_COLOR_TYPE_RGB;
@@ -1270,7 +1270,7 @@ dbool savepng(const char* full, texdata* image)
 		/* If we get here, we had a problem writing the file */
 		fclose(savepngfp);
 		png_destroy_write_struct(&png_ptr, &info_ptr);
-		return ecfalse;
+		return dfalse;
 	}
 
 	if(g_usepalette)
@@ -1281,7 +1281,7 @@ dbool savepng(const char* full, texdata* image)
 			OUTMEM();
 			fclose(savepngfp);
 			png_destroy_write_struct(&png_ptr, &info_ptr);//
-			return ecfalse;
+			return dfalse;
 		}
 
 		npal = 0;
@@ -1304,7 +1304,7 @@ dbool savepng(const char* full, texdata* image)
 	if(!row_pointers)
 	{
 		OUTMEM();
-		return ecfalse;
+		return dfalse;
 	}
 
 	for (y=0; y<image->sizey; y++)
@@ -1369,7 +1369,7 @@ dbool savepng(const char* full, texdata* image)
 	fclose(savepngfp);
 
 	/* That's it */
-	return ectrue;
+	return dtrue;
 }
 
 //"flip"
@@ -1422,7 +1422,7 @@ dbool saveraw(const char* full, texdata* image)
 
 	fclose(fp);
 
-	return ectrue;
+	return dtrue;
 }
 
 //"stream RAW"

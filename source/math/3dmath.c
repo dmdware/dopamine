@@ -179,9 +179,9 @@ dbool intpg(v3f poly[], v3f line[], v3f *n, float *origindist)
 	// This is because the 2 points must be on either side of the plane (IE. -1 * 1 = -1).
 
 	if(d1 * d2 >= 0)			// Check to see if both point's distances are both negative or both positive
-		return ecfalse;
+		return dfalse;
 #endif
-	return ectrue;
+	return dtrue;
 }
 
 // http://en.wikipedia.org/wiki/Line-plane_intersection
@@ -194,7 +194,7 @@ dbool intpl2(v3f l0, v3f l, p3f p, v3f *inter)
 
 	if(fabs(denom) <= EPSILON/2.0f)
 		//if(denom == 0.0f)
-		return ecfalse;
+		return dfalse;
 
 	p0 = pop(p);
 
@@ -208,7 +208,7 @@ dbool intpl2(v3f l0, v3f l, p3f p, v3f *inter)
 	inter->y = l0.y + l.z * num/denom;
 	inter->z = l0.z + l.z * num/denom;
 	
-	return ectrue;
+	return dtrue;
 }
 
 float dot3f(v3f v1, v3f v2)
@@ -257,9 +257,9 @@ dbool inyaw3f(c3f *c, v3f p, float angle)
 	if(fabs(yaw3f(c) - yaw) <= angle ||
 	   fabs(yaw3f(c) - yaw2) <= angle ||
 	   fabs(yaw3f(c) - yaw3) <= angle)
-		return ectrue;
+		return dtrue;
 
-	return ecfalse;
+	return dfalse;
 }
 
 #if 0

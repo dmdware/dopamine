@@ -9,8 +9,8 @@
 
 
 
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef WG_H
+#define WG_H
 
 #include "../sys/utils.h"
 #include "../sys/texture.h"
@@ -30,7 +30,8 @@
 #define WIDGET_VIEWLAYER			4
 #define WIDGET_TEXT					5
 #define WIDGET_LINK					6
-#define WIDGETS						7
+#define WIDGET_VIEWPORT				7
+#define WIDGETS						8
 
 struct wg
 {
@@ -96,7 +97,7 @@ void wginit(wg* w);
 void wgfree(wg *w);
 void wgdraw(wg *w);
 void wgdrawover(wg *w);
-void wginev(wg *w, inev* ie);
+void wgin(wg *w, inev* ie);
 void wgframeup(wg *w);
 void wgreframe(wg *w);	//resized or moved
 wg* wgget(wg *w, const char* name);
@@ -112,6 +113,5 @@ void wglosefocus(wg *w);
 
 void subcrop(float *src1, float *src2, float *ndest);
 void szfs(wg *w);
-void wginits();
 
 #endif

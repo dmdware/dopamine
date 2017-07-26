@@ -30,12 +30,12 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	pstrset(&b->label, label);
 	b->font = f;
 
-	length = endx(b->tooltip, richlen(b->tooltip), b->font, bw->pos, ecfalse);
-	b->over = ecfalse;
-	b->ldown = ecfalse;
+	length = endx(b->tooltip, richlen(b->tooltip), b->font, bw->pos, dfalse);
+	b->over = dfalse;
+	b->ldown = dfalse;
 
 	if(style == BUST_LEFTIMAGE)
-		createtex(&b->texi, filepath, ectrue, ecfalse, ecfalse);
+		createtex(&b->texi, filepath, dtrue, dfalse, dfalse);
 
 	b->bgtex = 0;
 	b->bgovertex = 0;
@@ -48,11 +48,11 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->outfunc = out;
 	b->param = parm;
 	b->clickfunc3 = click3;
-	b->ldown = ecfalse;
+	b->ldown = dfalse;
 	wgreframe(bw);
 }
 
-void bwginev(wg *bw, inev* ie)
+void bwgin(wg *bw, inev* ie)
 {
 	bwg *b;
 
@@ -73,22 +73,22 @@ void bwginev(wg *bw, inev* ie)
 			if(b->clickfunc3 != NULL)
 				b->clickfunc3(bw);
 
-			//over = ecfalse;
-			b->ldown = ecfalse;
+			//over = dfalse;
+			b->ldown = dfalse;
 
-			ie->intercepted = ectrue;
+			ie->intercepted = dtrue;
 			
 			return;	// intercept mouse event
 		}
 
 		if(b->ldown)
 		{
-			b->ldown = ecfalse;
-			ie->intercepted = ectrue;
+			b->ldown = dfalse;
+			ie->intercepted = dtrue;
 			return;
 		}
 
-		b->over = ecfalse;
+		b->over = dfalse;
 	}
 	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
@@ -96,8 +96,8 @@ void bwginev(wg *bw, inev* ie)
 
 		if(b->over)
 		{
-			b->ldown = ectrue;
-			ie->intercepted = ectrue;
+			b->ldown = dtrue;
+			ie->intercepted = dtrue;
 			return;	// intercept mouse event
 		}
 	}
@@ -111,7 +111,7 @@ void bwginev(wg *bw, inev* ie)
 			if(b->over && b->outfunc != NULL)
 				b->outfunc();
 
-			b->over = ecfalse;
+			b->over = dfalse;
 		}
 
 		if(!ie->intercepted)
@@ -123,9 +123,9 @@ void bwginev(wg *bw, inev* ie)
 				if(b->overfunc2 != NULL)
 					b->overfunc2(b->param);
 
-				b->over = ectrue;
+				b->over = dtrue;
 
-				ie->intercepted = ectrue;
+				ie->intercepted = dtrue;
 				return;
 			}
 		}
@@ -199,7 +199,7 @@ void bwgdraw(wg *bw)
 		textleft = bw->pos[0]+minsz+1;
 
 		//TODO rewrite font.cpp/h to better deal with cropping
-		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, ectrue, ecfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, dtrue, dfalse);
 	}
 	else if(b->style == BUST_LINEBASED)
 	{
@@ -234,7 +234,7 @@ void bwgdraw(wg *bw)
 
 		//TODO fix resolution change on settings reload on mobile
 
-		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, ectrue, ecfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, dtrue, dfalse);
 	}
 }
 
@@ -252,7 +252,7 @@ void bwgdrawover(wg *bw)
 		tpos[2] = tpos[0] + 256;
 		tpos[3] = tpos[1] + 53;
 
-		drawt(b->font, tpos, bw->crop, b->tooltip, NULL, 0, -1, ectrue, ecfalse);
+		drawt(b->font, tpos, bw->crop, b->tooltip, NULL, 0, -1, dtrue, dfalse);
 	}
 }
 

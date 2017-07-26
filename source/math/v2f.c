@@ -23,18 +23,18 @@ dbool v2feq(v2f v1, v2f v2)
 {
 	if(v1.x == v2.x &&
 	   v1.y == v2.y)
-		return ectrue;
+		return dtrue;
 	
-	return ecfalse;
+	return dfalse;
 }
 
 dbool v2fneq(v2f v1, v2f v2)
 {
 	if(v1.x == v2.x &&
 	   v1.y == v2.y)
-		return ecfalse;
+		return dfalse;
 	
-	return ectrue;
+	return dtrue;
 }
 
 void v2fadd(v2f *v, v2f v1, v2f v2)

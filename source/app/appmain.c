@@ -236,7 +236,7 @@ void draw()
 #endif
 
 	drawt(MAINFONT16, frame, frame, "Test",
-	white, 0, -1, ecfalse, ecfalse);
+	white, 0, -1, dfalse, dfalse);
 
 	wgframeup(gui);
 	wgdraw(gui);
@@ -405,8 +405,6 @@ void appinit()
 	fullpath("log.txt", full);
 	g_applog = fopen(full, "wb");
 
-	wginits();
-
 #ifdef PLAT_LINUX
 	signal(SIGINT, sigcall);
 #endif
@@ -526,13 +524,13 @@ int evproc(void *userdata, SDL_Event *e)
 
 	gui = (wg*)&g_gui;
 
-	ie.intercepted = ecfalse;
+	ie.intercepted = dfalse;
 	ie.curst = CU_DEFAULT;
 
 	switch(e->type)
 	{
 		case SDL_QUIT:
-			g_quit = ectrue;
+			g_quit = dtrue;
 			break;
 		case SDL_KEYDOWN:
 			ie.type = INEV_KEYDOWN;
@@ -557,11 +555,11 @@ int evproc(void *userdata, SDL_Event *e)
 			}
 
 			CHECKGL();
-			wginev(gui, &ie);
+			wgin(gui, &ie);
 			CHECKGL();
 
 			if(!ie.intercepted)
-				g_keys[e->key.keysym.scancode] = ectrue;
+				g_keys[e->key.keysym.scancode] = dtrue;
 
 			g_keyin = ie.intercepted;
 			break;
@@ -571,11 +569,11 @@ int evproc(void *userdata, SDL_Event *e)
 			ie.scancode = e->key.keysym.scancode;
 
 			CHECKGL();
-			wginev(gui, &ie);
+			wgin(gui, &ie);
 			CHECKGL();
 
 			if(!ie.intercepted)
-				g_keys[e->key.keysym.scancode] = ecfalse;
+				g_keys[e->key.keysym.scancode] = dfalse;
 
 			g_keyin = ie.intercepted;
 			break;
@@ -585,7 +583,7 @@ int evproc(void *userdata, SDL_Event *e)
 			strcpy(ie.text, e->text.text);
 
 			CHECKGL();
-			wginev(gui, &ie);
+			wgin(gui, &ie);
 			CHECKGL();
 			break;
 
@@ -594,14 +592,14 @@ int evproc(void *userdata, SDL_Event *e)
 			ie.amount = e->wheel.y;
 
 			CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 			CHECKGL();
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			switch (e->button.button)
 			{
 			case SDL_BUTTON_LEFT:
-				g_mousekeys[MOUSE_LEFT] = ectrue;
+				g_mousekeys[MOUSE_LEFT] = dtrue;
 
 				ie.type = INEV_MOUSEDOWN;
 				ie.key = MOUSE_LEFT;
@@ -610,13 +608,13 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 
 				g_keyin = ie.intercepted;
 				break;
 			case SDL_BUTTON_RIGHT:
-				g_mousekeys[MOUSE_RIGHT] = ectrue;
+				g_mousekeys[MOUSE_RIGHT] = dtrue;
 
 				ie.type = INEV_MOUSEDOWN;
 				ie.key = MOUSE_RIGHT;
@@ -625,11 +623,11 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 				break;
 			case SDL_BUTTON_MIDDLE:
-				g_mousekeys[MOUSE_MIDDLE] = ectrue;
+				g_mousekeys[MOUSE_MIDDLE] = dtrue;
 
 				ie.type = INEV_MOUSEDOWN;
 				ie.key = MOUSE_MIDDLE;
@@ -638,7 +636,7 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 				break;
 			}
@@ -647,7 +645,7 @@ int evproc(void *userdata, SDL_Event *e)
 			switch (e->button.button)
 			{
 			case SDL_BUTTON_LEFT:
-				g_mousekeys[MOUSE_LEFT] = ecfalse;
+				g_mousekeys[MOUSE_LEFT] = dfalse;
 
 				ie.type = INEV_MOUSEUP;
 				ie.key = MOUSE_LEFT;
@@ -656,11 +654,11 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 				break;
 			case SDL_BUTTON_RIGHT:
-				g_mousekeys[MOUSE_RIGHT] = ecfalse;
+				g_mousekeys[MOUSE_RIGHT] = dfalse;
 
 				ie.type = INEV_MOUSEUP;
 				ie.key = MOUSE_RIGHT;
@@ -669,11 +667,11 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 				break;
 			case SDL_BUTTON_MIDDLE:
-				g_mousekeys[MOUSE_MIDDLE] = ecfalse;
+				g_mousekeys[MOUSE_MIDDLE] = dfalse;
 
 				ie.type = INEV_MOUSEUP;
 				ie.key = MOUSE_MIDDLE;
@@ -682,7 +680,7 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.y = g_mouse.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 				break;
 			}
@@ -691,7 +689,7 @@ int evproc(void *userdata, SDL_Event *e)
 
 			if(g_mouseout)
 			{
-				g_mouseout = ecfalse;
+				g_mouseout = dfalse;
 			}
 
 			old = g_mouse;
@@ -705,7 +703,7 @@ int evproc(void *userdata, SDL_Event *e)
 				ie.dy = g_mouse.y - old.y;
 
 				CHECKGL();
-				wginev(gui, &ie);
+				wgin(gui, &ie);
 				CHECKGL();
 
 				g_curst = ie.curst;
@@ -840,7 +838,7 @@ void appmain()
 
 	makewin(APPTIT);
 
-	//SDL_ShowCursor(ecfalse);
+	//SDL_ShowCursor(dfalse);
 	loadsysres();
 	queuesimres();
 	makewg();
@@ -848,7 +846,7 @@ void appmain()
 	evloop();
 
 	appdeinit();
-	//SDL_ShowCursor(ectrue);
+	//SDL_ShowCursor(dtrue);
 }
 
 dbool runops(const char* cmdline)
@@ -857,7 +855,7 @@ dbool runops(const char* cmdline)
 	{
 //		strcpy(g_startmap, "");
 
-		return ecfalse;
+		return dfalse;
 	}
 	else
 	{
@@ -882,7 +880,7 @@ dbool runops(const char* cmdline)
 		*/
 	}
 
-	return ecfalse;
+	return dfalse;
 }
 
 #ifdef PLAT_WIN

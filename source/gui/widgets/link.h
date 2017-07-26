@@ -30,6 +30,7 @@ typedef struct hpl hpl;
 
 void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*reframef)(wg* w), void(*click)(), void *e, void(*freef)(wg* w));
 void hpldraw(wg* bw);
-void hplinev(wg* bw, inev* ie);
+void hplin(wg* bw, inev* ie);
+void hplfree(wg* w);
 
 #endif

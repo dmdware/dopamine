@@ -44,9 +44,9 @@ void wgginit(wgg* gui)
 	gui->mbuttondownfunc = NULL;
 	gui->mbuttonupfunc = NULL;
 	gui->mousewheelfunc = NULL;
-	gui->mousemovefunc = NULL;
+	gui->mmovef = NULL;
 
-	w->hidden = ecfalse;
+	w->hidden = dfalse;
 }
 
 void wggdraw2(wgg *gui)
@@ -98,7 +98,7 @@ void wggdraw2(wgg *gui)
 	glEnable(GL_DEPTH_TEST);
 }
 
-void wgginev(wg *bw, inev* ie)
+void wggin(wg *bw, inev* ie)
 {
 	wgg *gui;
 
@@ -106,7 +106,7 @@ void wgginev(wg *bw, inev* ie)
 
 	if(!ie->intercepted)
 	{
-		if(ie->type == INEV_MOUSEMOVE && gui->mousemovefunc) gui->mousemovefunc(ie);
+		if(ie->type == INEV_MOUSEMOVE && gui->mmovef) gui->mmovef(ie);
 		else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && gui->lbuttondownfunc) gui->lbuttondownfunc();
 		else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && gui->lbuttonupfunc) gui->lbuttonupfunc();
 		else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_MIDDLE && gui->mbuttondownfunc) gui->mbuttondownfunc();
@@ -151,9 +151,9 @@ dbool mousepos()
 	SDL_GetMouseState(&g_mouse.x, &g_mouse.y);
 
 	if(g_mouse.x == old.x && g_mouse.y == old.y)
-		return ecfalse;
+		return dfalse;
 
-	return ectrue;
+	return dtrue;
 }
 
 void cenmouse()

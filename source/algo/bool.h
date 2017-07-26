@@ -12,7 +12,7 @@ typedef unsigned char dbool;
  return (dbool)(heap->total > 0);
  if(found)
  */
-#define ectrue	1
-#define ecfalse	0
+#define dtrue	1
+#define dfalse	0
 
 #endif

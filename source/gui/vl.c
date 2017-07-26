@@ -19,10 +19,10 @@ void vwinit(vl *v, const char* n, wg* parent)
 	bw = (wg*)v;
 	wginit(bw);
 	strcpy(bw->name, n);
-	bw->opened = ecfalse;
+	bw->opened = dfalse;
 	bw->type = WIDGET_VIEWLAYER;
 	bw->parent = parent;
-	bw->hidden = ectrue;
+	bw->hidden = dtrue;
 	bw->reframef = szfs;
 	wgreframe(bw);
 }

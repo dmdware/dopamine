@@ -24,12 +24,12 @@ p3f::~p3f()
 dbool Close(p3f a, p3f b)
 {
 	if(fabs(a.normal.x - b.normal.x) <= CLOSE_EPSILON && fabs(a.normal.y - b.normal.y) <= CLOSE_EPSILON && fabs(a.normal.z - b.normal.z) <= CLOSE_EPSILON && fabs(a.d - b.d) <= CLOSE_EPSILON)
-		return ectrue;
+		return dtrue;
 
 	if(fabs(-a.normal.x - b.normal.x) <= CLOSE_EPSILON && fabs(-a.normal.y - b.normal.y) <= CLOSE_EPSILON && fabs(-a.normal.z - b.normal.z) <= CLOSE_EPSILON && fabs(-a.d - b.d) <= CLOSE_EPSILON)
-		return ectrue;
+		return dtrue;
 
-	return ecfalse;
+	return dfalse;
 }
 
 //#define PLANE_DEBUG
@@ -121,9 +121,9 @@ dbool PointBehindPlane(v3f point, p3f plane)
 	float result = point.x*plane.normal.x + point.y*plane.normal.y + point.z*plane.normal.z + plane.d;
 
 	if(result <= 0)
-		return ectrue;
+		return dtrue;
 
-	return ecfalse;
+	return dfalse;
 }
 
 dbool PointOnOrBehindPlane(v3f point, p3f plane, float epsilon)
@@ -131,9 +131,9 @@ dbool PointOnOrBehindPlane(v3f point, p3f plane, float epsilon)
 	float result = point.x*plane.normal.x + point.y*plane.normal.y + point.z*plane.normal.z + plane.d;
 
 	if(result <= epsilon)
-		return ectrue;
+		return dtrue;
 
-	return ecfalse;
+	return dfalse;
 }
 
 dbool PointOnOrBehindPlane(v3f point, v3f normal, float dist, float epsilon)
@@ -141,9 +141,9 @@ dbool PointOnOrBehindPlane(v3f point, v3f normal, float dist, float epsilon)
 	float result = point.x*normal.x + point.y*normal.y + point.z*normal.z + dist;
 
 	if(result <= epsilon)
-		return ectrue;
+		return dtrue;
 
-	return ecfalse;
+	return dfalse;
 }
 
 void RotatePlane(p3f& p, v3f about, float radians, v3f axis)
@@ -178,17 +178,17 @@ dbool Lineintpl(const v3f *line, const v3f norm, const float d, v3f *inter)
 	float denom = dot3f(norm, change);
 
 	if(fabs(denom) <= EPSILON)
-		return ecfalse;
+		return dfalse;
 
 	float SegScalar = (d - dot3f(norm, line[0])) / denom;
 
 	//TODO: Check if SegScalar is [0.0, 1.0]?
 	if(SegScalar < 0.0f)
-		return ecfalse;
+		return dfalse;
 
 	*inter = change * SegScalar + line[0];
 
-	return ectrue;
+	return dtrue;
 }
 
 #endif

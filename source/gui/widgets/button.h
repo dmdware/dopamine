@@ -49,7 +49,7 @@ void bwginit(bwg *b, wg* parent,
 				 void (*overf2)(int p), void (*out)(), int parm, void (*click3)(wg* w));
 void bwgdraw(wg *bw);
 void bwgdrawover(wg *bw);
-void bwginev(wg *bw, inev* ie);
+void bwgin(wg *bw, inev* ie);
 void cenlab(bwg *w);
 
 #endif

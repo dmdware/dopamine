@@ -22,7 +22,7 @@ struct wgg
 	void (*keydownfunc[SDL_NUM_SCANCODES])();
 	void (*anykeyupfunc)(int k);
 	void (*anykeydownfunc)(int k);
-	void (*mousemovefunc)(inev* ie);
+	void (*mmovef)(inev* ie);
 	void (*lbuttondownfunc)();
 	void (*lbuttonupfunc)();
 	void (*rbuttondownfunc)();
@@ -36,7 +36,7 @@ typedef struct wgg wgg;
 
 void wgginit(wgg* gui);
 void wggdraw2(wgg* gui);
-void wgginev(wg* bw, inev* ie);
+void wggin(wg* bw, inev* ie);
 
 extern wgg g_gui;
 

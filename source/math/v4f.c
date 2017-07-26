@@ -70,9 +70,9 @@ dbool v4feq(v4f v1, v4f v2)
 	   v1.y == v2.y &&
 	   v1.z == v2.z &&
 	   v1.w == v2.w)
-		return ectrue;
+		return dtrue;
 	
-	return ecfalse;
+	return dfalse;
 }
 
 dbool v4fneq(v4f v1, v4f v2)
@@ -81,9 +81,9 @@ dbool v4fneq(v4f v1, v4f v2)
 	   v1.y == v2.y &&
 	   v1.z == v2.z &&
 	   v1.w == v2.w)
-		return ecfalse;
+		return dfalse;
 	
-	return ectrue;
+	return dtrue;
 }
 
 void v4fadd(v4f *v, v4f v1, v4f v2)

@@ -9,8 +9,8 @@
 
 
 
-#ifndef VEC3FX_H
-#define VEC3FX_H
+#ifndef V3FX_H
+#define V3FX_H
 
 #include "../sys/inc.h"
 #include "fixfrac.h"

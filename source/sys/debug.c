@@ -8,15 +8,15 @@
 #include "../algo/bool.h"
 
 perftm g_prof[TIMERS];
-dbool g_debug = ecfalse;
+dbool g_debug = dfalse;
 
 dbool outmem(const char *file, int line)
 {
 	char msg[2048];
 	sprintf(msg, "Failed to allocate memory in %s on line %d.", file, line);
 	errm("Out of memory", msg);
-	//g_quit = ectrue;
-	return ectrue;
+	//g_quit = dtrue;
+	return dtrue;
 }
 
 void tminit(perftm *t)
