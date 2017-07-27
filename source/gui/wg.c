@@ -22,7 +22,7 @@
 #include "widgets/vp.h"
 
 void(*wgsubd[WIDGETS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw};
-void(*wgsubdo[WIDGETS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawover,NULL,NULL,NULL,NULL };
+void(*wgsubdo[WIDGETS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawover,NULL,NULL,NULL,NULL};
 void(*wgsubin[WIDGETS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin};
 void(*wgsubf[WIDGETS]) (wg *bw) = {NULL,NULL,NULL,NULL,NULL,NULL,hplfree,vpfree};
 

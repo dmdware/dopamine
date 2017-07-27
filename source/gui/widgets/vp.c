@@ -8,7 +8,7 @@
 #include "../wg.h"
 #include "vp.h"
 
-void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
+void vpinit(vp* v, wg* parent, const char* n, void(*reframef)(wg* w),
 	void(*drawf)(void *e, int x, int y, int w, int h),
 	dbool(*ldownf)(void *e, int relx, int rely, int w, int h),
 	dbool(*lupf)(void *e, int relx, int rely, int w, int h),
@@ -26,7 +26,7 @@ void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
 	wginit(bw);
 
 	bw->parent = parent;
-	bw->type = WIDGET_VIEWLAYER;
+	bw->type = WIDGET_VIEWPORT;
 	bw->extra = e;
 	bw->reframef = reframef;
 	v->drawf = drawf;
@@ -87,8 +87,6 @@ void vpin(wg *w, inev *ie)
 	}
 	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
-		//InfoMess("vpld", "vpld");
-
 		if (!v->over)
 			return;
 
@@ -103,8 +101,6 @@ void vpin(wg *w, inev *ie)
 	}
 	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
-		//InfoMess("vplu", "vplu");
-
 		if (!v->over)
 			return;
 
@@ -175,7 +171,7 @@ void vpdraw(wg *w)
 	endsh();
 
 	if (v->drawf)
-		v->drawf(-1, w->pos[0], w->pos[1], w->pos[2], w->pos[3]);
+		v->drawf(w->extra, w->pos[0], w->pos[1], w->pos[2] - w->pos[0], w->pos[3] - w->pos[1]);
 
 	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 	flatview(g_width, g_height, 1, 1, 1, 1);

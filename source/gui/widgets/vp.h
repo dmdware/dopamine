@@ -32,7 +32,7 @@ struct vp
 
 typedef struct vp vp;
 
-void vpinit(wg* parent, vp* v, const char* n, void(*reframef)(wg* w),
+void vpinit(vp* v, wg* parent, const char* n, void(*reframef)(wg* w),
 	void(*drawf)(void *e, int x, int y, int w, int h),
 	dbool(*ldownf)(void *e, int relx, int rely, int w, int h),
 	dbool(*lupf)(void *e, int relx, int rely, int w, int h),
