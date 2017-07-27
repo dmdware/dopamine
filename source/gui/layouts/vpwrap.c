@@ -4,7 +4,7 @@
 #include "../gui.h"
 #include "../draw2d.h"
 
-int g_fpi[4] = { 1,2,3,4 };
+int g_fpi[4] = { 0,1,2,3 };
 
 //four ports
 void fpdraw(void *e, int x, int y, int w, int h)
@@ -22,7 +22,7 @@ void fpdraw(void *e, int x, int y, int w, int h)
 	glUniform1f(s->slot[SSLOT_WIDTH], (float)w);
 	glUniform1f(s->slot[SSLOT_HEIGHT], (float)h);
 
-	drawsq(0.7f, 0.7f, 0.7f, 0.5f, 20, 20, 500, 500, crop);
+	drawsq(0.7f, 0.7f, 0.7f, 0.5f, 0, 0, w, h, crop);
 
 	endsh();
 
@@ -34,9 +34,13 @@ void fpdraw(void *e, int x, int y, int w, int h)
 
 void szfp(wg* w)
 {
-	w->pos[0] = 30;
-	w->pos[1] = 30;
-	w->pos[2] = 200;
-	w->pos[3] = 100;
+	int fpi = *(int*)w->extra;
+	int x = fpi % 2;
+	int y = fpi / 2;
+
+	w->pos[0] = 100 + x * (g_width - 100) / 2 + 1;
+	w->pos[1] = 30 + y * (g_height - 30) / 2 + 1;
+	w->pos[2] = 100 + (x+1) * (g_width - 100) / 2 - 1;
+	w->pos[3] = 30 + (y+1) * (g_height - 30) / 2 - 1;
 	//cenlab((bwg*)w);
 }
