@@ -4,6 +4,8 @@
 #include "../gui.h"
 #include "../draw2d.h"
 
+int g_fpi[4] = { 1,2,3,4 };
+
 //four ports
 void fpdraw(void *e, int x, int y, int w, int h)
 {
@@ -30,3 +32,11 @@ void fpdraw(void *e, int x, int y, int w, int h)
 	endsh();
 }
 
+void szfp(wg* w)
+{
+	w->pos[0] = 30;
+	w->pos[1] = 30;
+	w->pos[2] = 200;
+	w->pos[3] = 100;
+	//cenlab((bwg*)w);
+}
