@@ -23,6 +23,15 @@ char g_appmode = APPMODE_LOGO;
 char g_viewmode = VIEWMODE_FIRST;
 char g_restage = 0;
 
+#define MX	0
+#define MY	0
+#define MZ -0.5/6371*384400
+#define EX	0.1
+#define EY	0
+#define EZ	1.5
+#define SX	0
+#define SY	0
+#define SZ	149600000/6371.0*0.5
 
 #ifdef PLAT_WIN
 HINSTANCE g_hinst = NULL;
@@ -127,23 +136,9 @@ void update()
 	}
 }
 
-void drawscene(float* proj, float* viewmat, float* modelmat, float* modelviewinv, 
-			   float mvLightPos[3], float lightDir[3])
+void drawscene(float* proj, float* viewmat, float* modelmat, float* modelviewinv,
+	float mvLightPos[3], float lightDir[3])
 {
-	mf mvp;
-	glshader *s;
-
-	return;
-	mfset(&mvp, viewmat);
-	mfpostmult(&mvp, (mf*)proj);
-
-	usesh(SH_COLOR3D);
-	s = g_shader+g_cursh;
-	glUniformMatrix4fv(s->slot[SSLOT_MVP], 1, GL_FALSE, mvp.matrix);
-
-
-
-	endsh();
 }
 
 void drawscenedepth()
@@ -200,8 +195,9 @@ void delfbo(unsigned int* rendertex, unsigned int* renderrb, unsigned int* rende
 
 void draw()
 {
+	char m[1230];
 	float white[4] = {1,1,1,1};
-	float frame[4] = {0,0,(float)g_width,(float)g_height};
+	float frame[4] = {0,g_height/3,(float)g_width,(float)g_height};
 	wg *gui;
 	//mf proj, view, model, mvinv;
 	//float lpos[3], ldir[3];
@@ -217,26 +213,42 @@ void draw()
 	//	0,0,100,100, 
 	//	0,0,1,1,
 	//	frame);
-#if 0
-	proj = pproj(45.0f,
-		(float)g_width/(float)g_height,
-		1.0f, MAX_DISTANCE);
+	if (g_appmode == APPMODE_PLAY)
+	{
+		mf proj, view, model, mvinv;
+		v3f lpos, ldir;
 
-	view = lookat(0,0,0,
-		-1000,1000,-1000,
-		0,1,0);
+		proj = pproj(40.0f,
+			(float)g_width / (float)g_height,
+			0.1f, MAX_DISTANCE);
+			//MAX_DISTANCE, 0.1f);
 
-	mfreset(&model);
+		view = lookat(g_camf.view.x, g_camf.view.y, g_camf.view.z,
+			g_camf.pos.x, g_camf.pos.y, g_camf.pos.z,
+			g_camf.up.x, g_camf.up.y, g_camf.up.z);
 
-	drawscene(proj.matrix, 
-		view.matrix, 
-		model.matrix, 
-		mvinv.matrix, 
-		lpos, ldir);
-#endif
+		mfreset(&model);
 
-	drawt(MAINFONT16, frame, frame, "Test",
-	white, 0, -1, dfalse, dfalse);
+		drawscene(proj.matrix,
+			view.matrix,
+			model.matrix,
+			mvinv.matrix,
+			(float*)&lpos, (float*)&ldir);
+	}
+
+	sprintf(m, "%f,%f,%f kmph    \r\n%f,%f,%f km  \r\nview %f,%f,%f \r\nfps%f",
+		g_camf.v.x * (6371 / 0.5) * 30.0f * 60.0f * 60,
+		g_camf.v.y * (6371 / 0.5) * 30.0f * 60.0f * 60,
+		g_camf.v.z * (6371 / 0.5) * 30.0f * 60.0f * 60,
+		g_camf.pos.x * (6371 / 0.5),
+		g_camf.pos.y * (6371 / 0.5),
+		g_camf.pos.z * (6371 / 0.5),
+		(g_camf.view.x - g_camf.pos.x),
+		(g_camf.view.y - g_camf.pos.y),
+		(g_camf.view.z - g_camf.pos.z),
+		g_indrawfps);
+	drawt(MAINFONT8, frame, frame, m,
+	white, 0, -1, dfalse, dtrue);
 
 	wgframeup(gui);
 	wgdraw(gui);

@@ -4,7 +4,7 @@
 c3f g_camf;
 
 /* TODO leave as float for now then use fixmath int's */
-void cpos3f(v3i *v, c3f *c)
+void cpos3f(v3f *v, c3f *c)
 {
 }
 
