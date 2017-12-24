@@ -17,7 +17,7 @@
 #include "../algo/bool.h"
 #include "../algo/vec.h"
 
-struct spt
+struct spit
 {
 	dbool on;
 	unsigned int difftexi;
@@ -31,13 +31,13 @@ struct spt
 	char* full;
 };
 
-typedef struct spt spt;
+typedef struct spit spit;
 
-void spinit(spt *s);
-void spfree(spt *s);
+void spinit(spit *s);
+void spfree(spit *s);
 
 #define SPRITES	40
-extern spt g_sp[SPRITES];
+extern spit g_sp[SPRITES];
 
 struct spat
 {
@@ -74,8 +74,8 @@ struct spload
 
 typedef struct spload spload;
 
-void sploadinit(spload *stl);
-void sploadfree(spload *stl);
+void splinit(spload *stl);
+void splfree(spload *stl);
 
 extern vector g_spload;
 
@@ -85,7 +85,7 @@ dbool loadqsp();
 void freesps();
 dbool loadsp(const char* relative, unsigned int* spin, dbool loadteam, dbool loaddepth);
 void queuesp(const char* relative, unsigned int* spin, dbool loadteam, dbool loaddepth);
-void parsesp(const char* relative, spt* s);
+void parsesp(const char* relative, spit* s);
 int spref(spat* sl, int frame, int incline, int pitch, int yaw, int roll,
 				  int slicex, int slicey);
 dbool loadspat(const char* relative, unsigned int* splin, dbool loadteam, dbool loaddepth, dbool queue);

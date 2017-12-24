@@ -38,8 +38,8 @@ void szfp(wg* w)
 	int x = fpi % 2;
 	int y = fpi / 2;
 
-	w->pos[0] = 100 + x * (g_width - 100) / 2 + 1;
-	w->pos[1] = 30 + y * (g_height - 30) / 2 + 1;
+	w->pos[0] = 100 + x * (g_width - 100) / 2;
+	w->pos[1] = 30 + y * (g_height - 30) / 2;
 	w->pos[2] = 100 + (x+1) * (g_width - 100) / 2 - 1;
 	w->pos[3] = 30 + (y+1) * (g_height - 30) / 2 - 1;
 	//cenlab((bwg*)w);

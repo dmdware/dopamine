@@ -52,7 +52,7 @@ void wgginit(wgg* gui)
 void wggdraw2(wgg *gui)
 {
 	unsigned int spi;
-	spt* sp;
+	spit* sp;
 	wg *bw;
 
 	glClear(GL_DEPTH_BUFFER_BIT);

@@ -151,6 +151,7 @@
     <ClInclude Include="..\..\..\source\png\pngpriv.h" />
     <ClInclude Include="..\..\..\source\png\pngstruct.h" />
     <ClInclude Include="..\..\..\source\render\anim.h" />
+    <ClInclude Include="..\..\..\source\render\fbo.h" />
     <ClInclude Include="..\..\..\source\render\shader.h" />
     <ClInclude Include="..\..\..\source\render\sprite.h" />
     <ClInclude Include="..\..\..\source\sdl\audio\directsound\SDL_directsound.h" />
@@ -449,6 +450,7 @@
     <ClCompile Include="..\..\..\source\png\pngwtran.c" />
     <ClCompile Include="..\..\..\source\png\pngwutil.c" />
     <ClCompile Include="..\..\..\source\render\anim.c" />
+    <ClCompile Include="..\..\..\source\render\fbo.c" />
     <ClCompile Include="..\..\..\source\render\shader.c" />
     <ClCompile Include="..\..\..\source\render\sprite.c" />
     <ClCompile Include="..\..\..\source\sdl\atomic\SDL_atomic.c" />

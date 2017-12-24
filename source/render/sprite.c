@@ -18,7 +18,7 @@
 
 vector g_spload; /* spload */
 int g_lastloadsp = -1;
-spt g_sp[SPRITES];
+spit g_sp[SPRITES];
 spat g_spat[SPATS];
 
 const char* INNAME[] =
@@ -40,7 +40,7 @@ const char* INNAME[] =
 	"1110"
 };
 
-void spinit(spt *s)
+void spinit(spit *s)
 {
 	s->on = dfalse;
 	s->difftexi = 0;
@@ -48,7 +48,7 @@ void spinit(spt *s)
 	s->pixels = NULL;
 }
 
-void spfree(spt *s)
+void spfree(spit *s)
 {
 	if(s->pixels)
 		ltexfree(s->pixels);
@@ -77,13 +77,13 @@ void spatfree(spat *sl)
 	sl->full = NULL;
 }
 
-void sploadinit(spload *stl)
+void splinit(spload *stl)
 {
 	stl->relative = NULL;
 	stl->spin = NULL;
 }
 
-void sploadfree(spload *stl)
+void splfree(spload *stl)
 {
 	free(stl->relative);
 	free(stl->spin);
@@ -93,7 +93,7 @@ void sploadfree(spload *stl)
 
 void freesps()
 {
-	spt *s;
+	spit *s;
 	spat *sl;
 
 	for(s=g_sp; s<g_sp+SPRITES; ++s)
@@ -158,7 +158,7 @@ void queuesp(const char* relative, unsigned int* spin, dbool loadteam, dbool loa
 
 int newsp()
 {
-	spt* s;
+	spit* s;
 	int i;
 
 	for(i=0; i<SPRITES; ++i)
@@ -193,7 +193,7 @@ dbool findsp(unsigned int *spin, const char* relative)
 	char c[DMD_MAX_PATH+1];
 	char full[DMD_MAX_PATH+1];
 	int i;
-	spt* s;
+	spit* s;
 	strcpy(c, relative);
 	corslash(c);
 	fullpath(c, full);
@@ -224,7 +224,7 @@ texdata -> ltext or texdata
 dbool loadsp(const char* relative, unsigned int* spin, dbool loadteam, dbool loaddepth)
 {
 	int i;
-	spt* s;
+	spit* s;
 	char full[DMD_MAX_PATH+1];
 	char reltxt[DMD_MAX_PATH+1];
 	char reldiff[DMD_MAX_PATH+1];
@@ -608,7 +608,7 @@ int spref(spat* sl, int frame, int incline, int pitch, int yaw, int roll,
 }
 
 //TODO size up to power of 2 for mobile etc
-void parsesp(const char* relative, spt* s)
+void parsesp(const char* relative, spit* s)
 {
 	char full[DMD_MAX_PATH+1];
 	FILE* fp;
