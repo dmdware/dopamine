@@ -8,7 +8,7 @@ void twginit(twg *tw, wg *parent, const char *n, const char *t, int f, void (*re
 	bw = &tw->base;
 	wginit(bw);
 	bw->parent = parent;
-	bw->type = WIDGET_TEXT;
+	bw->type = WG_TEXT;
 	strcpy(bw->name, n);
 	tw->text = NULL;
 	pstrset(&tw->text, t);

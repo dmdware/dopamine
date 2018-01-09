@@ -26,7 +26,7 @@ void vpinit(vp* v, wg* parent, const char* n, void(*reframef)(wg* w),
 	wginit(bw);
 
 	bw->parent = parent;
-	bw->type = WIDGET_VIEWPORT;
+	bw->type = WG_VIEWPORT;
 	bw->extra = e;
 	bw->reframef = reframef;
 	v->drawf = drawf;

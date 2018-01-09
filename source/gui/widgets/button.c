@@ -23,7 +23,7 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	wginit(bw);
 
 	bw->parent = parent;
-	bw->type = WIDGET_BUTTON;
+	bw->type = WG_BUTTON;
 	strcpy(bw->name, name);
 	b->style = style;
 	pstrset(&b->tooltip, tooltip);
@@ -34,22 +34,30 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->over = dfalse;
 	b->ldown = dfalse;
 
-	if(style == BUST_LEFTIMAGE)
+	if(style == BUST_LEIM)
 		createtex(&b->texi, filepath, dtrue, dfalse, dfalse);
 
 	b->bgtex = 0;
-	b->bgovertex = 0;
+	b->bgovtex = 0;
 
 	bw->reframef = reframef;
 	b->clickf = click;
-	b->clickfunc2 = click2;
-	b->overfunc = overf;
-	b->overfunc2 = overf2;
-	b->outfunc = out;
+	b->clickf2 = click2;
+	b->overf = overf;
+	b->overf2 = overf2;
+	b->outf = out;
 	b->param = parm;
-	b->clickfunc3 = click3;
+	b->clickf3 = click3;
 	b->ldown = dfalse;
 	wgreframe(bw);
+}
+
+void bwgfree(wg* w)
+{
+	bwg *b = (bwg*)w;
+
+	free(b->label);
+	free(b->tooltip);
 }
 
 void bwgin(wg *bw, inev* ie)
@@ -67,11 +75,11 @@ void bwgin(wg *bw, inev* ie)
 			if(b->clickf != NULL)
 				b->clickf();
 
-			if(b->clickfunc2 != NULL)
-				b->clickfunc2(b->param);
+			if(b->clickf2 != NULL)
+				b->clickf2(b->param);
 
-			if(b->clickfunc3 != NULL)
-				b->clickfunc3(bw);
+			if(b->clickf3 != NULL)
+				b->clickf3(bw);
 
 			//over = dfalse;
 			b->ldown = dfalse;
@@ -108,8 +116,8 @@ void bwgin(wg *bw, inev* ie)
 		}
 		else
 		{
-			if(b->over && b->outfunc != NULL)
-				b->outfunc();
+			if(b->over && b->outf != NULL)
+				b->outf();
 
 			b->over = dfalse;
 		}
@@ -118,10 +126,10 @@ void bwgin(wg *bw, inev* ie)
 		{
 			if(g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 			{
-				if(b->overfunc != NULL)
-					b->overfunc();
-				if(b->overfunc2 != NULL)
-					b->overfunc2(b->param);
+				if(b->overf != NULL)
+					b->overf();
+				if(b->overf2 != NULL)
+					b->overf2(b->param);
 
 				b->over = dtrue;
 
@@ -147,12 +155,12 @@ void bwgdraw(wg *bw)
 	float texttop;
 	float textleft;
 	font *f;
-	gltex *tex, *bgtex, *bgovertex;
+	gltex *tex, *bgtex, *bgovtex;
 
 	b = (bwg*)bw;
 	f = g_font+b->font;
 	tex = g_tex+b->texi;
-	bgovertex = g_tex+b->bgovertex;
+	bgovtex = g_tex+b->bgovtex;
 	bgtex = g_tex+b->bgtex;
 
 	w = bw->pos[2]-bw->pos[0]-2;
@@ -161,7 +169,7 @@ void bwgdraw(wg *bw)
 
 	/* TODO all to font and lines/quads */
 
-	if(b->style == BUST_LEFTIMAGE)
+	if(b->style == BUST_LEIM)
 	{
 		endsh();
 
@@ -201,7 +209,7 @@ void bwgdraw(wg *bw)
 		//TODO rewrite font.cpp/h to better deal with cropping
 		drawt(b->font, b->tpos, bw->crop, b->label, NULL, 0, -1, dtrue, dfalse);
 	}
-	else if(b->style == BUST_LINEBASED)
+	else if(b->style == BUST_LINE)
 	{
 		endsh();
 
@@ -238,7 +246,7 @@ void bwgdraw(wg *bw)
 	}
 }
 
-void bwgdrawover(wg *bw)
+void bwgdrawov(wg *bw)
 {
 	float tpos[4];
 	bwg *b;
@@ -256,7 +264,7 @@ void bwgdrawover(wg *bw)
 	}
 }
 
-void cenlab(bwg *b)
+void cenlab(bwg *b, char* label)
 {
 	font* f;
 	int texwidth;
@@ -265,7 +273,7 @@ void cenlab(bwg *b)
 	bw = (wg*)b;
 	f = g_font+b->font;
 
-	texwidth = textw(b->font, bw->pos, b->label);
+	texwidth = textw(b->font, bw->pos, label);
 
 	b->tpos[0] = (bw->pos[2]+bw->pos[0])/2 - texwidth/2;
 	b->tpos[1] = (bw->pos[3]+bw->pos[1])/2 - f->gheight/2;

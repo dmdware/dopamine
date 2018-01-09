@@ -23,15 +23,16 @@
 
 #define MAX_OPTIONS_SHOWN	7
 
-#define WIDGET_GUI					0
-#define WIDGET_IMAGE				1
-#define WIDGET_EDITBOX				2
-#define WIDGET_BUTTON				3
-#define WIDGET_VIEWLAYER			4
-#define WIDGET_TEXT					5
-#define WIDGET_LINK					6
-#define WIDGET_VIEWPORT				7
-#define WIDGETS						8
+#define WG_GUI					0
+#define WG_IMAGE				1
+#define WG_EDITBOX				2
+#define WG_BUTTON				3
+#define WG_VIEWLAYER			4
+#define WG_TEXT					5
+#define WG_LINK					6
+#define WG_VIEWPORT				7
+#define WG_DROPMENU				8
+#define WGS						9
 
 struct wg
 {
@@ -56,7 +57,7 @@ struct wg
 	float scar[4];	//scrolling area rect for windows
 	unsigned int texi;
 	unsigned int bgtex;
-	unsigned int bgovertex;
+	unsigned int bgovtex;
 	RichText text;
 	int font;
 	unsigned int frametex, filledtex, uptex, downtex;
@@ -78,13 +79,13 @@ struct wg
 	dbool popup;
 
 	void (*clickf)();
-	void (*clickfunc2)(int p);
-	void (*overfunc)();
-	void (*overfunc2)(int p);
-	void (*outfunc)();
-	void (*changefunc)();
-	void (*changefunc2)(int p);
-	void (*clickfunc3)(wg* w);
+	void (*clickf2)(int p);
+	void (*overf)();
+	void (*overf2)(int p);
+	void (*outf)();
+	void (*changef)();
+	void (*changef2)(int p);
+	void (*clickf3)(wg* w);
 	
 		*/
 
@@ -108,8 +109,8 @@ void wgchcall(wg *w, wg* ch, char type, void* data);	/* child callback */
 void wgfreech(wg *w);	/* free subwg children */
 void wgtofront(wg *w);	/* only used for windows. edit: needed for everything since droplist uses it on parent tree. */
 void wghideall(wg *w);
-void wggainfocus(wg *w);
-void wglosefocus(wg *w);
+void wggain(wg *w);
+void wglose(wg *w);
 
 void subcrop(float *src1, float *src2, float *ndest);
 void szfs(wg *w);

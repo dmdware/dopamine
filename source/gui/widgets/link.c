@@ -21,7 +21,7 @@ void hplinit(hpl* hl, wg* parent, const char* n, const char* t, char f, void(*re
 	wginit(bw);
 
 	bw->parent = parent;
-	bw->type = WIDGET_LINK;
+	bw->type = WG_LINK;
 	strcpy(bw->name, n);
 	hl->over = dfalse;
 	hl->ldown = dfalse;
@@ -39,7 +39,7 @@ void hplfree(wg* w)
 	hpl *hl = (hpl*)w;
 
 	if(hl->freef)
-		hl->freef(hl);
+		hl->freef(w);
 }
 
 void hpldraw(wg* bw)

@@ -7,8 +7,8 @@
 #include "../wg.h"
 
 /* styles */
-#define BUST_LINEBASED		0
-#define BUST_LEFTIMAGE		1
+#define BUST_LINE		0
+#define BUST_LEIM		1
 
 struct bwg
 {
@@ -19,7 +19,7 @@ struct bwg
 	float tpos[4];	//text pos
 	unsigned int texi;
 	unsigned int bgtex;
-	unsigned int bgovertex;
+	unsigned int bgovtex;
 	char* tooltip;
 	char font;
 
@@ -31,13 +31,13 @@ struct bwg
 	dbool ldown;	//was the left mouse button pressed while over this (i.e. drag)?
 
 	void (*clickf)();
-	void (*clickfunc2)(int p);
-	void (*overfunc)();
-	void (*overfunc2)(int p);
-	void (*outfunc)();
-	void (*changefunc)();
-	void (*changefunc2)(int p);
-	void (*clickfunc3)(wg* w);
+	void (*clickf2)(int p);
+	void (*overf)();
+	void (*overf2)(int p);
+	void (*outf)();
+	void (*changef)();
+	void (*changef2)(int p);
+	void (*clickf3)(wg* w);
 };
 
 typedef struct bwg bwg;
@@ -47,9 +47,10 @@ void bwginit(bwg *b, wg* parent,
 				 const char* tooltip, char f, char style, void (*reframef)(wg* w),
 				 void (*click)(), void (*click2)(int p), void (*overf)(), 
 				 void (*overf2)(int p), void (*out)(), int parm, void (*click3)(wg* w));
+void bwgfree(wg* w);
 void bwgdraw(wg *bw);
-void bwgdrawover(wg *bw);
+void bwgdrawov(wg *bw);
 void bwgin(wg *bw, inev* ie);
-void cenlab(bwg *w);
+void cenlab(bwg *w, char* label);
 
 #endif

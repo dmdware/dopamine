@@ -20,7 +20,7 @@ void vwinit(vl *v, const char* n, wg* parent)
 	wginit(bw);
 	strcpy(bw->name, n);
 	bw->opened = dfalse;
-	bw->type = WIDGET_VIEWLAYER;
+	bw->type = WG_VIEWLAYER;
 	bw->parent = parent;
 	bw->hidden = dtrue;
 	bw->reframef = szfs;

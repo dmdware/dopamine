@@ -23,7 +23,7 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 	bw = &eb->base;
 	wginit(bw);
 	bw->parent = parent;
-	bw->type = WIDGET_EDITBOX;
+	bw->type = WG_EDITBOX;
 	strcpy(bw->name, n);
 	bw->font = f;
 	free(bw->val);
@@ -34,8 +34,8 @@ void ebwinit(ebw *eb, wg *parent, const char *n, const char *t, int f, void (*re
 	bw->maxlen = maxl;
 	bw->reframef = reframef;
 	bw->submitfunc = submitf;
-	bw->changefunc = NULL;
-	bw->changefunc2 = NULL;
+	bw->changef = NULL;
+	bw->changef2 = NULL;
 	bw->changefunc3 = change3;
 	bw->scroll[0] = 0;
 	bw->highl[0] = 0;
@@ -391,8 +391,8 @@ void ebwin(ebw *eb, inev *ie)
 			}
 		}
 
-		if(bw->changefunc2 != NULL)
-			bw->changefunc2(param);
+		if(bw->changef2 != NULL)
+			bw->changef2(param);
 
 		if(bw->changefunc3 != NULL)
 			bw->changefunc3(ie->key, ie->scancode, dtrue, param);
@@ -423,11 +423,11 @@ void ebwin(ebw *eb, inev *ie)
 
 		ebwplacestr(eb, ie->text);
 
-		if(bw->changefunc != NULL)
-			bw->changefunc();
+		if(bw->changef != NULL)
+			bw->changef();
 
-		if(bw->changefunc2 != NULL)
-			bw->changefunc2(param);
+		if(bw->changef2 != NULL)
+			bw->changef2(param);
 
 		if(bw->changefunc3 != NULL)
 			bw->changefunc3(val[0], 0, dtrue, param);

@@ -108,6 +108,7 @@
     <ClInclude Include="..\..\..\source\gui\vl.h" />
     <ClInclude Include="..\..\..\source\gui\wg.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\button.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\dropmenu.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\editbox.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\image.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\link.h" />
@@ -366,6 +367,7 @@
     <ClCompile Include="..\..\..\source\gui\vl.c" />
     <ClCompile Include="..\..\..\source\gui\wg.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\button.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\dropmenu.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\editbox.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\image.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\link.c" />

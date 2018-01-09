@@ -20,11 +20,12 @@
 #include "widgets/text.h"
 #include "widgets/link.h"
 #include "widgets/vp.h"
+#include "widgets/dropmenu.h"
 
-void(*wgsubd[WIDGETS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw};
-void(*wgsubdo[WIDGETS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawover,NULL,NULL,NULL,NULL};
-void(*wgsubin[WIDGETS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin};
-void(*wgsubf[WIDGETS]) (wg *bw) = {NULL,NULL,NULL,NULL,NULL,NULL,hplfree,vpfree};
+void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw};
+void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov};
+void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,NULL};
+void(*wgsubf[WGS]) (wg *bw) = {NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree};
 
 void wginit(wg* w)
 {
@@ -129,7 +130,7 @@ void wgdraw(wg *w)
 	
 	switch(w->type)
 	{
-	case WIDGET_GUI:
+	case WG_GUI:
 		wggdraw2((wgg*)w);
 		break;
 	}
@@ -224,11 +225,11 @@ void wgadd(wg *w, wg *newg)
 	lpub2(&w->sub, sizeof(wg*), &newg);
 }
 
-void wggainfocus(wg *w)
+void wggain(wg *w)
 {
 }
 
-void wglosefocus(wg *w)
+void wglose(wg *w)
 {
 	lnode *i;
 	wg *iw;
@@ -238,14 +239,14 @@ void wglosefocus(wg *w)
 	for(i=w->sub.head; i; i=i->next)
 	{
 		iw = *(wg**)&i->data[0];
-		wglosefocus(iw);
+		wglose(iw);
 	}
 }
 
 void wghide(wg *w)
 {
 	w->hidden = dtrue;
-	wglosefocus(w);
+	wglose(w);
 }
 
 void wgshow(wg *w)

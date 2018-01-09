@@ -27,7 +27,7 @@ void wgginit(wgg* gui)
 
 	wginit(w);
 
-	w->type = WIDGET_GUI;
+	w->type = WG_GUI;
 
 	for(i=0; i<SDL_NUM_SCANCODES; ++i)
 	{
