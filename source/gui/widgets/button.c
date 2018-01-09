@@ -264,7 +264,7 @@ void bwgdrawov(wg *bw)
 	}
 }
 
-void cenlab(bwg *b, char* label)
+void cenlab(bwg *b)
 {
 	font* f;
 	int texwidth;
@@ -273,7 +273,7 @@ void cenlab(bwg *b, char* label)
 	bw = (wg*)b;
 	f = g_font+b->font;
 
-	texwidth = textw(b->font, bw->pos, label);
+	texwidth = textw(b->font, bw->pos, b->label);
 
 	b->tpos[0] = (bw->pos[2]+bw->pos[0])/2 - texwidth/2;
 	b->tpos[1] = (bw->pos[3]+bw->pos[1])/2 - f->gheight/2;

@@ -34,7 +34,6 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	bw->pos[2] = 0;
 	bw->pos[3] = 0;
 	wgreframe(bw);
-	//cenlab((bwg*)bw, d->label);
 }
 
 void dwgfree(wg* w)
