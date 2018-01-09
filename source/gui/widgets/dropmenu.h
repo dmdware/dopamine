@@ -31,5 +31,6 @@ void dwginit(dwg *b, wg* parent, const char* name,
 void dwgfree(wg* w);
 void dwgdraw(wg *bw);
 void dwgdrawov(wg *bw);
+void dsz(wg *bw);
 
 #endif

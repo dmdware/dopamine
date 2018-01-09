@@ -264,19 +264,19 @@ void bwgdrawov(wg *bw)
 	}
 }
 
-void cenlab(bwg *b)
+void cenlab(bwg *b, char *label, char fi, float *pos, float *tpos)
 {
-	font* f;
+	font *f;
 	int texwidth;
 	wg *bw;
 
 	bw = (wg*)b;
-	f = g_font+b->font;
+	f = g_font+fi;
 
-	texwidth = textw(b->font, bw->pos, b->label);
+	texwidth = textw(fi, pos, label);
 
-	b->tpos[0] = (bw->pos[2]+bw->pos[0])/2 - texwidth/2;
-	b->tpos[1] = (bw->pos[3]+bw->pos[1])/2 - f->gheight/2;
-	b->tpos[2] = bw->pos[2];
-	b->tpos[3] = bw->pos[3];
+	tpos[0] = (pos[2]+pos[0])/2 - texwidth/2;
+	tpos[1] = (pos[3]+pos[1])/2 - f->gheight/2;
+	tpos[2] = pos[2];
+	tpos[3] = pos[3];
 }

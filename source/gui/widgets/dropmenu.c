@@ -29,11 +29,8 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->clickf = click;
 	d->clickf2 = click2;
 	d->clickf3 = click3;
-	bw->pos[0] = 0;
-	bw->pos[1] = 0;
-	bw->pos[2] = 0;
-	bw->pos[3] = 0;
 	wgreframe(bw);
+	cenlab((bwg*)bw, d->label, d->font, bw->pos, d->tpos);
 }
 
 void dwgfree(wg* w)
@@ -96,5 +93,10 @@ void dwgdrawov(wg *bw)
 
 	if (bw->opened)
 	{
+
 	}
+}
+
+void dsz(wg *bw)
+{
 }

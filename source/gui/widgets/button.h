@@ -51,6 +51,6 @@ void bwgfree(wg* w);
 void bwgdraw(wg *bw);
 void bwgdrawov(wg *bw);
 void bwgin(wg *bw, inev* ie);
-void cenlab(bwg *w);
+void cenlab(bwg *b, char *label, char fi, float *pos, float *tpos);
 
 #endif
