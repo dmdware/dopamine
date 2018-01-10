@@ -30,7 +30,7 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->clickf2 = click2;
 	d->clickf3 = click3;
 	d->param = parm;
-	d->opened = dtrue;
+	d->opened = dfalse;
 	wgreframe(bw);
 	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos);
 }
@@ -49,12 +49,17 @@ void dwgopen(wg *bw)
 	d = (dwg*)bw;
 	d->opened = dtrue;
 	d->ldown = dtrue;
+
+	for (n = bw->sub.head; n; n = n->next)
+	{
+		wi = *(wg**)&n->data[0];
+		wgreframe(wi);
+	}
 }
 
 void dwgclose(wg *bw)
 {
 	dwg *d;
-	wg *wi;
 	d = (dwg*)bw;
 
 	while (bw->type == WG_DROPMENU)
@@ -69,17 +74,21 @@ void dwgclose(wg *bw)
 void dwgin(wg *bw, inev* ie)
 {
 	dwg *d;
+	dwg *pd;
+	wg *pw;
 
 	d = (dwg*)bw;
+	pw = bw->parent;
+	pd = (dwg*)pw;
 
-	//if (bw->parent->type == WG_DROPMENU && !((dwg*)bw->parent)->opened)
-		//return;
+	if (pw->type == WG_DROPMENU && !pd->opened)
+		return;
 
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted && d->opened)
+	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
-		if (d->over && d->ldown)
+		if (d->over && (d->ldown || pw->type == WG_DROPMENU))
 		{
 			if (d->clickf != NULL)
 				d->clickf();
@@ -100,7 +109,7 @@ void dwgin(wg *bw, inev* ie)
 			return;	// intercept mouse event
 		}
 
-		if (d->ldown)
+		//if (d->ldown)
 		{
 			if (!bw->sub.size)
 			{
@@ -168,11 +177,15 @@ void dwgdraw(wg *bw)
 	float textcolor[] = { 0.9f,0.9f,0.9f,0.8f };
 	font *f;
 	char i;
+	dwg *pd;
+	wg *pw;
 
 	d = (dwg*)bw;
+	pw = bw->parent;
+	pd = (dwg*)pw;
 
-	//if (bw->parent->type == WG_DROPMENU && !((dwg*)bw->parent)->opened)
-	//	return;
+	if (pw->type == WG_DROPMENU && !pd->opened)
+		return;
 
 	f = g_font + d->font;
 
@@ -194,20 +207,21 @@ void dwgdraw(wg *bw)
 		}
 	}
 
-	drawsq(midcolor[0], midcolor[1], midcolor[2], midcolor[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
+	drawsq(midcolor[0], midcolor[1], midcolor[2], midcolor[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->pos);
 
-	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3] - 1, bw->crop);
-	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], bw->crop);
+	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3] - 1, bw->pos);
+	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], bw->pos);
 
-	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
-	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[2], bw->pos[1] + 1, bw->pos[2], bw->pos[3], bw->crop);
+	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], bw->pos);
+	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[2], bw->pos[1] + 1, bw->pos[2], bw->pos[3], bw->pos);
 
 	endsh();
+
 	CHECKGL();
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	//TODO rewrite font.cpp/h to better deal with cropping
-	drawt(d->font, d->tpos, bw->crop, d->label, textcolor, 0, -1, dtrue, dfalse);
+	drawt(d->font, d->tpos, bw->pos, d->label, textcolor, 0, -1, dtrue, dfalse);
 }
 
 void dwgdrawov(wg *bw)

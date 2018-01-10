@@ -50,8 +50,6 @@ void hpldraw(wg* bw)
 
 	hl = (hpl*)bw;
 
-	glDisable(GL_TEXTURE_2D);
-
 	if(!hl->over)
 	{
 		color[0] = 0.8f;
