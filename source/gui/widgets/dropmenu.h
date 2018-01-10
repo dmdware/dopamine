@@ -4,8 +4,6 @@
 
 #include "../wg.h"
 
-typedef struct dwi dwi;
-
 struct dwg
 {
 	wg base;
@@ -22,6 +20,7 @@ struct dwg
 	void(*clickf3)(wg* w);
 
 	int param;
+	dbool opened;
 };
 
 typedef struct dwg dwg;
@@ -35,5 +34,7 @@ void dwgin(wg *bw, inev* ie);
 void dwgdraw(wg *bw);
 void dwgdrawov(wg *bw);
 void dsz(wg *bw);
+void dwgopen(wg *bw);
+void dwgclose(wg *bw);
 
 #endif

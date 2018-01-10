@@ -19,7 +19,6 @@ void vwinit(vl *v, const char* n, wg* parent)
 	bw = (wg*)v;
 	wginit(bw);
 	strcpy(bw->name, n);
-	bw->opened = dfalse;
 	bw->type = WG_VIEWLAYER;
 	bw->parent = parent;
 	bw->hidden = dtrue;

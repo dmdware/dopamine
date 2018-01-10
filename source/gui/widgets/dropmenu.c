@@ -30,6 +30,7 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->clickf2 = click2;
 	d->clickf3 = click3;
 	d->param = parm;
+	d->opened = dtrue;
 	wgreframe(bw);
 	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos);
 }
@@ -40,13 +41,41 @@ void dwgfree(wg* w)
 	free(d->label);
 }
 
+void dwgopen(wg *bw)
+{
+	dwg *d;
+	lnode *n;
+	wg *wi;
+	d = (dwg*)bw;
+	d->opened = dtrue;
+	d->ldown = dtrue;
+}
+
+void dwgclose(wg *bw)
+{
+	dwg *d;
+	wg *wi;
+	d = (dwg*)bw;
+
+	while (bw->type == WG_DROPMENU)
+	{
+		d->opened = dfalse;
+		d->ldown = dfalse;
+		bw = bw->parent;
+		d = (dwg*)bw;
+	}
+}
+
 void dwgin(wg *bw, inev* ie)
 {
 	dwg *d;
 
 	d = (dwg*)bw;
 
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	//if (bw->parent->type == WG_DROPMENU && !((dwg*)bw->parent)->opened)
+		//return;
+
+	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted && d->opened)
 	{
 		//mousemove();
 
@@ -61,6 +90,8 @@ void dwgin(wg *bw, inev* ie)
 			if (d->clickf3 != NULL)
 				d->clickf3(bw);
 
+			dwgclose(d);
+
 			//over = dfalse;
 			d->ldown = dfalse;
 
@@ -71,8 +102,11 @@ void dwgin(wg *bw, inev* ie)
 
 		if (d->ldown)
 		{
-			d->ldown = dfalse;
-			ie->intercepted = dtrue;
+			if (!bw->sub.size)
+			{
+				ie->intercepted = dtrue;
+				dwgclose(d);
+			}
 			return;
 		}
 
@@ -86,13 +120,24 @@ void dwgin(wg *bw, inev* ie)
 		{
 			d->ldown = dtrue;
 			ie->intercepted = dtrue;
+			dwgopen(bw);
 			return;	// intercept mouse event
+		}
+		else if (!d->opened)
+		{
+			ie->intercepted = dtrue;
+			dwgclose(bw);
+			return;
 		}
 	}
 	else if (ie->type == INEV_MOUSEMOVE)
 	{
 		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{
+			if (d->ldown)
+			{
+				dwgopen(bw);
+			}
 		}
 		else
 		{
@@ -125,6 +170,10 @@ void dwgdraw(wg *bw)
 	char i;
 
 	d = (dwg*)bw;
+
+	//if (bw->parent->type == WG_DROPMENU && !((dwg*)bw->parent)->opened)
+	//	return;
+
 	f = g_font + d->font;
 
 	endsh();
@@ -167,7 +216,7 @@ void dwgdrawov(wg *bw)
 
 	d = (dwg*)bw;
 
-	if (bw->opened)
+	if (d->opened)
 	{
 
 	}

@@ -45,7 +45,6 @@ struct wg
 
 	char name[16];
 
-	dbool opened;
 	dbool hidden;
 
 	list sub;	/* wg* */
