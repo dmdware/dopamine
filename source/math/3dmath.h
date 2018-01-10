@@ -33,6 +33,7 @@ struct v2i;
 struct v3i;
 struct v2f;
 
+float plad(v3f n, float d, v3f p);
 v3f vmin(float minf, v3f v);
 float mag3f(v3f v);
 float mag2f(v2f v);

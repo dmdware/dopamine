@@ -12,6 +12,11 @@
 #include "../sys/syswin.h"
 #include "../sim/user.h"
 
+float plad(v3f n, float d, v3f p)
+{
+	return dot3f(n, p) + d;
+}
+
 float clipf(float n, float lower, float upper)
 {
 	return maxf(lower, minf(n, upper));

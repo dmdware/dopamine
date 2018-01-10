@@ -155,6 +155,7 @@
     <ClInclude Include="..\..\..\source\render\fbo.h" />
     <ClInclude Include="..\..\..\source\render\shader.h" />
     <ClInclude Include="..\..\..\source\render\sprite.h" />
+    <ClInclude Include="..\..\..\source\render\toxy.h" />
     <ClInclude Include="..\..\..\source\sdl\audio\directsound\SDL_directsound.h" />
     <ClInclude Include="..\..\..\source\sdl\audio\disk\SDL_diskaudio.h" />
     <ClInclude Include="..\..\..\source\sdl\audio\dummy\SDL_dummyaudio.h" />
@@ -455,6 +456,7 @@
     <ClCompile Include="..\..\..\source\render\fbo.c" />
     <ClCompile Include="..\..\..\source\render\shader.c" />
     <ClCompile Include="..\..\..\source\render\sprite.c" />
+    <ClCompile Include="..\..\..\source\render\toxy.c" />
     <ClCompile Include="..\..\..\source\sdl\atomic\SDL_atomic.c" />
     <ClCompile Include="..\..\..\source\sdl\atomic\SDL_spinlock.c" />
     <ClCompile Include="..\..\..\source\sdl\audio\directsound\SDL_directsound.c" />
