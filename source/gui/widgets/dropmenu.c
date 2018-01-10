@@ -54,6 +54,12 @@ void dwgopen(wg *bw)
 	{
 		wi = *(wg**)&n->data[0];
 		wgreframe(wi);
+
+		if (wi->type == WG_DROPMENU)
+		{
+			d = (dwg*)wi;
+			d->over = dfalse;
+		}
 	}
 }
 
@@ -61,11 +67,12 @@ void dwgclose(wg *bw)
 {
 	dwg *d;
 	d = (dwg*)bw;
-
+	
 	while (bw->type == WG_DROPMENU)
 	{
 		d->opened = dfalse;
 		d->ldown = dfalse;
+		d->over = dfalse;
 		bw = bw->parent;
 		d = (dwg*)bw;
 	}
