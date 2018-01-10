@@ -58,6 +58,7 @@ void dwgopen(wg *bw)
 	while (di)
 	{
 		di->opened = dfalse;
+		di->ldown = dtrue;
 		di = di->prev;
 	}
 
@@ -65,6 +66,7 @@ void dwgopen(wg *bw)
 	while (di)
 	{
 		di->opened = dfalse;
+		di->ldown = dtrue;
 		di = di->next;
 	}
 
@@ -174,7 +176,6 @@ void dwgin(wg *bw, inev* ie)
 		}
 		else if (!d->opened)
 		{
-			ie->intercepted = dtrue;
 			dwgclose(bw);
 			return;
 		}
@@ -183,7 +184,7 @@ void dwgin(wg *bw, inev* ie)
 	{
 		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{
-			if (d->ldown)
+			if (pw->type == WG_DROPMENU || d->ldown)
 			{
 				dwgopen(bw);
 			}
@@ -203,7 +204,7 @@ void dwgin(wg *bw, inev* ie)
 				{
 					d->opened = dtrue;
 					d->ldown = dtrue;
-					dwgopen(bw);
+					//dwgopen(bw);
 				}
 				return;
 			}
