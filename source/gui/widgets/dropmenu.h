@@ -21,6 +21,8 @@ struct dwg
 
 	int param;
 	dbool opened;
+	struct dwg *prev;
+	struct dwg *next;
 };
 
 typedef struct dwg dwg;
@@ -28,7 +30,8 @@ typedef struct dwg dwg;
 void dwginit(dwg *b, wg* parent, const char* name,
 	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
-	void(*click2)(int p), void(*click3)(wg* w));
+	void(*click2)(int p), void(*click3)(wg* w),
+	dwg *prev, dwg *next);
 void dwgfree(wg* w);
 void dwgin(wg *bw, inev* ie);
 void dwgdraw(wg *bw);

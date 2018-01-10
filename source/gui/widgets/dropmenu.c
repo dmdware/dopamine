@@ -8,7 +8,8 @@
 void dwginit(dwg *d, wg* parent, const char* name,
 	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
-	void(*click2)(int p), void(*click3)(wg* w))
+	void(*click2)(int p), void(*click3)(wg* w),
+	dwg *prev, dwg *next)
 {
 	wg *bw;
 	int length;
@@ -31,6 +32,8 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->clickf3 = click3;
 	d->param = parm;
 	d->opened = dfalse;
+	d->prev = prev;
+	d->next = next;
 	wgreframe(bw);
 	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos);
 }
@@ -46,9 +49,24 @@ void dwgopen(wg *bw)
 	dwg *d;
 	lnode *n;
 	wg *wi;
+	dwg *di;
 	d = (dwg*)bw;
 	d->opened = dtrue;
 	d->ldown = dtrue;
+
+	di = d->prev;
+	while (di)
+	{
+		di->opened = dfalse;
+		di = di->prev;
+	}
+
+	di = d->next;
+	while (di)
+	{
+		di->opened = dfalse;
+		di = di->next;
+	}
 
 	for (n = bw->sub.head; n; n = n->next)
 	{
@@ -60,6 +78,21 @@ void dwgopen(wg *bw)
 			d = (dwg*)wi;
 			d->over = dfalse;
 		}
+	}
+
+	wi = bw->parent;
+
+	while (wi)
+	{
+		if (wi->type == WG_DROPMENU)
+		{
+			d = (dwg*)wi;
+			d->opened = dtrue;
+			d->ldown = dtrue;
+			wi = wi->parent;
+			continue;
+		}
+		break;
 	}
 }
 
@@ -165,8 +198,13 @@ void dwgin(wg *bw, inev* ie)
 			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 			{
 				d->over = dtrue;
-
 				ie->intercepted = dtrue;
+				if (pd->ldown)
+				{
+					d->opened = dtrue;
+					d->ldown = dtrue;
+					dwgopen(bw);
+				}
 				return;
 			}
 		}
