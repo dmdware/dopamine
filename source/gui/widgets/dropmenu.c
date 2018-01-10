@@ -6,7 +6,7 @@
 #include "../gui.h"
 
 void dwginit(dwg *d, wg* parent, const char* name,
-	const char* label, char f,
+	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
 	void(*click2)(int p), void(*click3)(wg* w))
 {
@@ -29,8 +29,9 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->clickf = click;
 	d->clickf2 = click2;
 	d->clickf3 = click3;
+	d->param = parm;
 	wgreframe(bw);
-	cenlab((bwg*)bw, d->label, d->font, bw->pos, d->tpos);
+	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos);
 }
 
 void dwgfree(wg* w)
@@ -39,6 +40,79 @@ void dwgfree(wg* w)
 	free(d->label);
 }
 
+void dwgin(wg *bw, inev* ie)
+{
+	dwg *d;
+
+	d = (dwg*)bw;
+
+	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	{
+		//mousemove();
+
+		if (d->over && d->ldown)
+		{
+			if (d->clickf != NULL)
+				d->clickf();
+
+			if (d->clickf2 != NULL)
+				d->clickf2(d->param);
+
+			if (d->clickf3 != NULL)
+				d->clickf3(bw);
+
+			//over = dfalse;
+			d->ldown = dfalse;
+
+			ie->intercepted = dtrue;
+
+			return;	// intercept mouse event
+		}
+
+		if (d->ldown)
+		{
+			d->ldown = dfalse;
+			ie->intercepted = dtrue;
+			return;
+		}
+
+		d->over = dfalse;
+	}
+	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	{
+		//mousemove();
+
+		if (d->over)
+		{
+			d->ldown = dtrue;
+			ie->intercepted = dtrue;
+			return;	// intercept mouse event
+		}
+	}
+	else if (ie->type == INEV_MOUSEMOVE)
+	{
+		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+		{
+		}
+		else
+		{
+			d->over = dfalse;
+		}
+
+		if (!ie->intercepted)
+		{
+			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+			{
+				d->over = dtrue;
+
+				ie->intercepted = dtrue;
+				return;
+			}
+		}
+	}
+}
+
+
 void dwgdraw(wg *bw)
 {
 	dwg *d;
@@ -46,6 +120,7 @@ void dwgdraw(wg *bw)
 	float midcolor[] = { 0.7f,0.7f,0.7f,0.8f };
 	float lightcolor[] = { 0.8f,0.8f,0.8f,0.8f };
 	float darkcolor[] = { 0.5f,0.5f,0.5f,0.8f };
+	float textcolor[] = { 0.9f,0.9f,0.9f,0.8f };
 	font *f;
 	char i;
 
@@ -66,6 +141,7 @@ void dwgdraw(wg *bw)
 			midcolor[i] = 0.8f;
 			lightcolor[i] = 0.9f;
 			darkcolor[i] = 0.6f;
+			textcolor[i] = 1.0f;
 		}
 	}
 
@@ -82,7 +158,7 @@ void dwgdraw(wg *bw)
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	//TODO rewrite font.cpp/h to better deal with cropping
-	drawt(d->font, d->tpos, bw->crop, d->label, NULL, 0, -1, dtrue, dfalse);
+	drawt(d->font, d->tpos, bw->crop, d->label, textcolor, 0, -1, dtrue, dfalse);
 }
 
 void dwgdrawov(wg *bw)

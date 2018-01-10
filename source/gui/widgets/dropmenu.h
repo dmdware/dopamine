@@ -20,15 +20,18 @@ struct dwg
 	void(*clickf)();
 	void(*clickf2)(int p);
 	void(*clickf3)(wg* w);
+
+	int param;
 };
 
 typedef struct dwg dwg;
 
 void dwginit(dwg *b, wg* parent, const char* name,
-	const char* label, char f,
+	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
 	void(*click2)(int p), void(*click3)(wg* w));
 void dwgfree(wg* w);
+void dwgin(wg *bw, inev* ie);
 void dwgdraw(wg *bw);
 void dwgdrawov(wg *bw);
 void dsz(wg *bw);

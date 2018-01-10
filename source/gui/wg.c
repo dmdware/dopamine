@@ -24,7 +24,7 @@
 
 void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw};
 void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov};
-void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,NULL};
+void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin};
 void(*wgsubf[WGS]) (wg *bw) = {NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree};
 
 void wginit(wg* w)
