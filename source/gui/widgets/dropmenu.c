@@ -44,6 +44,24 @@ void dwgfree(wg* w)
 	free(d->label);
 }
 
+void dwgclose2(wg *bw)
+{
+	lnode *n;
+	dwg *d;
+	d = (dwg*)bw;
+	wg *wi;
+
+	for(n=bw->sub.head; n; n=n->next)
+	{
+		wi = *(wg**)&n->data[0];
+		d = (dwg*)wi;
+		d->opened = dfalse;
+		d->ldown = dfalse;
+		d->over = dfalse;
+		dwgclose2(wi);
+	}
+}
+
 void dwgopen(wg *bw)
 {
 	dwg *d;
@@ -57,7 +75,7 @@ void dwgopen(wg *bw)
 	di = d->prev;
 	while (di)
 	{
-		di->opened = dfalse;
+		dwgclose2((wg*)di);
 		di->ldown = dtrue;
 		di = di->prev;
 	}
@@ -65,7 +83,7 @@ void dwgopen(wg *bw)
 	di = d->next;
 	while (di)
 	{
-		di->opened = dfalse;
+		dwgclose2((wg*)di);
 		di->ldown = dtrue;
 		di = di->next;
 	}
@@ -126,11 +144,11 @@ void dwgin(wg *bw, inev* ie)
 	if (pw->type == WG_DROPMENU && !pd->opened)
 		return;
 
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
 		//mousemove();
 
-		if (d->over && (d->ldown || pw->type == WG_DROPMENU))
+		if (d->over && (d->ldown || pw->type == WG_DROPMENU) && !ie->intercepted)
 		{
 			if (d->clickf != NULL)
 				d->clickf();
@@ -143,9 +161,6 @@ void dwgin(wg *bw, inev* ie)
 
 			dwgclose(d);
 
-			//over = dfalse;
-			d->ldown = dfalse;
-
 			ie->intercepted = dtrue;
 
 			return;	// intercept mouse event
@@ -153,14 +168,17 @@ void dwgin(wg *bw, inev* ie)
 
 		//if (d->ldown)
 		{
-			if (!bw->sub.size)
+			//if (!bw->sub.size)
+			//if(!d->opened)
 			{
-				ie->intercepted = dtrue;
-				dwgclose(d);
+				//ie->intercepted = dtrue;
+				//dwgclose(d);
 			}
-			return;
+			//return;
 		}
 
+		d->ldown = dfalse;
+		d->opened = dfalse;
 		d->over = dfalse;
 	}
 	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
@@ -200,11 +218,11 @@ void dwgin(wg *bw, inev* ie)
 			{
 				d->over = dtrue;
 				ie->intercepted = dtrue;
-				if (pd->ldown)
+				if (pw->type == WG_DROPMENU && pd->ldown)
 				{
 					d->opened = dtrue;
 					d->ldown = dtrue;
-					//dwgopen(bw);
+					dwgopen(bw);
 				}
 				return;
 			}
