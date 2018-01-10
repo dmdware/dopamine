@@ -76,6 +76,7 @@ void dwgopen(wg *bw)
 	while (di)
 	{
 		dwgclose2((wg*)di);
+		di->opened = dfalse;
 		di->ldown = dtrue;
 		di = di->prev;
 	}
@@ -84,6 +85,7 @@ void dwgopen(wg *bw)
 	while (di)
 	{
 		dwgclose2((wg*)di);
+		di->opened = dfalse;
 		di->ldown = dtrue;
 		di = di->next;
 	}
