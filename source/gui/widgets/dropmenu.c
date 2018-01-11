@@ -276,9 +276,13 @@ void dwgdraw(wg *bw)
 	drawsq(midcolor[0], midcolor[1], midcolor[2], midcolor[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->pos);
 
 	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3] - 1, bw->pos);
-	drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], bw->pos);
 
-	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], bw->pos);
+	if (pw->type == WG_DROPMENU && !d->prev)
+		drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], bw->pos);
+
+	if (pw->type == WG_DROPMENU && !d->next)
+		drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], bw->pos);
+
 	drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[2], bw->pos[1] + 1, bw->pos[2], bw->pos[3], bw->pos);
 
 	endsh();
