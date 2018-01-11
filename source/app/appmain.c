@@ -128,6 +128,8 @@ void update()
 
 void drawscene()
 {
+	float d[12];
+	float v[3][3];
 }
 
 void drawscenedepth()

@@ -42,7 +42,7 @@ float sa3f(v3f a, v3f b, v3f c)
 	return sqrtf(s * (s - a1) * (s - a2) * (s - a3));
 }
 
-v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6])
+v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *d)
 {
 	float v[12];
 	int i;
@@ -58,6 +58,8 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6])
 	v[9] = vol3f(vi, p[0], p[1], p[4]) / sa3f(p[0], p[1], p[4]);
 	v[10] = vol3f(vi, p[5], p[6], p[7]) / sa3f(p[5], p[6], p[7]);
 	v[11] = vol3f(vi, p[4], p[5], p[7]) / sa3f(p[4], p[5], p[7]);
+
+	memcpy(d, v, sizeof(float) * 12);
 
 #if 01
 	if (plad(pl[0], pld[0], vi) < 0)
@@ -104,13 +106,49 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6])
 	}
 #endif
 
-	vi.y = wy * (v[4] + v[5]) / (v[8] + v[9] + v[4] + v[5]);
-	vi.x = wx * (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
-	vi.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
+	if (v[6] < 0 || v[7] < 0)
+	{
+		vi.x = wx * - (fabs(v[6]) + fabs(v[7])) / (- fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
+	}
+	else if (v[2] < 0 || v[3] < 0)
+	{
+		vi.x = wx * (1.0f + (fabs(v[2]) + fabs(v[3])) / (-fabs(v[2]) - fabs(v[3]) + v[6] + v[7]));
+	}
+	else
+	{
+		vi.x = wx * (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
+	}
+
+	if (v[4] < 0 || v[5] < 0)
+	{
+		vi.y = wy * -(fabs(v[4]) + fabs(v[5])) / (-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]);
+	}
+	else if (v[8] < 0 || v[9] < 0)
+	{
+		vi.y = wy * (1.0f + (fabs(v[8]) + fabs(v[9])) / (-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]));
+	}
+	else
+	{
+		vi.y = wy * (v[4] + v[5]) / (v[8] + v[9] + v[4] + v[5]);
+	}
+
+	if (v[10] < 0 || v[11] < 0)
+	{
+		vi.z = ((fabs(v[10]) + fabs(v[11])) / (v[0] + v[1] - fabs(v[10]) - fabs(v[11])));
+	}
+	else if (v[0] < 0 || v[1] < 0)
+	{
+		vi.z = (1.0f + (fabs(v[0]) + fabs(v[1])) / (v[10] + v[11] - fabs(v[0]) - fabs(v[1])));
+	}
+	else
+	{
+		vi.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
+	}
+
 	return vi;
 }
 
-v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov)
+v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d)
 {
 	v3f pv[8];
 	v3f vvvv[3][2][2];
@@ -213,5 +251,5 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 	pld[4] = -dot3f(pl[4], tn[4][0]);
 	pld[5] = -dot3f(pl[5], tn[5][0]);
 
-	return toxy2(vi, wx, wy, pv, pl, pld);
+	return toxy2(vi, wx, wy, pv, pl, pld, d);
 }
