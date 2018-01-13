@@ -85,35 +85,13 @@ const char *SHTEXT[SHADERS][4]
 "														\r\n"\
 	},
 	/* SH_COLOR3D */
-{
-"SH_COLOR3D v",
-"SH_COLOR3D f",
-""
-"#version 120\r\n"
-""
-"uniform mat4 mvp;\r\n"
-""
-"uniform vec4 color;\r\n"
-""
-"void main(void)\r\n"
-"{\r\n"
-"	gl_Position = mvp * gl_Vertex;\r\n"
-"	//gl_Position.w = 1;\r\n"
-"	//gl_Position.z = - gl_Position.z;"
-"}\r\n"
-"",
-""
-"#version 120\r\n"
-""
-"uniform vec4 color;"
-""
-"void main(void)"
-"{"
-"	gl_FragColor = color;"
-"	gl_FragColor = vec4(1,1,1,1);"
-"}"
-""
-},
+	{
+		"SH_COLOR3D v",
+		"SH_COLOR3D f",
+#include "../shaders/color3d.vert"
+		,
+#include "../shaders/color3d.frag"
+	},
 /* SH_E */
 {
 "SH_E v",

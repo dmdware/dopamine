@@ -130,25 +130,25 @@ void update()
 void drawscene()
 {
 	float d[15];
-	float v[3][3];
+	static float v[3][3] =
+	{ {-0.1f, 0.1f, 0.2f},{0.1f, 0.1f, 0.2f},{0.0f,-0.1f, 0.2f} };
 	v3f view;
 	v3f pos;
 	v3f up;
 	v3f side;
-	v3f out;
-	
-	v[0][0] = -0.1f;
-	v[0][1] = 0.1f;
-	v[0][2] = 0.2f;
-
-	v[1][0] = 0.1f;
-	v[1][1] = 0.1f;
-	v[1][2] = 0.2f;
-
-	v[2][0] = 0.0f;
-	v[2][1] = -0.1f;
-	v[2][2] = 0.2f;
-
+	v3f out[3];
+	glshader *s;
+#if 01
+	v[0][0] += (rand() % 5000 - 2500) / 250000.0f;
+	v[0][1] += (rand() % 5000 - 2500) / 250000.0f;
+	v[0][2] += (rand() % 5000 - 2500) / 250000.0f;
+	v[1][0] += (rand() % 5000 - 2500) / 250000.0f;
+	v[1][1] += (rand() % 5000 - 2500) / 250000.0f;
+	v[1][2] += (rand() % 5000 - 2500) / 250000.0f;
+	v[2][0] += (rand() % 5000 - 2500) / 250000.0f;
+	v[2][1] += (rand() % 5000 - 2500) / 250000.0f;
+	v[2][2] += (rand() % 5000 - 2500) / 250000.0f;
+#endif
 	view.x = 0;
 	view.y = 0;
 	view.z = 1;
@@ -165,12 +165,33 @@ void drawscene()
 	pos.y = 0;
 	pos.z = 0;
 
-	out = toxy(*(v3f*)v[0], 100, 100, view, pos, up, side, 10, 0.01f, 90.0f, d);
+	out[0] = toxy(*(v3f*)v[0], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
+	out[1] = toxy(*(v3f*)v[1], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
+	out[2] = toxy(*(v3f*)v[2], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
 
 	fprintf(g_applog, "d0123%f,%f,%f,%f\r\nd4567%f,%f,%f,%f\r\nd8901%f,%f,%f,%f\r\no%f,%f,%f,  %f,%f,%f,  %f,%f,%f\r\n",
-		d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], out.x, out.y, out.z, (*(v3f*)v[0]).x, (*(v3f*)v[0]).y, (*(v3f*)v[0]).z, d[12], d[13], d[14]);
+		d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], out[0].x, out[0].y, out[0].z, out[1].x, out[1].y, out[1].z, out[2].x, out[2].y, out[2].z);
 
-	exit(0);
+	endsh();
+	usesh(SH_COLOR3D);
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_CULL_FACE);
+	s = g_shader + g_cursh;
+	glUniform4f(s->slot[SSLOT_COLOR], 1, 1, 1, 1);
+	glUniform1f(s->slot[SSLOT_WIDTH], g_currw);
+	glUniform1f(s->slot[SSLOT_HEIGHT], g_currh);
+
+	//glVertexPointer(3, GL_FLOAT, 0, &v[0][0]);
+	glVertexPointer(3, GL_FLOAT, 0, (float*)&out[0]);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	endsh();
+	usesh(SH_COLOR3D);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_CULL_FACE);
+	flatview(g_currw, g_currh, 1, 1, 1, 1);
+
+	drawt(MAINFONT16, g_gui.base.crop, g_gui.base.crop, "alkj,sjdalksd", NULL, 0, -1, dtrue, dfalse);
 }
 
 void drawscenedepth()
