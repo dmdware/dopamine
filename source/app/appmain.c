@@ -169,9 +169,6 @@ void drawscene()
 	out[1] = toxy(*(v3f*)v[1], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
 	out[2] = toxy(*(v3f*)v[2], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
 
-	fprintf(g_applog, "d0123%f,%f,%f,%f\r\nd4567%f,%f,%f,%f\r\nd8901%f,%f,%f,%f\r\no%f,%f,%f,  %f,%f,%f,  %f,%f,%f\r\n",
-		d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], out[0].x, out[0].y, out[0].z, out[1].x, out[1].y, out[1].z, out[2].x, out[2].y, out[2].z);
-
 	endsh();
 	usesh(SH_COLOR3D);
 	glDisable(GL_TEXTURE_2D);

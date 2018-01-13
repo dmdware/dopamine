@@ -48,18 +48,18 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	int i;
 	v[0] = vol3f(vi, p[0], p[2], p[1]) / sa3f(p[0], p[2], p[1]);
 	v[1] = vol3f(vi, p[0], p[3], p[2]) / sa3f(p[0], p[3], p[2]);
-	v[2] = vol3f(vi, p[1], p[2], p[6]) / sa3f(p[1], p[2], p[6]);
-	v[3] = vol3f(vi, p[1], p[6], p[5]) / sa3f(p[1], p[6], p[5]);
-	v[4] = vol3f(vi, p[2], p[7], p[6]) / sa3f(p[2], p[6], p[7]);
-	v[5] = vol3f(vi, p[3], p[7], p[2]) / sa3f(p[7], p[3], p[2]);
-	v[6] = vol3f(vi, p[3], p[0], p[7]) / sa3f(p[7], p[3], p[0]);
-	v[7] = vol3f(vi, p[7], p[0], p[4]) / sa3f(p[7], p[0], p[4]);
-	v[8] = vol3f(vi, p[1], p[5], p[4]) / sa3f(p[1], p[5], p[4]);
-	v[9] = vol3f(vi, p[0], p[1], p[4]) / sa3f(p[0], p[1], p[4]);
-	v[10] = vol3f(vi, p[6], p[5], p[7]) / sa3f(p[6], p[5], p[7]);
-	v[11] = vol3f(vi, p[5], p[4], p[7]) / sa3f(p[5], p[4], p[7]);
+	v[2] = vol3f(vi, p[6], p[1], p[2]) / sa3f(p[1], p[2], p[6]);
+	v[3] = vol3f(vi, p[5], p[1], p[6]) / sa3f(p[1], p[6], p[5]);
+	v[4] = vol3f(vi, p[6], p[2], p[7]) / sa3f(p[2], p[6], p[7]);
+	v[5] = vol3f(vi, p[2], p[3], p[7]) / sa3f(p[7], p[3], p[2]);
+	v[6] = vol3f(vi, p[7], p[3], p[0]) / sa3f(p[7], p[3], p[0]);
+	v[7] = vol3f(vi, p[4], p[7], p[0]) / sa3f(p[7], p[0], p[4]);
+	v[8] = vol3f(vi, p[4], p[1], p[5]) / sa3f(p[1], p[5], p[4]);
+	v[9] = vol3f(vi, p[4], p[0], p[1]) / sa3f(p[0], p[1], p[4]);
+	v[10] = vol3f(vi, p[7], p[5], p[6]) / sa3f(p[6], p[5], p[7]);
+	v[11] = vol3f(vi, p[5], p[7], p[4]) / sa3f(p[5], p[4], p[7]);
 
-	//memcpy(d, v, sizeof(float) * 12);
+	memcpy(d, v, sizeof(float) * 12);
 
 #if 0
 	if (plad(pl[0], pld[0], vi) < 0)
@@ -122,22 +122,22 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 		vi.x = wx * (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
 	}
 
-	if (v[4] < 0 || v[5] < 0)
+	if (v[8] < 0 || v[9] < 0)
 	{
-		vi.y = wy * -(fabs(v[4]) + fabs(v[5])) / (-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]);
+		vi.y = wy * -(fabs(v[8]) + fabs(v[9])) / (-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]);
 	}
-	else if (v[8] < 0 || v[9] < 0)
+	else if (v[4] < 0 || v[5] < 0)
 	{
-		vi.y = wy * (1.0f + (fabs(v[8]) + fabs(v[9])) / (-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]));
+		vi.y = wy * (1.0f + (fabs(v[4]) + fabs(v[5])) / (-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]));
 	}
 	else
 	{
-		vi.y = wy * (v[4] + v[5]) / (v[8] + v[9] + v[4] + v[5]);
+		vi.y = wy * (v[8] + v[9]) / (v[4] + v[5] + v[8] + v[9]);
 	}
 
 	if (v[10] < 0 || v[11] < 0)
 	{
-		vi.z = ((fabs(v[10]) + fabs(v[11])) / (v[0] + v[1] - fabs(v[10]) - fabs(v[11])));
+		vi.z = -((fabs(v[10]) + fabs(v[11])) / (v[0] + v[1] - fabs(v[10]) - fabs(v[11])));
 	}
 	else if (v[0] < 0 || v[1] < 0)
 	{
@@ -178,9 +178,12 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 	v3fmul(&vvvv[Y][NEARP][POS], vvvv[Y][NEARP][POS], wy / wx * ta);
 	v3fmul(&vvvv[X][NEARP][POS], vvvv[X][NEARP][POS], ta);
 
-	v3fmul(&vvvv[X][FARP][POS], vvvv[X][NEARP][POS], maxd - mind);
-	v3fmul(&vvvv[Y][FARP][POS], vvvv[Y][NEARP][POS], maxd - mind);
-	v3fmul(&vvvv[Z][FARP][POS], vvvv[Z][NEARP][POS], maxd - mind);
+	v3fmul(&vvvv[X][FARP][POS], vvvv[X][NEARP][POS], maxd);
+	v3fmul(&vvvv[Y][FARP][POS], vvvv[Y][NEARP][POS], maxd);
+	v3fmul(&vvvv[Z][FARP][POS], vvvv[Z][NEARP][POS], maxd);
+	v3fmul(&vvvv[X][NEARP][POS], vvvv[X][NEARP][POS], mind);
+	v3fmul(&vvvv[Y][NEARP][POS], vvvv[Y][NEARP][POS], mind);
+	v3fmul(&vvvv[Z][NEARP][POS], vvvv[Z][NEARP][POS], mind);
 
 	v3fmul(&vvvv[X][NEARP][NEG], vvvv[X][NEARP][POS], -1);
 	v3fmul(&vvvv[Y][NEARP][NEG], vvvv[Y][NEARP][POS], -1);
