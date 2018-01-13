@@ -18,6 +18,7 @@
 #include "../sim/simflow.h"
 #include "../sim/simvars.h"
 #include "../render/shader.h"
+#include "../render/toxy.h"
 
 char g_appmode = APPMODE_LOGO;
 char g_viewmode = VIEWMODE_FIRST;
@@ -128,8 +129,48 @@ void update()
 
 void drawscene()
 {
-	float d[12];
+	float d[15];
 	float v[3][3];
+	v3f view;
+	v3f pos;
+	v3f up;
+	v3f side;
+	v3f out;
+	
+	v[0][0] = -0.1f;
+	v[0][1] = 0.1f;
+	v[0][2] = 0.2f;
+
+	v[1][0] = 0.1f;
+	v[1][1] = 0.1f;
+	v[1][2] = 0.2f;
+
+	v[2][0] = 0.0f;
+	v[2][1] = -0.1f;
+	v[2][2] = 0.2f;
+
+	view.x = 0;
+	view.y = 0;
+	view.z = 1;
+
+	side.x = 1;
+	side.y = 0;
+	side.z = 0;
+
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+
+	pos.x = 0;
+	pos.y = 0;
+	pos.z = 0;
+
+	out = toxy(*(v3f*)v[0], 100, 100, view, pos, up, side, 10, 0.01f, 90.0f, d);
+
+	fprintf(g_applog, "d0123%f,%f,%f,%f\r\nd4567%f,%f,%f,%f\r\nd8901%f,%f,%f,%f\r\no%f,%f,%f,  %f,%f,%f,  %f,%f,%f\r\n",
+		d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11], out.x, out.y, out.z, (*(v3f*)v[0]).x, (*(v3f*)v[0]).y, (*(v3f*)v[0]).z, d[12], d[13], d[14]);
+
+	exit(0);
 }
 
 void drawscenedepth()
