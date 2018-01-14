@@ -109,6 +109,7 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	//for (i = 0; i < 12; ++i)
 		//v[i] = fabs(v[i]);
 
+#if 01
 	if (v[6] < 0 || v[7] < 0)
 	{
 		vi.x = wx * - (fabs(v[6]) + fabs(v[7])) / (- fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
@@ -147,7 +148,7 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	{
 		vi.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
 	}
-
+#endif
 	//memcpy(&d[12], &vi, sizeof(float) * 3);
 
 	return vi;

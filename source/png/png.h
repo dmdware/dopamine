@@ -2855,7 +2855,7 @@ typedef struct
  *
  * NOTE: All the macros that take a png_image::format parameter are compile time
  * constants if the format parameter is, itself, a constant.  Therefore these
- * macros can be used in array declarations and case labels where required.
+ * macros can be used in array declarations and case options where required.
  * Similarly the macros are also pre-processor constants (sizeof is not used) so
  * they can be used in #if tests.
  *

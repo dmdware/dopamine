@@ -36,7 +36,7 @@ void loadsysres()
 
 void upload()
 {
-	wg *gui, *menu;
+	wg *gui, *menu, *bgv;
 
 	gui = (wg*)&g_gui;
 
@@ -57,7 +57,9 @@ void upload()
 
 			g_appmode = APPMODE_MENU;
 			wghide(gui);
+			bgv = wgget(gui, "bg");
 			menu = wgget(gui, "menu");
+			wgshow(bgv);
 			wgshow(menu);
 		}
 		break;
