@@ -22,6 +22,15 @@
 #include "widgets/vp.h"
 #include "widgets/dropmenu.h"
 
+const float MC[4] = { MCR,MCG,MCB,MCA };
+const float LC[4] = { LCR,LCG,LCB,LCA };
+const float DC[4] = { DCR,DCG,DCB,DCA };
+const float TC[4] = { TCR,TCG,TCB,TCA };
+const float MCO[4] = { MCRO,MCGO,MCBO,MCAO };
+const float LCO[4] = { LCRO,LCGO,LCBO,LCAO };
+const float DCO[4] = { DCRO,DCGO,DCBO,DCAO };
+const float TCO[4] = { TCRO,TCGO,TCBO,TCAO };
+
 void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw};
 void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov};
 void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin};

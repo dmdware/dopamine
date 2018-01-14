@@ -33,6 +33,7 @@ struct dlw
 	void(*clickf)();
 	void(*clickf2)(int p);
 	void(*clickf3)(wg* w);
+	float scroll;
 };
 
 typedef struct dlw dlw;

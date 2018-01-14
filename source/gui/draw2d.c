@@ -110,6 +110,10 @@ void drawim(unsigned int texi, float left, float top, float right, float bottom,
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void drawtri(float r, float g, float b, float a, float *pos, float *crop)
+{
+}
+
 void drawsq(float r, float g, float b, float a, float left, float top, float right, float bottom, float *crop)
 {
 	glshader *s;

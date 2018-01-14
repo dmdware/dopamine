@@ -144,10 +144,10 @@ void bwgdraw(wg *bw)
 {
 	bwg *b;
 	glshader *s;
-	float midcolor[] = {0.7f,0.7f,0.7f,0.8f};
-	float lightcolor[] = {0.8f,0.8f,0.8f,0.8f};
-	float darkcolor[] = {0.5f,0.5f,0.5f,0.8f};
-	float textcolor[] = { 0.9f,0.9f,0.9f,0.8f };
+	float mc[] = {MCR,MCG,MCB,MCA};
+	float lc[] = {LCR,LCG,LCB,LCA};
+	float dc[] = {DCR,DCG,DCB,DCA};
+	float textcolor[] = { TCR,TCG,TCB,TCA };
 	char i;
 	float w;
 	float h;
@@ -183,20 +183,20 @@ void bwgdraw(wg *bw)
 		{
 			for(i=0; i<3; ++i)
 			{
-				midcolor[i] = 0.8f;
-				lightcolor[i] = 0.9f;
-				darkcolor[i] = 0.6f;
+				mc[i] = 0.8f;
+				lc[i] = 0.9f;
+				dc[i] = 0.6f;
 				textcolor[i] = 1.0f;
 			}
 		}
 
-		drawsq(midcolor[0], midcolor[1], midcolor[2], midcolor[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
+		drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
 
-		drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3]-1, bw->crop);
-		drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2]-1, bw->pos[1], bw->crop);
+		drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3]-1, bw->crop);
+		drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[2]-1, bw->pos[1], bw->crop);
 
-		drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0]+1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
-		drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[2], bw->pos[1]+1, bw->pos[2], bw->pos[3], bw->crop);
+		drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[0]+1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
+		drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[2], bw->pos[1]+1, bw->pos[2], bw->pos[3], bw->crop);
 
 		endsh();
 		CHECKGL();
@@ -224,19 +224,19 @@ void bwgdraw(wg *bw)
 		{
 			for(i=0; i<3; i++)
 			{
-				midcolor[i] = 0.8f;
-				lightcolor[i] = 0.9f;
-				darkcolor[i] = 0.6f;
+				mc[i] = 0.8f;
+				lc[i] = 0.9f;
+				dc[i] = 0.6f;
 			}
 		}
 
-		drawsq(midcolor[0], midcolor[1], midcolor[2], midcolor[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
+		drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
 
-		drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3]-1, bw->crop);
-		drawl(lightcolor[0], lightcolor[1], lightcolor[2], lightcolor[3], bw->pos[0], bw->pos[1], bw->pos[2]-1, bw->pos[1], bw->crop);
+		drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3]-1, bw->crop);
+		drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[2]-1, bw->pos[1], bw->crop);
 
-		drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[0]+1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
-		drawl(darkcolor[0], darkcolor[1], darkcolor[2], darkcolor[3], bw->pos[2], bw->pos[1]+1, bw->pos[2], bw->pos[3], bw->crop);
+		drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[0]+1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
+		drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[2], bw->pos[1]+1, bw->pos[2], bw->pos[3], bw->crop);
 
 		endsh();
 		CHECKGL();

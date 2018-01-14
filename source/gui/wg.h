@@ -21,7 +21,47 @@
 #include "richtext.h"
 #include "inev.h"
 
-#define MAX_OPTIONS_SHOWN	7
+#define MCR	0.7f
+#define MCG	0.7f
+#define MCB	0.7f
+#define LCR	0.8f
+#define LCG	0.8f
+#define LCB	0.8f
+#define DCR	0.5f
+#define DCG	0.5f
+#define DCB	0.5f
+#define TCR	0.9f
+#define TCG	0.9f
+#define TCB 0.9f
+#define MCA	0.8f
+#define LCA	0.8f
+#define DCA	0.8f
+#define TCA 0.8f
+#define MCRO	0.8f
+#define MCGO	0.8f
+#define MCBO	0.8f
+#define LCRO	0.9f
+#define LCGO	0.9f
+#define LCBO	0.9f
+#define DCRO	0.6f
+#define DCGO	0.6f
+#define DCBO	0.6f
+#define TCRO	1.0f
+#define TCGO	1.0f
+#define TCBO	1.0f
+#define MCAO	0.8f
+#define LCAO	0.8f
+#define DCAO	0.8f
+#define TCAO	0.8f
+
+extern const float MC[4];
+extern const float LC[4];
+extern const float DC[4];
+extern const float TC[4];
+extern const float MCO[4];
+extern const float LCO[4];
+extern const float DCO[4];
+extern const float TCO[4];
 
 #define WG_GUI					0
 #define WG_IMAGE				1
@@ -32,7 +72,8 @@
 #define WG_LINK					6
 #define WG_VIEWPORT				7
 #define WG_DROPMENU				8
-#define WGS						9
+#define WG_DROPLIST				9
+#define WGS						10
 
 struct wg
 {
