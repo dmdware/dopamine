@@ -255,9 +255,9 @@ void dwgdraw(wg *bw)
 		return;
 
 	if (pw->type == WG_DROPMENU)
-		crop = bw->crop;
-	else
 		crop = bw->pos;
+	else
+		crop = bw->crop;
 
 	f = g_font + d->font;
 
