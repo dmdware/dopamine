@@ -140,6 +140,10 @@ void drawscene()
 	v3f side;
 	v3f out[3];
 	glshader *s;
+	wg *gb;
+
+	gb = (wg*)&g_gui;
+
 #if 01
 	v[0][0] += (rand() % 5000 - 2500) / 250000.0f;
 	v[0][1] += (rand() % 5000 - 2500) / 250000.0f;
@@ -190,7 +194,7 @@ void drawscene()
 	glEnable(GL_CULL_FACE);
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
-	drawt(MAINFONT16, g_gui.base.crop, g_gui.base.crop, "alkj,sjdalksd", NULL, 0, -1, dtrue, dfalse);
+	drawt(MAINFONT16, gb->crop, gb->crop, "alkj,sjdalksd", NULL, 0, -1, dtrue, dfalse);
 }
 
 void drawscenedepth()
@@ -213,6 +217,7 @@ void draw()
 
 	wgframeup(gui);
 	wgdraw(gui);
+	wgdrawover(gui);
 
 	endsh();
 	glEnable(GL_DEPTH_TEST);

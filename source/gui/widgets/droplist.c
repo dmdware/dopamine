@@ -4,7 +4,7 @@
 
 
 #include "droplist.h"
-
+#include "../gui.h"
 
 void dlwinit(dlw *d, wg* parent, const char* name,
 	const char* label, char f, void *e,
@@ -85,41 +85,28 @@ void dlwin(wg *bw, inev* ie)
 
 		if (d->over && d->ldown)
 		{
-			if (d->clickf != NULL)
-				d->clickf();
-
-			d->opened = dfalse;
-
 			ie->intercepted = dtrue;
 
 			return;	// intercept mouse event
 		}
 
-		//if (d->ldown)
-		{
-			//if (!bw->sub.size)
-			//if(!d->opened)
-			{
-				//ie->intercepted = dtrue;
-				//dwgclose(d);
-			}
-			//return;
-		}
-
 		d->ldown = dfalse;
-		d->opened = dfalse;
 		d->over = dfalse;
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		//mousemove();
 
-		if (d->over)
+		if (d->over && !ie->intercepted)
 		{
 			d->ldown = dtrue;
 			ie->intercepted = dtrue;
 			d->opened = dtrue;
 			return;	// intercept mouse event
+		}
+		else if (!d->over)
+		{
+			d->opened = dfalse;
 		}
 	}
 	else if (ie->type == INEV_MOUSEMOVE)
@@ -172,15 +159,15 @@ void dlwdraw(wg *bw)
 	float ua[3 * 2];
 	float da[3 * 2];
 	float h;
-	int nops;
 	float us[4];
 	float ds[4];
+	float tp[4];
+	wg* gb;
 
+	gb = (wg*)&g_gui;
 	d = (dlw*)bw;
 	pw = bw->parent;
 	pd = (dlw*)pw;
-
-#define WGOPS	7
 
 	f = g_font + d->font;
 	h = d->dpos[3] - d->dpos[1];
@@ -189,18 +176,18 @@ void dlwdraw(wg *bw)
 	ua[0 * 2 + 1] = d->dpos[3] - h*0.3f;
 	ua[1 * 2 + 0] = d->dpos[2] - h*0.3f;
 	ua[1 * 2 + 1] = d->dpos[3] - h*0.3f;
-	ua[2 * 2 + 0] = d->dpos[2] - h/2.0f;
+	ua[2 * 2 + 0] = d->dpos[2] - h / 2.0f;
 	ua[2 * 2 + 1] = d->dpos[1] + h*0.3f;
 	memcpy(da, ua, sizeof(float) * 3 * 2);
 	for (i = 0; i < 3; ++i)
-		da[2 * i + 1] = h - (da[2*i + 1] - d->dpos[1]) + d->dpos[1];
+		da[2 * i + 1] = h - (da[2 * i + 1] - d->dpos[1]) + d->dpos[1];
 
-	us[0] = d->dpos[2] - h + 1;
-	us[1] = d->dpos[1] + 2;
-	us[2] = d->dpos[2] - 2;
-	us[3] = d->dpos[3] - 2;
+#define SQSP	2
 
-	nops = mini(WGOPS, d->noptions);
+	us[0] = d->dpos[2] - h + SQSP;
+	us[1] = d->dpos[1] + SQSP;
+	us[2] = d->dpos[2] - SQSP;
+	us[3] = d->dpos[3] - SQSP;
 
 	endsh();
 
@@ -228,10 +215,6 @@ void dlwdraw(wg *bw)
 
 	if (d->opened)
 	{
-		drawtri(lc[0], lc[1], lc[2], lc[3], ua, bw->crop);
-		for (i = 0; i < 3; ++i)
-			da[2 * i + 1] = da[2 * i + 1] + (nops+1) * h;
-		drawtri(lc[0], lc[1], lc[2], lc[3], da, bw->crop);
 	}
 	else
 	{
@@ -240,7 +223,7 @@ void dlwdraw(wg *bw)
 
 	endsh();
 
-#undef WGOPS
+#undef SQSP
 
 	CHECKGL();
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
@@ -253,21 +236,125 @@ void dlwdraw(wg *bw)
 		drawt(d->font, d->dpos, bw->crop, d->options[d->active], tc[d->over], 0, -1, dtrue, dfalse);
 
 	}
-
-	if (d->opened)
-	{
-	}
 }
 
 void dlwdrawov(wg *bw)
 {
 	dlw *d;
+	glshader *s;
+	float *mc = MC;
+	float *lc = LC;
+	float *dc = DC;
+	float *mco = MCO;
+	float *lco = LCO;
+	float *dco = DCO;
+	float *tc[2] = { TC,TCO };
+	float *ulc = lc;
+	float *umc = mc;
+	float *udc = dc;
+	float *dlc = lc;
+	float *dmc = mc;
+	float *ddc = dc;
+	float *cmc = mc;
+	float *cdc = dc;
+	float *clc = lc;
+	font *f;
+	char i;
+	dlw *pd;
+	wg *pw;
+	float ua[3 * 2];
+	float da[3 * 2];
+	float h;
+	int nops;
+	float us[4];
+	float ds[4];
+	float tp[4];
+	wg* gb;
 
 	d = (dlw*)bw;
 
-	if (d->opened)
-	{
+	if (!d->opened)
+		return;
 
+	gb = (wg*)&g_gui;
+	pw = bw->parent;
+	pd = (dlw*)pw;
+
+#define WGOPS	7
+
+	f = g_font + d->font;
+	h = d->dpos[3] - d->dpos[1];
+
+	ua[0 * 2 + 0] = d->dpos[2] - h + h*0.3f;
+	ua[0 * 2 + 1] = d->dpos[3] - h*0.3f;
+	ua[1 * 2 + 0] = d->dpos[2] - h*0.3f;
+	ua[1 * 2 + 1] = d->dpos[3] - h*0.3f;
+	ua[2 * 2 + 0] = d->dpos[2] - h / 2.0f;
+	ua[2 * 2 + 1] = d->dpos[1] + h*0.3f;
+	memcpy(da, ua, sizeof(float) * 3 * 2);
+	for (i = 0; i < 3; ++i)
+		da[2 * i + 1] = d->dpos[1] - (da[2 * i + 1] - d->dpos[1]);
+
+#define SQSP	2
+
+	us[0] = d->dpos[2] - h + SQSP;
+	us[1] = d->dpos[1] + SQSP;
+	us[2] = d->dpos[2] - SQSP;
+	us[3] = d->dpos[3] - SQSP;
+
+	nops = mini(WGOPS, d->noptions);
+
+	endsh();
+
+	usesh(SH_COLOR2D);
+	s = g_shader + g_cursh;
+	glUniform1f(s->slot[SSLOT_WIDTH], (float)g_currw);
+	glUniform1f(s->slot[SSLOT_HEIGHT], (float)g_currh);
+
+	tp[0] = d->dpos[0];
+	tp[1] = d->dpos[3];
+	tp[2] = d->dpos[2];
+	tp[3] = d->dpos[3] + nops * h;
+
+	drawsq(mc[0], mc[1], mc[2], mc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
+
+	tp[0] = d->dpos[2] - h + SQSP;
+	tp[1] = d->dpos[3];
+	tp[2] = d->dpos[2] - SQSP;
+	tp[3] = d->dpos[3] + (nops - 1) * h;
+
+	drawsq(dc[0], dc[1], dc[2], dc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
+
+	ds[0] = d->dpos[2] - h + SQSP;
+	ds[1] = d->dpos[3] + h * (nops - 1) + SQSP;
+	ds[2] = d->dpos[2] - SQSP;
+	ds[3] = d->dpos[3] + h * nops - SQSP;
+
+	drawsq(cmc[0], cmc[1], cmc[2], cmc[3], ds[0], ds[1], ds[2], ds[3], gb->crop);
+
+	drawtri(lc[0], lc[1], lc[2], lc[3], ua, gb->crop);
+	for (i = 0; i < 3; ++i)
+		da[2 * i + 1] = da[2 * i + 1] + (nops + 1) * h;
+	drawtri(lc[0], lc[1], lc[2], lc[3], da, gb->crop);
+
+	tp[1] = d->dpos[3] + d->scroll / d->noptions * ((nops - 1) * h);
+	tp[3] = d->dpos[3] + (d->scroll + (float)nops) / d->noptions * ((nops - 1) * h);
+	drawsq(mc[0], mc[1], mc[2], mc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
+
+	CHECKGL();
+	flatview(g_currw, g_currh, 1, 1, 1, 1);
+
+	//TODO rewrite font.cpp/h to better deal with cropping
+	drawt(d->font, d->tpos, bw->crop, d->label, tc[d->over], 0, -1, dtrue, dfalse);
+
+	tp[0] = d->dpos[0];
+	tp[2] = d->dpos[2] - h;
+
+	for (i = 0; i < nops; ++i)
+	{
+		tp[1] = d->dpos[3] + i * h;
+		tp[3] = d->dpos[3] + (i + 1) * h;
+		drawt(d->font, tp, gb->crop, d->options[i], tc[d->over], 0, -1, dtrue, dfalse);
 	}
 }
 
@@ -309,7 +396,7 @@ DropList::DropList() : Widget()
 	reframe();
 }
 
-DropList::DropList(Widget* parent, const char* n, int f, void (*reframef)(Widget* w), void (*change)()) : Widget()
+DropList::DropList(Widget* parent, const char* n, int f, void(*reframef)(Widget* w), void(*change)()) : Widget()
 {
 	parent = parent;
 	type = WIDGET_DROPLIST;
@@ -331,14 +418,14 @@ DropList::DropList(Widget* parent, const char* n, int f, void (*reframef)(Widget
 
 void DropList::erase(int which)
 {
-	options.erase( options.begin() + which );
-	if(selected == which)
+	options.erase(options.begin() + which);
+	if (selected == which)
 		selected = -1;
 
-	if(scroll[1] + rowsshown() > options.size())
+	if (scroll[1] + rowsshown() > options.size())
 		scroll[1] = options.size() - (float)rowsshown();
 
-	if(scroll[1] < 0)
+	if (scroll[1] < 0)
 		scroll[1] = 0;
 }
 
@@ -346,7 +433,7 @@ int DropList::rowsshown()
 {
 	int rows = MAX_OPTIONS_SHOWN;
 
-	if(rows > options.size())
+	if (rows > options.size())
 		rows = options.size();
 
 	return rows;
@@ -359,7 +446,7 @@ int DropList::square()
 
 float DropList::scrollspace()
 {
-	return g_font[font].gheight*(rowsshown())-square();
+	return g_font[font].gheight*(rowsshown()) - square();
 }
 
 //TODO draw using lines
@@ -369,15 +456,15 @@ void DropList::draw()
 	//glColor4f(1, 1, 1, 1);
 	glUniform4f(g_sh[SHADER_ORTHO].slot[SSLOT_COLOR], 1, 1, 1, 1);
 
-	DrawImage(g_texture[frametex].texname, pos[0], pos[1], pos[2], pos[3], 0,0,1,1, crop);
+	DrawImage(g_texture[frametex].texname, pos[0], pos[1], pos[2], pos[3], 0, 0, 1, 1, crop);
 
-	if(!opened)
-		DrawImage(g_texture[uptex].texname, pos[2]-square(), pos[1], pos[2], pos[1]+square(), 0, 1, 1, 0, crop);
+	if (!opened)
+		DrawImage(g_texture[uptex].texname, pos[2] - square(), pos[1], pos[2], pos[1] + square(), 0, 1, 1, 0, crop);
 
-	if(options.size() <= 0)
+	if (options.size() <= 0)
 		return;
 
-	if(selected < 0)
+	if (selected < 0)
 	{
 		//if(options.size() <= 0)
 		//	return;
@@ -387,15 +474,15 @@ void DropList::draw()
 		return;
 	}
 
-	if(selected >= (int)options.size())
+	if (selected >= (int)options.size())
 		return;
 
-	DrawShadowedTextF(font, pos[0]+3, pos[1], crop[0], crop[1], crop[2], crop[3], &options[selected], NULL, -1);
+	DrawShadowedTextF(font, pos[0] + 3, pos[1], crop[0], crop[1], crop[2], crop[3], &options[selected], NULL, -1);
 }
 
 void DropList::drawover()
 {
-	if(!opened)
+	if (!opened)
 		return;
 
 	//glColor4f(1, 1, 1, 1);
@@ -415,7 +502,7 @@ void DropList::drawover()
 
 	//if(opened)
 	{
-		if(downdrop)
+		if (downdrop)
 		{
 			drop[0] = pos[0];
 			drop[1] = pos[1];
@@ -423,17 +510,17 @@ void DropList::drawover()
 			drop[3] = pos[3] + rowsshown() * f->gheight;
 			dropsign = 1;
 			dropedge = 3;
-			
-			drfy[0] = drop[1]+f->gheight;
+
+			drfy[0] = drop[1] + f->gheight;
 			drfy[1] = drop[3];
-			scary[0] = drop[1]+f->gheight;
+			scary[0] = drop[1] + f->gheight;
 			scary[1] = drop[3];
 			upy[0] = drop[1];
-			upy[1] = drop[1]+square();
-			downy[0] = drop[3]-square();
+			upy[1] = drop[1] + square();
+			downy[0] = drop[3] - square();
 			downy[1] = drop[3];
-			bary[0] = drop[1]+f->gheight+scrollspace()*topratio();
-			bary[1] = drop[1]+f->gheight+scrollspace()*bottomratio();
+			bary[0] = drop[1] + f->gheight + scrollspace()*topratio();
+			bary[1] = drop[1] + f->gheight + scrollspace()*bottomratio();
 		}
 		else
 		{
@@ -443,17 +530,17 @@ void DropList::drawover()
 			drop[3] = pos[3];
 			dropsign = -1;
 			dropedge = 1;
-			
+
 			drfy[0] = drop[1];
-			drfy[1] = drop[3]-f->gheight;
-			scary[0] = drop[1]+f->gheight;
+			drfy[1] = drop[3] - f->gheight;
+			scary[0] = drop[1] + f->gheight;
 			scary[1] = drop[3];
 			upy[0] = drop[1];
-			upy[1] = drop[1]+square();
-			downy[0] = drop[3]-square();
+			upy[1] = drop[1] + square();
+			downy[0] = drop[3] - square();
 			downy[1] = drop[3];
-			bary[0] = drop[1]+f->gheight+scrollspace()*topratio();
-			bary[1] = drop[1]+f->gheight+scrollspace()*bottomratio();
+			bary[0] = drop[1] + f->gheight + scrollspace()*topratio();
+			bary[1] = drop[1] + f->gheight + scrollspace()*bottomratio();
 		}
 	}
 
@@ -462,34 +549,34 @@ void DropList::drawover()
 	//if(downdrop)
 	{
 		//dropdown frame box
-		DrawImage(g_texture[frametex].texname, 
+		DrawImage(g_texture[frametex].texname,
 			pos[0], drfy[0], pos[2], drfy[1],
-			0,0,1,1, g_gui.crop);
+			0, 0, 1, 1, g_gui.crop);
 
 		//scroll area box
-		DrawImage(g_texture[frametex].texname, 
-			pos[2]-square(), scary[0], pos[2], scary[1], 
-			0,0,1,1, g_gui.crop);
+		DrawImage(g_texture[frametex].texname,
+			pos[2] - square(), scary[0], pos[2], scary[1],
+			0, 0, 1, 1, g_gui.crop);
 
 		//up scroll button
-		DrawImage(g_texture[uptex].texname, 
-			pos[2]-square(), upy[0], pos[2], upy[1],
-			0,0,1,1, g_gui.crop);
+		DrawImage(g_texture[uptex].texname,
+			pos[2] - square(), upy[0], pos[2], upy[1],
+			0, 0, 1, 1, g_gui.crop);
 
 		//down scroll button
-		DrawImage(g_texture[uptex].texname, 
-			pos[2]-square(), downy[0], pos[2], downy[1], 
+		DrawImage(g_texture[uptex].texname,
+			pos[2] - square(), downy[0], pos[2], downy[1],
 			0, 1, 1, 0, g_gui.crop);
 
 #if 1
 		//scroll bar
-		DrawImage(g_texture[filledtex].texname, 
-			pos[2]-square(), bary[0], pos[2], bary[1], 
-			0,0,1,1, g_gui.crop);
+		DrawImage(g_texture[filledtex].texname,
+			pos[2] - square(), bary[0], pos[2], bary[1],
+			0, 0, 1, 1, g_gui.crop);
 
-		for(int i=(int)scroll[1]; i<(int)scroll[1]+rowsshown(); i++)
+		for (int i = (int)scroll[1]; i < (int)scroll[1] + rowsshown(); i++)
 			//DrawShadowedText(font, pos[0]+3, pos[3]+f->gheight*(i-(int)scroll[1]), &options[i]);
-			DrawShadowedTextF(font, pos[0]+3, drfy[0]+f->gheight*(i-(int)scroll[1]), pos[0], drop[1], pos[2], drop[3], &options[i]);
+			DrawShadowedTextF(font, pos[0] + 3, drfy[0] + f->gheight*(i - (int)scroll[1]), pos[0], drop[1], pos[2], drop[3], &options[i]);
 #endif
 	}
 }
@@ -508,9 +595,9 @@ void DropList::inev(InEv* ie)
 	float upy[2];
 	float downy[2];
 
-	if(opened)
+	if (opened)
 	{
-		if(downdrop)
+		if (downdrop)
 		{
 			drop[0] = pos[0];
 			drop[1] = pos[1];
@@ -518,17 +605,17 @@ void DropList::inev(InEv* ie)
 			drop[3] = pos[3] + rowsshown() * f->gheight;
 			dropsign = 1;
 			dropedge = 3;
-			
-			drfy[0] = drop[1]+f->gheight;
+
+			drfy[0] = drop[1] + f->gheight;
 			drfy[1] = drop[3];
-			scary[0] = drop[1]+f->gheight;
+			scary[0] = drop[1] + f->gheight;
 			scary[1] = drop[3];
 			upy[0] = drop[1];
-			upy[1] = drop[1]+square();
-			downy[0] = drop[3]-square();
+			upy[1] = drop[1] + square();
+			downy[0] = drop[3] - square();
 			downy[1] = drop[3];
-			bary[0] = drop[1]+f->gheight+scrollspace()*topratio();
-			bary[1] = drop[1]+f->gheight+scrollspace()*bottomratio();
+			bary[0] = drop[1] + f->gheight + scrollspace()*topratio();
+			bary[1] = drop[1] + f->gheight + scrollspace()*bottomratio();
 		}
 		else
 		{
@@ -538,48 +625,48 @@ void DropList::inev(InEv* ie)
 			drop[3] = pos[3];
 			dropsign = -1;
 			dropedge = 1;
-			
+
 			drfy[0] = drop[1];
-			drfy[1] = drop[3]-f->gheight;
-			scary[0] = drop[1]+f->gheight;
+			drfy[1] = drop[3] - f->gheight;
+			scary[0] = drop[1] + f->gheight;
 			scary[1] = drop[3];
 			upy[0] = drop[1];
-			upy[1] = drop[1]+square();
-			downy[0] = drop[3]-square();
+			upy[1] = drop[1] + square();
+			downy[0] = drop[3] - square();
 			downy[1] = drop[3];
-			bary[0] = drop[1]+f->gheight+scrollspace()*topratio();
-			bary[1] = drop[1]+f->gheight+scrollspace()*bottomratio();
+			bary[0] = drop[1] + f->gheight + scrollspace()*topratio();
+			bary[1] = drop[1] + f->gheight + scrollspace()*bottomratio();
 		}
 	}
 
-	if(ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
+	if (ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
 	{
-		if(opened)
+		if (opened)
 		{
 			ie->intercepted = ectrue;
 			return;	// intercept mouse event
 		}
 	}
 	// corpd fix
-	else if(ie->type == INEV_MOUSEMOVE && (!ie->intercepted || mousescroll))
+	else if (ie->type == INEV_MOUSEMOVE && (!ie->intercepted || mousescroll))
 	{
-		if(g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[3])
+		if (g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[3])
 		{
-			g_mouseoveraction =  ectrue;
+			g_mouseoveraction = ectrue;
 			//windows/msvs2012 still allowed droplist drop down even when the following line wasn't there wtf
 			//but mac didn't
 			over = ectrue;
 		}
 
 #if 0
-		if(opened)
+		if (opened)
 		{
 			Font* f = &g_font[font];
 
 			//on dropped list?
-			if(g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[1] + f->gheight*rowsshown())
+			if (g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[1] + f->gheight*rowsshown())
 			{
-				g_mouseoveraction =  ectrue;
+				g_mouseoveraction = ectrue;
 				over = ectrue;
 				ie->intercepted = ectrue;
 			}
@@ -587,23 +674,23 @@ void DropList::inev(InEv* ie)
 #endif
 
 		//corpd fix corpc fix
-		if(opened)
+		if (opened)
 		{
-			for(int i=(int)scroll[1]; i<(int)scroll[1]+rowsshown(); i++)
+			for (int i = (int)scroll[1]; i < (int)scroll[1] + rowsshown(); i++)
 			{
 				// std::list item?
-				if(g_mouse.x >= pos[0] && 
-					g_mouse.x <= pos[2]-square() && 
-					g_mouse.y >= drfy[0]+f->gheight*(i-(int)scroll[1]) && 
-					g_mouse.y <= drfy[0]+f->gheight*(i-(int)scroll[1]+1))
+				if (g_mouse.x >= pos[0] &&
+					g_mouse.x <= pos[2] - square() &&
+					g_mouse.y >= drfy[0] + f->gheight*(i - (int)scroll[1]) &&
+					g_mouse.y <= drfy[0] + f->gheight*(i - (int)scroll[1] + 1))
 				{
 					ie->intercepted = ectrue;
 				}
 			}
 
 			// scroll bar?
-			if(g_mouse.x >= pos[2]-square() && 
-				g_mouse.y >= bary[0] && 
+			if (g_mouse.x >= pos[2] - square() &&
+				g_mouse.y >= bary[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= bary[1])
 			{
@@ -611,7 +698,7 @@ void DropList::inev(InEv* ie)
 			}
 
 			// up button?
-			if(g_mouse.x >= pos[2]-square() &&
+			if (g_mouse.x >= pos[2] - square() &&
 				g_mouse.y >= upy[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= upy[1])
@@ -620,7 +707,7 @@ void DropList::inev(InEv* ie)
 			}
 
 			// down button?
-			if(g_mouse.x >= pos[2]-square() &&
+			if (g_mouse.x >= pos[2] - square() &&
 				g_mouse.y >= downy[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= downy[1])
@@ -628,21 +715,21 @@ void DropList::inev(InEv* ie)
 				ie->intercepted = ectrue;
 			}
 		}
-		if(g_mouse.x >= pos[0] && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[3])
+		if (g_mouse.x >= pos[0] && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[3])
 		{
 			ie->intercepted = ectrue;
 		}
 
-		if(ldown)
+		if (ldown)
 			ie->intercepted = ectrue;
 
-		if(!mousescroll)
+		if (!mousescroll)
 			return;
 
-		g_mouseoveraction =  ectrue;
+		g_mouseoveraction = ectrue;
 
 		int dy = g_mouse.y - mousedown[1];
-		float topy = scary[dropedge/2]+square()+scrollspace()*topratio();
+		float topy = scary[dropedge / 2] + square() + scrollspace()*topratio();
 		float newtopy = topy + dy;
 
 		//topratio = (float)scroll / (float)(options.size());
@@ -651,15 +738,15 @@ void DropList::inev(InEv* ie)
 		//topy - pos[3] - square = scrollspace*(float)scroll / (float)(options.size())
 		//(topy - pos[3] - square)*(float)(options.size())/scrollspace = scroll
 
-		scroll[1] = (newtopy - scary[dropedge/2] - square())*(float)(options.size())/scrollspace();
+		scroll[1] = (newtopy - scary[dropedge / 2] - square())*(float)(options.size()) / scrollspace();
 
-		if(scroll[1] < 0)
+		if (scroll[1] < 0)
 		{
 			scroll[1] = 0;
 			ie->intercepted = ectrue;
 			return;
 		}
-		else if(scroll[1] + rowsshown() > options.size())
+		else if (scroll[1] + rowsshown() > options.size())
 		{
 			scroll[1] = options.size() - (float)rowsshown();
 			ie->intercepted = ectrue;
@@ -669,27 +756,27 @@ void DropList::inev(InEv* ie)
 		mousedown[1] = g_mouse.y;
 		ie->intercepted = ectrue;
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
+	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		//InfoMess("dlld", "dlld");
 
 #if 0
-		if(over)
+		if (over)
 		{
 			ldown = ectrue;
 			ie->intercepted = ectrue;
 		}
 #endif
 
-		if(opened)
+		if (opened)
 		{
-			for(int i=(int)scroll[1]; i<(int)scroll[1]+rowsshown(); i++)
+			for (int i = (int)scroll[1]; i < (int)scroll[1] + rowsshown(); i++)
 			{
 				// std::list item?
-				if(g_mouse.x >= pos[0] && 
-					g_mouse.x <= pos[2]-square() && 
-					g_mouse.y >= drfy[0]+f->gheight*(i-(int)scroll[1]) && 
-					g_mouse.y <= drfy[0]+f->gheight*(i-(int)scroll[1]+1))
+				if (g_mouse.x >= pos[0] &&
+					g_mouse.x <= pos[2] - square() &&
+					g_mouse.y >= drfy[0] + f->gheight*(i - (int)scroll[1]) &&
+					g_mouse.y <= drfy[0] + f->gheight*(i - (int)scroll[1] + 1))
 				{
 					ldown = ectrue;
 					ie->intercepted = ectrue;
@@ -698,8 +785,8 @@ void DropList::inev(InEv* ie)
 			}
 
 			// scroll bar?
-			if(g_mouse.x >= pos[2]-square() && 
-				g_mouse.y >= bary[0] && 
+			if (g_mouse.x >= pos[2] - square() &&
+				g_mouse.y >= bary[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= bary[1])
 			{
@@ -711,9 +798,9 @@ void DropList::inev(InEv* ie)
 			}
 
 			// up button?
-			if(g_mouse.x >= pos[2]-square() && 
-				g_mouse.y >= upy[0] && 
-				g_mouse.x <= pos[2] && 
+			if (g_mouse.x >= pos[2] - square() &&
+				g_mouse.y >= upy[0] &&
+				g_mouse.x <= pos[2] &&
 				g_mouse.y <= upy[1])
 			{
 				ldown = ectrue;
@@ -722,9 +809,9 @@ void DropList::inev(InEv* ie)
 			}
 
 			// down button?
-			if(g_mouse.x >= pos[2]-square() && 
-				g_mouse.y >= downy[0] && 
-				g_mouse.x <= pos[2] && 
+			if (g_mouse.x >= pos[2] - square() &&
+				g_mouse.y >= downy[0] &&
+				g_mouse.x <= pos[2] &&
 				g_mouse.y <= downy[1])
 			{
 				ldown = ectrue;
@@ -735,59 +822,59 @@ void DropList::inev(InEv* ie)
 			ie->intercepted = ectrue;
 		}
 
-		if(!ie->intercepted)
+		if (!ie->intercepted)
 		{
-			if(g_mouse.x >= pos[0] && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[3])
+			if (g_mouse.x >= pos[0] && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[3])
 			{
 				ldown = ectrue;
 				ie->intercepted = ectrue;
 				return;
 			}
 		}
-		
+
 		//corpd fix xp
-		if(!ldown)
+		if (!ldown)
 		{
 			opened = ecfalse;
 
 			return;
 		}
 	}
-	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
+	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
 		//InfoMess("dllu", "dllu");
 
 #if 0
-		if(over)
+		if (over)
 		{
 			ie->intercepted = ectrue;
 		}
 #endif
 
-		if(opened)
+		if (opened)
 		{
 #if 0	//wtf msvs still worked but mac didn't (mac version is correct)
-			if(!ldown)
+			if (!ldown)
 			{
 				opened = ecfalse;
 				return;
 			}
 #endif
-	
+
 			//corpd fix
 			//did some other widget intercept?
-			if(ie->intercepted && 
+			if (ie->intercepted &&
 				ie->interceptor != this)
 				opened = ecfalse;
-			
-			if(ldown)
+
+			if (ldown)
 			{
 				ie->intercepted = ectrue;
 				ie->interceptor = this;
 				ldown = ecfalse;
 			}
 
-			if(mousescroll)
+			if (mousescroll)
 			{
 				mousescroll = ecfalse;
 				ie->intercepted = ectrue;
@@ -795,17 +882,17 @@ void DropList::inev(InEv* ie)
 				return;	// intercept mouse event
 			}
 
-			for(int i=(int)scroll[1]; i<(int)scroll[1]+rowsshown(); i++)
+			for (int i = (int)scroll[1]; i < (int)scroll[1] + rowsshown(); i++)
 			{
 				// std::list item?
-				if(g_mouse.x >= pos[0] &&
-					g_mouse.x <= pos[2]-square() &&
-					g_mouse.y >= drfy[0]+f->gheight*(i-(int)scroll[1]) && 
-					g_mouse.y <= drfy[0]+f->gheight*(i-(int)scroll[1]+1))
+				if (g_mouse.x >= pos[0] &&
+					g_mouse.x <= pos[2] - square() &&
+					g_mouse.y >= drfy[0] + f->gheight*(i - (int)scroll[1]) &&
+					g_mouse.y <= drfy[0] + f->gheight*(i - (int)scroll[1] + 1))
 				{
 					selected = i;
 					opened = ecfalse;
-					if(changefunc != NULL)
+					if (changefunc != NULL)
 						changefunc();
 
 					ie->intercepted = ectrue;
@@ -815,13 +902,13 @@ void DropList::inev(InEv* ie)
 			}
 
 			// up button?
-			if(g_mouse.x >= pos[2]-square() &&
+			if (g_mouse.x >= pos[2] - square() &&
 				g_mouse.y >= upy[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= upy[1])
 			{
 				scroll[1]--;
-				if(scroll[1] < 0)
+				if (scroll[1] < 0)
 					scroll[1] = 0;
 
 				ie->intercepted = ectrue;
@@ -830,37 +917,37 @@ void DropList::inev(InEv* ie)
 			}
 
 			// down button?
-			if(g_mouse.x >= pos[2]-square() &&
+			if (g_mouse.x >= pos[2] - square() &&
 				g_mouse.y >= downy[0] &&
 				g_mouse.x <= pos[2] &&
 				g_mouse.y <= downy[1])
 			{
 				scroll[1]++;
-				if(scroll[1]+rowsshown() > options.size())
+				if (scroll[1] + rowsshown() > options.size())
 					scroll[1] = options.size() - rowsshown();
 
 				ie->intercepted = ectrue;
 				ie->interceptor = this;
 				return;
 			}
-			
+
 			//corpd fix
 			//was it outside of this widget?
-			if(!ie->intercepted)
+			if (!ie->intercepted)
 				opened = ecfalse;
 
 			ie->intercepted = ectrue;	// intercept mouse event
 			ie->interceptor = this;
 		}
 		//!opened
-		else if(!ie->intercepted)
+		else if (!ie->intercepted)
 		{
-			if(!ldown)
+			if (!ldown)
 				return;
 
 			ldown = ecfalse;
 
-			if(g_mouse.x >= pos[2]-square() && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[1]+square())
+			if (g_mouse.x >= pos[2] - square() && g_mouse.y >= pos[1] && g_mouse.x <= pos[2] && g_mouse.y <= pos[1] + square())
 			{
 				opened = ectrue;
 				ie->intercepted = ectrue;
@@ -868,7 +955,7 @@ void DropList::inev(InEv* ie)
 
 				float* parf = g_gui.crop; //parent->pos;
 				//see whether up or down has more room
-				if(fabs(parf[1] - pos[1]) > fabs(parf[3] - pos[3]))
+				if (fabs(parf[1] - pos[1]) > fabs(parf[3] - pos[3]))
 					downdrop = ecfalse;
 				else
 					downdrop = ectrue;
@@ -876,7 +963,7 @@ void DropList::inev(InEv* ie)
 				//Need to bring tree to front so that drop-down list gets 
 				//the mouse up event first instead of any item in the background.
 				Widget* parw = parent;
-				while(parw)
+				while (parw)
 				{
 					parw->tofront();
 					parw = parw->parent;

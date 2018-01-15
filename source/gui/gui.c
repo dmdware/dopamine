@@ -49,7 +49,7 @@ void wgginit(wgg* gui)
 	w->hidden = dfalse;
 }
 
-void wggdraw2(wgg *gui)
+void wggdrawov2(wgg *gui)
 {
 	unsigned int spi;
 	spit* sp;

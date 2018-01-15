@@ -35,7 +35,7 @@ struct wgg
 typedef struct wgg wgg;
 
 void wgginit(wgg* gui);
-void wggdraw2(wgg* gui);
+void wggdrawov2(wgg* gui);
 void wggin(wg* bw, inev* ie);
 
 extern wgg g_gui;

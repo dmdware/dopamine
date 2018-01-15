@@ -43,9 +43,11 @@ void enumdisp()
 	short i;
 	SDL_DisplayMode mode;
 	dbool found;
-	lnode* rit;	/* v2i */
+	lnode* it;	/* v2i */
 	v2i* rp;
 	v2i r;
+	char *cp;
+	char c;
 
 	lfree(&g_ress);
 
@@ -55,9 +57,9 @@ void enumdisp()
 
 		found = dfalse;
 
-		for(rit=g_ress.head; rit; rit=rit->next)
+		for(it=g_ress.head; it; it=it->next)
 		{
-			rp = (v2i*)rit->data;
+			rp = (v2i*)it->data;
 
 			if(rp->x == mode.w &&
 				rp->y == mode.h)
@@ -73,6 +75,30 @@ void enumdisp()
 		r.x = mode.w;
 		r.y = mode.h;
 		lpub2(&g_ress, sizeof(r), &r);
+	}
+
+	for (i = 0; i<SDL_GetNumDisplayModes(0); ++i)
+	{
+		SDL_GetDisplayMode(0, i, &mode);
+
+		found = dfalse;
+
+		for (it = g_bpps.head; it; it = it->next)
+		{
+			cp = (char*)it->data;
+
+			if (*cp == SDL_BITSPERPIXEL(mode.format))
+			{
+				found = dtrue;
+				break;
+			}
+		}
+
+		if (found)
+			continue;
+
+		c = SDL_BITSPERPIXEL(mode.format);
+		lpub2(&g_bpps, sizeof(c), &c);
 	}
 }
 

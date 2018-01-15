@@ -140,13 +140,6 @@ void wgdraw(wg *w)
 
 		wgdraw(iw);
 	}
-	
-	switch(w->type)
-	{
-	case WG_GUI:
-		wggdraw2((wgg*)w);
-		break;
-	}
 }
 
 void wgdrawover(wg *w)
@@ -165,6 +158,13 @@ void wgdrawover(wg *w)
 			continue;
 
 		wgdrawover(iw);
+	}
+
+	switch (w->type)
+	{
+	case WG_GUI:
+		wggdrawov2((wgg*)w);
+		break;
 	}
 }
 
