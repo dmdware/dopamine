@@ -7,10 +7,8 @@
 
 
 void dlwinit(dlw *d, wg* parent, const char* name,
-	const char* label, char f, int parm,
-	void(*reframef)(wg* w), void(*click)(),
-	void(*click2)(int p), void(*click3)(wg* w),
-	dlw *prev, dlw *next)
+	const char* label, char f, void *e,
+	void(*reframef)(wg* w), void(*click)())
 {
 	wg *bw;
 	int length;
@@ -28,21 +26,22 @@ void dlwinit(dlw *d, wg* parent, const char* name,
 	d->active = -1;
 	d->over = dfalse;
 	d->ldown = dfalse;
-	d->param = parm;
+	bw->extra = e;
 	d->opened = dfalse;
 	d->clickf = click;
-	d->clickf2 = click2;
-	d->clickf3 = click3;
 	d->scroll = 0.0f;
+	d->dover = dfalse;
+	d->uover = dfalse;
+	d->oover = -1;
+	bw->reframef = reframef;
 	wgreframe(bw);
-	dlwcen(d);
 }
 
-void dlwcen(dlw *d)
+void dlwsz(wg *bw)
 {
-	wg *bw;
-	bw = (wg*)d;
-	memcpy(d->tpos, bw->pos, sizeof(float)*4);
+	dlw *d;
+	d = (dlw*)bw;
+	memcpy(d->tpos, bw->pos, sizeof(float) * 4);
 	memcpy(d->dpos, bw->pos, sizeof(float) * 4);
 	d->tpos[2] = bw->pos[0] + (bw->pos[2] - bw->pos[0]) / 2.0f;
 	d->dpos[0] = d->tpos[2];
@@ -95,8 +94,7 @@ void dlwin(wg *bw, inev* ie)
 	pw = bw->parent;
 	pd = (dlw*)pw;
 
-	if (pw->type == WG_DROPMENU && !pd->opened)
-		return;
+	return;
 
 	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
@@ -106,12 +104,6 @@ void dlwin(wg *bw, inev* ie)
 		{
 			if (d->clickf != NULL)
 				d->clickf();
-
-			if (d->clickf2 != NULL)
-				d->clickf2(d->param);
-
-			if (d->clickf3 != NULL)
-				d->clickf3(bw);
 
 			dwgclose(d);
 
@@ -189,13 +181,14 @@ void dlwdraw(wg *bw)
 {
 	dlw *d;
 	glshader *s;
-	float mc[] = { MCR,MCG,MCB,MCA };
-	float lc[] = { LCR,LCG,LCB,LCA };
-	float dc[] = { DCR,DCG,DCB,DCA };
-	float mco[] = { MCR,MCG,MCB,MCA };
-	float lco[] = { LCR,LCG,LCB,LCA };
-	float dco[] = { DCR,DCG,DCB,DCA };
-	float textcolor[] = { TCR,TCG,TCB,TCA };
+	float *mc = MC;
+	float *lc = LC;
+	float *dc = DC;
+	float *mco = MCO;
+	float *lco = LCO;
+	float *dco = DCO;
+	float *tc = TC;
+	float *tco = TCO;
 	font *f;
 	char i;
 	dlw *pd;
@@ -208,9 +201,6 @@ void dlwdraw(wg *bw)
 	d = (dlw*)bw;
 	pw = bw->parent;
 	pd = (dlw*)pw;
-
-	if (pw->type == WG_DROPMENU && !pd->opened)
-		return;
 
 #define WGOPS	7
 
@@ -243,19 +233,19 @@ void dlwdraw(wg *bw)
 			mc[i] = 0.8f;
 			lc[i] = 0.9f;
 			dc[i] = 0.6f;
-			textcolor[i] = 1.0f;
+			tc[i] = 1.0f;
 		}
 	}
 
-	drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], bw->crop);
+	drawsq(mc[0], mc[1], mc[2], mc[3], d->dpos[0], d->dpos[1], d->dpos[2], d->dpos[3], bw->crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3] - 1, bw->crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], d->dpos[2], d->dpos[1], d->dpos[2], d->dpos[3] - 1, bw->crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], bw->crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], d->dpos[0], d->dpos[1], d->dpos[2] - 1, d->dpos[1], bw->crop);
 
-	drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], bw->crop);
+	drawl(dc[0], dc[1], dc[2], dc[3], d->dpos[0] + 1, d->dpos[3], d->dpos[2], d->dpos[3], bw->crop);
 
-	drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[2], bw->pos[1] + 1, bw->pos[2], bw->pos[3], bw->crop);
+	drawl(dc[0], dc[1], dc[2], dc[3], d->dpos[2], d->dpos[1] + 1, d->dpos[2], d->dpos[3], bw->crop);
 
 	if (d->opened)
 	{
@@ -277,7 +267,7 @@ void dlwdraw(wg *bw)
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	//TODO rewrite font.cpp/h to better deal with cropping
-	drawt(d->font, d->tpos, bw->pos, d->label, textcolor, 0, -1, dtrue, dfalse);
+	drawt(d->font, d->tpos, bw->crop, d->label, tc, 0, -1, dtrue, dfalse);
 
 	if (d->opened)
 	{

@@ -147,7 +147,7 @@ void bwgdraw(wg *bw)
 	float mc[] = {MCR,MCG,MCB,MCA};
 	float lc[] = {LCR,LCG,LCB,LCA};
 	float dc[] = {DCR,DCG,DCB,DCA};
-	float textcolor[] = { TCR,TCG,TCB,TCA };
+	float *tc = TC;
 	char i;
 	float w;
 	float h;
@@ -186,7 +186,7 @@ void bwgdraw(wg *bw)
 				mc[i] = 0.8f;
 				lc[i] = 0.9f;
 				dc[i] = 0.6f;
-				textcolor[i] = 1.0f;
+				tc[i] = 1.0f;
 			}
 		}
 
@@ -209,7 +209,7 @@ void bwgdraw(wg *bw)
 		textleft = bw->pos[0]+minsz+1;
 
 		//TODO rewrite font.cpp/h to better deal with cropping
-		drawt(b->font, b->tpos, bw->crop, b->label, textcolor, 0, -1, dtrue, dfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, tc, 0, -1, dtrue, dfalse);
 	}
 	else if(b->style == BUST_LINE)
 	{
@@ -244,7 +244,7 @@ void bwgdraw(wg *bw)
 
 		//TODO fix resolution change on settings reload on mobile
 
-		drawt(b->font, b->tpos, bw->crop, b->label, textcolor, 0, -1, dtrue, dfalse);
+		drawt(b->font, b->tpos, bw->crop, b->label, tc, 0, -1, dtrue, dfalse);
 	}
 }
 

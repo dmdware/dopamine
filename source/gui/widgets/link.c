@@ -45,17 +45,13 @@ void hplfree(wg* w)
 void hpldraw(wg* bw)
 {
 	hpl *hl;
-	float color[] = { 1, 1, 1, 1 };
+	float *color = LCO;
 	glshader *s;
 
 	hl = (hpl*)bw;
 
 	if(!hl->over)
-	{
-		color[0] = 0.8f;
-		color[1] = 0.8f;
-		color[2] = 0.8f;
-	}
+		color = LC;
 
 	drawt(hl->font, bw->pos, bw->crop, hl->text, color, 0, -1, dtrue, dfalse);
 	s = g_shader+g_cursh;

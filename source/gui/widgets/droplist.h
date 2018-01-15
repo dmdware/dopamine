@@ -28,22 +28,20 @@ struct dlw
 	dbool over;
 	dbool ldown;	//was the left mouse button pressed while over this (i.e. drag)?
 	dbool opened;
-	int param;
 	char *label;
 	void(*clickf)();
-	void(*clickf2)(int p);
-	void(*clickf3)(wg* w);
 	float scroll;
+	dbool uover;
+	dbool dover;
+	int oover;
 };
 
 typedef struct dlw dlw;
 
 void dlwinit(dlw *b, wg* parent, const char* name,
-	const char* label, char f, int parm,
-	void(*reframef)(wg* w), void(*click)(),
-	void(*click2)(int p), void(*click3)(wg* w),
-	dlw *prev, dlw *next);
-void dlwcen(dlw *d);
+	const char* label, char f, void *e,
+	void(*reframef)(wg* w), void(*click)());
+void dlwsz(wg *bw);
 void dlwadd(dlw *d, char *label);
 void dlwfree(wg* w);
 void dlwin(wg *bw, inev* ie);

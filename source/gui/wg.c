@@ -21,6 +21,7 @@
 #include "widgets/link.h"
 #include "widgets/vp.h"
 #include "widgets/dropmenu.h"
+#include "widgets/droplist.h"
 
 const float MC[4] = { MCR,MCG,MCB,MCA };
 const float LC[4] = { LCR,LCG,LCB,LCA };
@@ -31,10 +32,11 @@ const float LCO[4] = { LCRO,LCGO,LCBO,LCAO };
 const float DCO[4] = { DCRO,DCGO,DCBO,DCAO };
 const float TCO[4] = { TCRO,TCGO,TCBO,TCAO };
 
-void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw};
-void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov};
-void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin};
-void(*wgsubf[WGS]) (wg *bw) = { NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree };
+void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw,dlwdraw};
+void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov,dlwdrawov};
+void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin,dlwin};
+void(*wgsubf[WGS]) (wg *bw) = { NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree,dlwfree};
+void(*wgsubr[WGS]) (wg *bw) = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,dlwsz };
 
 void wginit(wg* w)
 {
@@ -116,6 +118,9 @@ void wgreframe(wg *w)	//resized or moved
 		iw = *(wg**)&i->data[0];
 		wgreframe(iw);
 	}
+
+	if (wgsubr[w->type])
+		wgsubr[w->type](w);
 }
 
 void wgdraw(wg *w)

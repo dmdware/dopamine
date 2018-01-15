@@ -237,10 +237,10 @@ void dwgdraw(wg *bw)
 {
 	dwg *d;
 	glshader *s;
-	float mc[] = { MCR,MCG,MCB,MCA };
-	float lc[] = { LCR,LCG,LCB,LCA };
-	float dc[] = { DCR,DCG,DCB,DCA };
-	float textcolor[] = { TCR,TCG,TCB,TCA };
+	float *mc = MC;
+	float *lc = LC;
+	float *dc = DC;
+	float *tc = TC;
 	font *f;
 	char i;
 	dwg *pd;
@@ -270,13 +270,10 @@ void dwgdraw(wg *bw)
 
 	if (d->over)
 	{
-		for (i = 0; i<3; ++i)
-		{
-			mc[i] = 0.8f;
-			lc[i] = 0.9f;
-			dc[i] = 0.6f;
-			textcolor[i] = 1.0f;
-		}
+		mc = MCO;
+		lc = LCO;
+		dc = DCO;
+		tc = TCO;
 	}
 
 	drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], crop);
@@ -295,7 +292,7 @@ void dwgdraw(wg *bw)
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	//TODO rewrite font.cpp/h to better deal with cropping
-	drawt(d->font, d->tpos, bw->pos, d->label, textcolor, 0, -1, dtrue, dfalse);
+	drawt(d->font, d->tpos, crop, d->label, tc, 0, -1, dtrue, dfalse);
 }
 
 void dwgdrawov(wg *bw)
