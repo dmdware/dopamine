@@ -33,6 +33,8 @@ struct dlw
 	float scroll;
 	dbool uover;
 	dbool dover;
+	dbool ldownd;
+	dbool ldownu;
 	int oover;
 };
 

@@ -278,7 +278,7 @@ void dwgdraw(wg *bw)
 
 	drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[2], bw->pos[1], bw->pos[2], bw->pos[3] - 1, crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[0], bw->pos[3] - 1, crop);
 
 	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], crop);
 

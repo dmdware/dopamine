@@ -112,6 +112,9 @@ void drawim(unsigned int texi, float left, float top, float right, float bottom,
 
 void drawtri(float r, float g, float b, float a, float *pos, float *crop)
 {
+	drawl(r, g, b, a, pos[2 * 0 + 0], pos[2 * 0 + 1], pos[2 * 1 + 0], pos[2 * 1 + 1], crop);
+	drawl(r, g, b, a, pos[2 * 1 + 0], pos[2 * 1 + 1], pos[2 * 2 + 0], pos[2 * 2 + 1], crop);
+	drawl(r, g, b, a, pos[2 * 2 + 0], pos[2 * 2 + 1], pos[2 * 0 + 0], pos[2 * 0 + 1], crop);
 }
 
 void drawsq(float r, float g, float b, float a, float left, float top, float right, float bottom, float *crop)

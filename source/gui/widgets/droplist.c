@@ -33,6 +33,8 @@ void dlwinit(dlw *d, wg* parent, const char* name,
 	d->dover = dfalse;
 	d->uover = dfalse;
 	d->oover = -1;
+	d->ldownu = dfalse;
+	d->ldownd = dfalse;
 	bw->reframef = reframef;
 	wgreframe(bw);
 }
@@ -64,24 +66,7 @@ void dlwfree(wg* w)
 	for (i = 0; i < d->noptions; ++i)
 		free(d->options[i]);
 	free(d->options);
-}
-
-void dlwclose2(wg *bw)
-{
-	lnode *n;
-	dlw *d;
-	d = (dlw*)bw;
-	wg *wi;
-
-	for (n = bw->sub.head; n; n = n->next)
-	{
-		wi = *(wg**)&n->data[0];
-		d = (dlw*)wi;
-		d->opened = dfalse;
-		d->ldown = dfalse;
-		d->over = dfalse;
-		dwgclose2(wi);
-	}
+	free(d->label);
 }
 
 void dlwin(wg *bw, inev* ie)
@@ -94,18 +79,16 @@ void dlwin(wg *bw, inev* ie)
 	pw = bw->parent;
 	pd = (dlw*)pw;
 
-	return;
-
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
+	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
-		if (d->over && (d->ldown || pw->type == WG_DROPMENU) && !ie->intercepted)
+		if (d->over && d->ldown)
 		{
 			if (d->clickf != NULL)
 				d->clickf();
 
-			dwgclose(d);
+			d->opened = dfalse;
 
 			ie->intercepted = dtrue;
 
@@ -135,23 +118,14 @@ void dlwin(wg *bw, inev* ie)
 		{
 			d->ldown = dtrue;
 			ie->intercepted = dtrue;
-			dwgopen(bw);
+			d->opened = dtrue;
 			return;	// intercept mouse event
-		}
-		else if (!d->opened)
-		{
-			dwgclose(bw);
-			return;
 		}
 	}
 	else if (ie->type == INEV_MOUSEMOVE)
 	{
 		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{
-			if (pw->type == WG_DROPMENU || d->ldown)
-			{
-				dwgopen(bw);
-			}
 		}
 		else
 		{
@@ -164,12 +138,6 @@ void dlwin(wg *bw, inev* ie)
 			{
 				d->over = dtrue;
 				ie->intercepted = dtrue;
-				if (pw->type == WG_DROPMENU && pd->ldown)
-				{
-					d->opened = dtrue;
-					d->ldown = dtrue;
-					dwgopen(bw);
-				}
 				return;
 			}
 		}
@@ -187,8 +155,16 @@ void dlwdraw(wg *bw)
 	float *mco = MCO;
 	float *lco = LCO;
 	float *dco = DCO;
-	float *tc = TC;
-	float *tco = TCO;
+	float *tc[2] = { TC,TCO };
+	float *ulc = lc;
+	float *umc = mc;
+	float *udc = dc;
+	float *dlc = lc;
+	float *dmc = mc;
+	float *ddc = dc;
+	float *cmc = mc;
+	float *cdc = dc;
+	float *clc = lc;
 	font *f;
 	char i;
 	dlw *pd;
@@ -197,6 +173,8 @@ void dlwdraw(wg *bw)
 	float da[3 * 2];
 	float h;
 	int nops;
+	float us[4];
+	float ds[4];
 
 	d = (dlw*)bw;
 	pw = bw->parent;
@@ -207,15 +185,20 @@ void dlwdraw(wg *bw)
 	f = g_font + d->font;
 	h = d->dpos[3] - d->dpos[1];
 
-	ua[0 * 2 + 0] = d->dpos[2] - h + h*0.1f;
-	ua[0 * 2 + 1] = d->dpos[1] + h*0.1f;
-	ua[1 * 2 + 0] = d->dpos[2] - h*0.1f;
-	ua[1 * 2 + 1] = d->dpos[1] + h*0.1f;
+	ua[0 * 2 + 0] = d->dpos[2] - h + h*0.3f;
+	ua[0 * 2 + 1] = d->dpos[3] - h*0.3f;
+	ua[1 * 2 + 0] = d->dpos[2] - h*0.3f;
+	ua[1 * 2 + 1] = d->dpos[3] - h*0.3f;
 	ua[2 * 2 + 0] = d->dpos[2] - h/2.0f;
-	ua[2 * 2 + 1] = d->dpos[3] - h*0.1f;
+	ua[2 * 2 + 1] = d->dpos[1] + h*0.3f;
 	memcpy(da, ua, sizeof(float) * 3 * 2);
 	for (i = 0; i < 3; ++i)
-		da[2 * i + 1] = (da[2*i + 1] - d->dpos[1])*-1.0f + d->dpos[1];
+		da[2 * i + 1] = h - (da[2*i + 1] - d->dpos[1]) + d->dpos[1];
+
+	us[0] = d->dpos[2] - h + 1;
+	us[1] = d->dpos[1] + 2;
+	us[2] = d->dpos[2] - 2;
+	us[3] = d->dpos[3] - 2;
 
 	nops = mini(WGOPS, d->noptions);
 
@@ -228,24 +211,20 @@ void dlwdraw(wg *bw)
 
 	if (d->over)
 	{
-		for (i = 0; i<3; ++i)
-		{
-			mc[i] = 0.8f;
-			lc[i] = 0.9f;
-			dc[i] = 0.6f;
-			tc[i] = 1.0f;
-		}
+		clc = lco;
+		cmc = mco;
+		cdc = dco;
 	}
 
-	drawsq(mc[0], mc[1], mc[2], mc[3], d->dpos[0], d->dpos[1], d->dpos[2], d->dpos[3], bw->crop);
+	drawsq(cmc[0], cmc[1], cmc[2], cmc[3], us[0], us[1], us[2], us[3], bw->crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], d->dpos[2], d->dpos[1], d->dpos[2], d->dpos[3] - 1, bw->crop);
+	drawl(cdc[0], cdc[1], cdc[2], cdc[3], d->dpos[0], d->dpos[1], d->dpos[0], d->dpos[3] - 1, bw->crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], d->dpos[0], d->dpos[1], d->dpos[2] - 1, d->dpos[1], bw->crop);
+	drawl(cdc[0], cdc[1], cdc[2], cdc[3], d->dpos[0], d->dpos[1], d->dpos[2] - 1, d->dpos[1], bw->crop);
 
-	drawl(dc[0], dc[1], dc[2], dc[3], d->dpos[0] + 1, d->dpos[3], d->dpos[2], d->dpos[3], bw->crop);
+	drawl(clc[0], clc[1], clc[2], clc[3], d->dpos[0] + 1, d->dpos[3], d->dpos[2], d->dpos[3], bw->crop);
 
-	drawl(dc[0], dc[1], dc[2], dc[3], d->dpos[2], d->dpos[1] + 1, d->dpos[2], d->dpos[3], bw->crop);
+	drawl(clc[0], clc[1], clc[2], clc[3], d->dpos[2], d->dpos[1] + 1, d->dpos[2], d->dpos[3], bw->crop);
 
 	if (d->opened)
 	{
@@ -267,7 +246,13 @@ void dlwdraw(wg *bw)
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	//TODO rewrite font.cpp/h to better deal with cropping
-	drawt(d->font, d->tpos, bw->crop, d->label, tc, 0, -1, dtrue, dfalse);
+	drawt(d->font, d->tpos, bw->crop, d->label, tc[d->over], 0, -1, dtrue, dfalse);
+
+	if (d->active >= 0)
+	{
+		drawt(d->font, d->dpos, bw->crop, d->options[d->active], tc[d->over], 0, -1, dtrue, dfalse);
+
+	}
 
 	if (d->opened)
 	{
