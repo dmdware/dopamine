@@ -35,6 +35,7 @@ struct dlw
 	dbool dover;
 	dbool ldownd;
 	dbool ldownu;
+	int ldowna;
 	int oover;
 };
 

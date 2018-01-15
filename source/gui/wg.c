@@ -193,7 +193,7 @@ void wgin(wg *w, inev* ie)
 		wgsubin[w->type](w, ie);
 }
 
-void wgtofront(wg *w)
+void wgtop(wg *w)
 {
 	lnode *i;
 	wg *iw;

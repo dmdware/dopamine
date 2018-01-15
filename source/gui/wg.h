@@ -147,7 +147,7 @@ void wghide(wg *w);
 void wgshow(wg *w);
 void wgchcall(wg *w, wg* ch, char type, void* data);	/* child callback */
 void wgfreech(wg *w);	/* free subwg children */
-void wgtofront(wg *w);	/* only used for windows. edit: needed for everything since droplist uses it on parent tree. */
+void wgtop(wg *w);	/* only used for windows. edit: needed for everything since droplist uses it on parent tree. */
 void wghideall(wg *w);
 void wggain(wg *w);
 void wglose(wg *w);

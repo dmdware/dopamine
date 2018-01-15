@@ -35,6 +35,7 @@ void dlwinit(dlw *d, wg* parent, const char* name,
 	d->oover = -1;
 	d->ldownu = dfalse;
 	d->ldownd = dfalse;
+	d->ldowna = -1;
 	bw->reframef = reframef;
 	wgreframe(bw);
 }
@@ -74,14 +75,55 @@ void dlwin(wg *bw, inev* ie)
 	dlw *d;
 	dlw *pd;
 	wg *pw;
+	float tp[4];
+	int nops;
+	float h;
+	int i;
 
 	d = (dlw*)bw;
 	pw = bw->parent;
 	pd = (dlw*)pw;
 
+	if (d->opened)
+	{
+#define WGOPS	7
+		h = d->dpos[3] - d->dpos[1];
+		nops = mini(WGOPS, d->noptions);
+
+		tp[0] = d->dpos[0];
+		tp[2] = d->dpos[2] - h;
+
+		if (g_mouse.x >= tp[0] && g_mouse.x <= tp[2])
+		{
+			i = (g_mouse.y - d->dpos[3]) / h;
+			if (i >= 0 && i < nops)
+			{
+				i += (int)d->scroll;
+				goto c;
+			}
+		}
+	}
+
+	i = -1;
+
+	c:
+
 	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
+
+		if (d->ldowna == i && i >= 0)
+		{
+			d->active = i;
+			ie->intercepted = dtrue;
+			d->ldown = dfalse;
+			d->over = dfalse;
+			d->opened = dfalse;
+			d->ldowna = -1;
+			return;
+		}
+
+		d->ldowna = -1;
 
 		if (d->over && d->ldown)
 		{
@@ -97,11 +139,19 @@ void dlwin(wg *bw, inev* ie)
 	{
 		//mousemove();
 
+		if (i >= 0 && i < d->noptions && !ie->intercepted)
+		{
+			d->ldowna = i;
+			ie->intercepted = dtrue;
+			return;
+		}
+
 		if (d->over && !ie->intercepted)
 		{
 			d->ldown = dtrue;
 			ie->intercepted = dtrue;
 			d->opened = dtrue;
+			wgtop(bw);
 			return;	// intercept mouse event
 		}
 		else if (!d->over)
@@ -124,6 +174,11 @@ void dlwin(wg *bw, inev* ie)
 			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 			{
 				d->over = dtrue;
+				ie->intercepted = dtrue;
+				return;
+			}
+			if (i >= 0 && i < d->noptions)
+			{
 				ie->intercepted = dtrue;
 				return;
 			}
@@ -280,8 +335,6 @@ void dlwdrawov(wg *bw)
 	pw = bw->parent;
 	pd = (dlw*)pw;
 
-#define WGOPS	7
-
 	f = g_font + d->font;
 	h = d->dpos[3] - d->dpos[1];
 
@@ -340,6 +393,10 @@ void dlwdrawov(wg *bw)
 	tp[1] = d->dpos[3] + d->scroll / d->noptions * ((nops - 1) * h);
 	tp[3] = d->dpos[3] + (d->scroll + (float)nops) / d->noptions * ((nops - 1) * h);
 	drawsq(mc[0], mc[1], mc[2], mc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], tp[0], tp[1], tp[0], tp[3] - 1, gb->crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], tp[0], tp[1], tp[2] - 1, tp[1], gb->crop);
+	drawl(dc[0], dc[1], dc[2], dc[3], tp[2], tp[1] + 1, tp[2], tp[3], gb->crop);
+	drawl(dc[0], dc[1], dc[2], dc[3], tp[0] + 1, tp[3], tp[2], tp[3], gb->crop);
 
 	CHECKGL();
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
@@ -354,7 +411,7 @@ void dlwdrawov(wg *bw)
 	{
 		tp[1] = d->dpos[3] + i * h;
 		tp[3] = d->dpos[3] + (i + 1) * h;
-		drawt(d->font, tp, gb->crop, d->options[i], tc[d->over], 0, -1, dtrue, dfalse);
+		drawt(d->font, tp, gb->crop, d->options[i], tc[0], 0, -1, dtrue, dfalse);
 	}
 }
 
