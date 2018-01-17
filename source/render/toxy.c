@@ -262,3 +262,27 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 
 	return toxy2(vi, wx, wy, pv, pl, pld, d);
 }
+
+v3f toclip(v3f vi)
+{
+	v3f up, view, pos, side;
+	float d[12];
+
+	view.x = 0;
+	view.y = 0;
+	view.z = 1;
+
+	side.x = 1;
+	side.y = 0;
+	side.z = 0;
+
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+
+	pos.x = 0;
+	pos.y = 0;
+	pos.z = 0;
+
+	return toxy(vi, 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
+}

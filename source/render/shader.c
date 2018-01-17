@@ -519,6 +519,15 @@ const char *SHTEXT[SHADERS][4]
 "	}\r\n"
 "	gl_FragColor = outcolor; gl_FragDepth = f; //gl_FragColor = vec4(1,1,1,1);\r\n"
 "}"
+},
+
+/* SH_GRID */
+{
+	"SH_GRID v",
+	"SH_GRID f",
+#include "../shaders/grid.vert"
+	,
+#include "../shaders/grid.frag"
 }
 };
 
@@ -704,6 +713,9 @@ void inglsl()
 		dfalse, dfalse);
 	loadsh(SH_S, SHTEXT[SH_S][0], SHTEXT[SH_S][1],
 		SHTEXT[SH_S][2], SHTEXT[SH_S][3],
+		dfalse, dfalse);
+	loadsh(SH_GRID, SHTEXT[SH_GRID][0], SHTEXT[SH_GRID][1],
+		SHTEXT[SH_GRID][2], SHTEXT[SH_GRID][3],
 		dfalse, dfalse);
 
 	return;

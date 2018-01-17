@@ -54,7 +54,8 @@ typedef struct glshader glshader;
 #define SH_E					3
 #define SH_M					4
 #define SH_S					5
-#define SHADERS					6
+#define SH_GRID					6
+#define SHADERS					7
 
 extern glshader g_shader[SHADERS];
 extern signed char g_cursh;

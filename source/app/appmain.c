@@ -134,10 +134,6 @@ void drawscene()
 	float d[15];
 	static float v[3][3] =
 	{ {-0.1f, 0.1f, 0.2f},{0.1f, 0.1f, 0.2f},{0.0f,-0.1f, 0.2f} };
-	v3f view;
-	v3f pos;
-	v3f up;
-	v3f side;
 	v3f out[3];
 	glshader *s;
 	wg *gb;
@@ -155,25 +151,10 @@ void drawscene()
 	v[2][1] += (rand() % 5000 - 2500) / 250000.0f;
 	v[2][2] += (rand() % 5000 - 2500) / 250000.0f;
 #endif
-	view.x = 0;
-	view.y = 0;
-	view.z = 1;
 
-	side.x = 1;
-	side.y = 0;
-	side.z = 0;
-
-	up.x = 0;
-	up.y = 1;
-	up.z = 0;
-
-	pos.x = 0;
-	pos.y = 0;
-	pos.z = 0;
-
-	out[0] = toxy(*(v3f*)v[0], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
-	out[1] = toxy(*(v3f*)v[1], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
-	out[2] = toxy(*(v3f*)v[2], 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
+	out[0] = toclip(*(v3f*)v[0]);
+	out[1] = toclip(*(v3f*)v[1]);
+	out[2] = toclip(*(v3f*)v[2]);
 
 	endsh();
 	usesh(SH_COLOR3D);
@@ -344,12 +325,12 @@ void savecfg()
 	FILE* fp = fopen(cfgfull, "w");
 	if(!fp)
 		return;
-	fprintf(fp, "fullscreen %d \r\n\r\n", g_fs ? 1 : 0);
-	fprintf(fp, "client_width %d \r\n\r\n", g_selres.x);
-	fprintf(fp, "client_height %d \r\n\r\n", g_selres.y);
-	fprintf(fp, "screen_bpp %d \r\n\r\n", g_bpp);
-	//fprintf(fp, "volume %d \r\n\r\n", g_volume);
-	//fprintf(fp, "language %s\r\n\r\n", g_lang);
+	fprintf(fp, "fullscreen %d \r\n", g_fs ? 1 : 0);
+	fprintf(fp, "client_width %d \r\n", g_selres.x);
+	fprintf(fp, "client_height %d \r\n", g_selres.y);
+	fprintf(fp, "screen_bpp %d \r\n", g_bpp);
+	//fprintf(fp, "volume %d \r\n", g_volume);
+	//fprintf(fp, "language %s\r\n", g_lang);
 	fclose(fp);
 }
 
