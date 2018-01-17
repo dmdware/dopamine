@@ -340,8 +340,8 @@ void loadname()
 void savecfg()
 {
 	char cfgfull[DMD_MAX_PATH+1];
-	FILE* fp = fopen(cfgfull, "w");
 	fullwrite(CFGFILE, cfgfull);
+	FILE* fp = fopen(cfgfull, "w");
 	if(!fp)
 		return;
 	fprintf(fp, "fullscreen %d \r\n\r\n", g_fs ? 1 : 0);
@@ -356,8 +356,8 @@ void savecfg()
 void writename()
 {
 	char cfgfull[DMD_MAX_PATH+1];
-	FILE* fp = fopen(cfgfull, "w");
 	fullwrite("name.txt", cfgfull);
+	FILE* fp = fopen(cfgfull, "w");
 	if(!fp)
 		return;
 	fprintf(fp, "%s", g_name);
