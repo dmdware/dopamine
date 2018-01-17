@@ -185,7 +185,7 @@ void dlwin(wg *bw, inev* ie)
 	}
 	else if (ie->type == IE_MOUSEMOVE)
 	{
-		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+		if (g_mouse.x >= bw->pos[0] && g_mouse.x < bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y < bw->pos[3])
 		{
 		}
 		else
@@ -193,7 +193,7 @@ void dlwin(wg *bw, inev* ie)
 			d->over = dfalse;
 		}
 
-		if (g_mouse.x >= bp[0] && g_mouse.x <= bp[2] && g_mouse.y >= bp[1] && g_mouse.y <= bp[3])
+		if (g_mouse.x >= bp[0] && g_mouse.x < bp[2] && g_mouse.y >= bp[1] && g_mouse.y < bp[3])
 		{
 		}
 		else
@@ -212,14 +212,14 @@ void dlwin(wg *bw, inev* ie)
 
 		if (!ie->intercepted)
 		{
-			if (g_mouse.x >= bp[0] && g_mouse.x <= bp[2] && g_mouse.y >= bp[1] && g_mouse.y <= bp[3])
+			if (g_mouse.x >= bp[0] && g_mouse.x < bp[2] && g_mouse.y >= bp[1] && g_mouse.y < bp[3])
 			{
 				d->bover = dtrue;
 				ie->intercepted = dtrue;
 				return;
 			}
 
-			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+			if (g_mouse.x >= bw->pos[0] && g_mouse.x < bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y < bw->pos[3])
 			{
 				d->over = dtrue;
 				ie->intercepted = dtrue;

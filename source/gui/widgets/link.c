@@ -101,8 +101,8 @@ void hplin(wg* bw, inev* ie)
 	{
 		x = endx(hl->text, richlen(hl->text), hl->font, bw->pos, dfalse);
 		if(g_mouse.x >= bw->pos[0] && g_mouse.y >= bw->pos[1] &&
-		                g_mouse.x <= x &&	//
-		                g_mouse.y <= bw->pos[1]+f->gheight)
+		                g_mouse.x < x &&	//
+		                g_mouse.y < bw->pos[1]+f->gheight)
 		{
 		}
 		else
@@ -113,8 +113,8 @@ void hplin(wg* bw, inev* ie)
 		if(!ie->intercepted)
 		{
 			if(g_mouse.x >= bw->pos[0] && g_mouse.y >= bw->pos[1] &&
-			g_mouse.x <= x &&	//
-			                g_mouse.y <= bw->pos[1]+f->gheight)
+			g_mouse.x < x &&	//
+			                g_mouse.y < bw->pos[1]+f->gheight)
 			{
 				hl->over = dtrue;
 

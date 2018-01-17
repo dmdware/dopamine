@@ -202,7 +202,7 @@ void dwgin(wg *bw, inev* ie)
 	}
 	else if (ie->type == IE_MOUSEMOVE)
 	{
-		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+		if (g_mouse.x >= bw->pos[0] && g_mouse.x < bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y < bw->pos[3])
 		{
 			if (pw->type == WG_DROPMENU || d->ldown)
 			{
@@ -216,7 +216,7 @@ void dwgin(wg *bw, inev* ie)
 
 		if (!ie->intercepted)
 		{
-			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
+			if (g_mouse.x >= bw->pos[0] && g_mouse.x < bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y < bw->pos[3])
 			{
 				d->over = dtrue;
 				ie->intercepted = dtrue;
