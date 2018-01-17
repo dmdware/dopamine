@@ -99,9 +99,9 @@ void dlwin(wg *bw, inev* ie)
 #define SQSP	2
 
 		bp[0] = d->dpos[2] - h + SQSP;
-		bp[1] = d->dpos[3] + (d->scroll / (float)d->noptions) * ((nops-1) * h / d->dpos[3]);
+		bp[1] = d->dpos[3] + (d->scroll / (float)d->noptions) * ((nops-1) * h);
 		bp[2] = d->dpos[2] - SQSP;
-		bp[3] = d->dpos[3] + ((d->scroll + nops) / (float)d->noptions) * ((nops - 1) * h / d->dpos[3]);
+		bp[3] = d->dpos[3] + ((d->scroll + nops) / (float)d->noptions) * ((nops - 1) * h);
 
 		if (g_mouse.x >= tp[0] && g_mouse.x <= tp[2])
 		{
@@ -121,6 +121,13 @@ void dlwin(wg *bw, inev* ie)
 	if (ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
+
+		if (d->ldownb)
+		{
+			d->ldownb = dfalse;
+			ie->intercepted = dtrue;
+			return;
+		}
 
 		if (d->ldowna == i && i >= 0)
 		{
@@ -148,6 +155,13 @@ void dlwin(wg *bw, inev* ie)
 	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		//mousemove();
+
+		if (d->bover)
+		{
+			d->ldownb = dtrue;
+			ie->intercepted = dtrue;
+			return;
+		}
 
 		if (i >= 0 && i < d->noptions && !ie->intercepted)
 		{
@@ -179,8 +193,33 @@ void dlwin(wg *bw, inev* ie)
 			d->over = dfalse;
 		}
 
+		if (g_mouse.x >= bp[0] && g_mouse.x <= bp[2] && g_mouse.y >= bp[1] && g_mouse.y <= bp[3])
+		{
+		}
+		else
+		{
+			d->bover = dfalse;
+		}
+
+		if (d->ldownb)
+		{
+			//d->scroll += ((float)ie->dy / ((nops-1) * h) * (float)nops);
+			d->scroll += ie->dy * nops / (float)((nops-1) * h);
+			d->scroll = minf(d->noptions - nops, d->scroll);
+			d->scroll = maxf(0, d->scroll);
+			ie->intercepted = dtrue;
+			return;
+		}
+
 		if (!ie->intercepted)
 		{
+			if (g_mouse.x >= bp[0] && g_mouse.x <= bp[2] && g_mouse.y >= bp[1] && g_mouse.y <= bp[3])
+			{
+				d->bover = dtrue;
+				ie->intercepted = dtrue;
+				return;
+			}
+
 			if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 			{
 				d->over = dtrue;
@@ -321,6 +360,9 @@ void dlwdrawov(wg *bw)
 	float *cmc = mc;
 	float *cdc = dc;
 	float *clc = lc;
+	float *bmc = MC;
+	float *bdc = DC;
+	float *blc = LC;
 	font *f;
 	char i;
 	dlw *pd;
@@ -342,6 +384,13 @@ void dlwdrawov(wg *bw)
 	gb = (wg*)&g_gui;
 	pw = bw->parent;
 	pd = (dlw*)pw;
+
+	if (d->bover)
+	{
+		blc = LCO;
+		bdc = DCO;
+		dmc = MCO;
+	}
 
 	f = g_font + d->font;
 	h = d->dpos[3] - d->dpos[1];
@@ -400,11 +449,11 @@ void dlwdrawov(wg *bw)
 
 	tp[1] = d->dpos[3] + d->scroll / d->noptions * ((nops - 1) * h);
 	tp[3] = d->dpos[3] + (d->scroll + (float)nops) / d->noptions * ((nops - 1) * h);
-	drawsq(mc[0], mc[1], mc[2], mc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
-	drawl(lc[0], lc[1], lc[2], lc[3], tp[0], tp[1], tp[0], tp[3] - 1, gb->crop);
-	drawl(lc[0], lc[1], lc[2], lc[3], tp[0], tp[1], tp[2] - 1, tp[1], gb->crop);
-	drawl(dc[0], dc[1], dc[2], dc[3], tp[2], tp[1] + 1, tp[2], tp[3], gb->crop);
-	drawl(dc[0], dc[1], dc[2], dc[3], tp[0] + 1, tp[3], tp[2], tp[3], gb->crop);
+	drawsq(bmc[0], bmc[1], bmc[2], bmc[3], tp[0], tp[1], tp[2], tp[3], gb->crop);
+	drawl(blc[0], blc[1], blc[2], blc[3], tp[0], tp[1], tp[0], tp[3] - 1, gb->crop);
+	drawl(blc[0], blc[1], blc[2], blc[3], tp[0], tp[1], tp[2] - 1, tp[1], gb->crop);
+	drawl(bdc[0], bdc[1], bdc[2], bdc[3], tp[2], tp[1] + 1, tp[2], tp[3], gb->crop);
+	drawl(bdc[0], bdc[1], bdc[2], bdc[3], tp[0] + 1, tp[3], tp[2], tp[3], gb->crop);
 
 	CHECKGL();
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
@@ -419,7 +468,7 @@ void dlwdrawov(wg *bw)
 	{
 		tp[1] = d->dpos[3] + i * h;
 		tp[3] = d->dpos[3] + (i + 1) * h;
-		drawt(d->font, tp, gb->crop, d->options[i], tc[0], 0, -1, dtrue, dfalse);
+		drawt(d->font, tp, gb->crop, d->options[i+(int)d->scroll], tc[0], 0, -1, dtrue, dfalse);
 	}
 }
 
