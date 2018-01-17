@@ -67,7 +67,7 @@ void hplin(wg* bw, inev* ie)
 	hl = (hpl*)bw;
 	f = g_font+hl->font;
 
-	if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	if(ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 		
@@ -86,7 +86,7 @@ void hplin(wg* bw, inev* ie)
 		hl->over = dfalse;
 		hl->ldown = dfalse;
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
@@ -97,7 +97,7 @@ void hplin(wg* bw, inev* ie)
 			return;	// intercept mouse event
 		}
 	}
-	else if(ie->type == INEV_MOUSEMOVE)
+	else if(ie->type == IE_MOUSEMOVE)
 	{
 		x = endx(hl->text, richlen(hl->text), hl->font, bw->pos, dfalse);
 		if(g_mouse.x >= bw->pos[0] && g_mouse.y >= bw->pos[1] &&

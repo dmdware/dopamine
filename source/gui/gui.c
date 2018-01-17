@@ -106,20 +106,20 @@ void wggin(wg *bw, inev* ie)
 
 	if(!ie->intercepted)
 	{
-		if(ie->type == INEV_MOUSEMOVE && gui->mmovef) gui->mmovef(ie);
-		else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && gui->lbuttondownfunc) gui->lbuttondownfunc();
-		else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && gui->lbuttonupfunc) gui->lbuttonupfunc();
-		else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_MIDDLE && gui->mbuttondownfunc) gui->mbuttondownfunc();
-		else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_MIDDLE && gui->mbuttonupfunc) gui->mbuttonupfunc();
-		else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_RIGHT && gui->rbuttondownfunc) gui->rbuttondownfunc();
-		else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_RIGHT && gui->rbuttonupfunc) gui->rbuttonupfunc();
-		else if(ie->type == INEV_MOUSEWHEEL && gui->mousewheelfunc) gui->mousewheelfunc(ie->amount);
-		else if(ie->type == INEV_KEYDOWN && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
-		else if(ie->type == INEV_KEYUP && gui->keyupfunc[ie->scancode]) gui->keyupfunc[ie->scancode]();
-		else if(ie->type == INEV_COPY && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
-		else if(ie->type == INEV_PASTE && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
+		if(ie->type == IE_MOUSEMOVE && gui->mmovef) gui->mmovef(ie);
+		else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT && gui->lbuttondownfunc) gui->lbuttondownfunc();
+		else if(ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && gui->lbuttonupfunc) gui->lbuttonupfunc();
+		else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_MIDDLE && gui->mbuttondownfunc) gui->mbuttondownfunc();
+		else if(ie->type == IE_MOUSEUP && ie->key == MOUSE_MIDDLE && gui->mbuttonupfunc) gui->mbuttonupfunc();
+		else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_RIGHT && gui->rbuttondownfunc) gui->rbuttondownfunc();
+		else if(ie->type == IE_MOUSEUP && ie->key == MOUSE_RIGHT && gui->rbuttonupfunc) gui->rbuttonupfunc();
+		else if(ie->type == IE_MOUSEWHEEL && gui->mousewheelfunc) gui->mousewheelfunc(ie->amount);
+		else if(ie->type == IE_KEYDOWN && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
+		else if(ie->type == IE_KEYUP && gui->keyupfunc[ie->scancode]) gui->keyupfunc[ie->scancode]();
+		else if(ie->type == IE_COPY && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
+		else if(ie->type == IE_PASTE && gui->keydownfunc[ie->scancode]) gui->keydownfunc[ie->scancode]();
 
-		if(ie->type != INEV_MOUSEMOVE && gui->anykeydownfunc) gui->anykeydownfunc(-1);
+		if(ie->type != IE_MOUSEMOVE && gui->anykeydownfunc) gui->anykeydownfunc(-1);
 	}
 }
 

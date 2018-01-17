@@ -56,7 +56,7 @@ void vpin(wg *w, inev *ie)
 {
 	vp* v = (vp*)w;
 
-	if (ie->type == INEV_MOUSEMOVE)
+	if (ie->type == IE_MOUSEMOVE)
 	{
 		if (g_mouse.x >= w->pos[0] && g_mouse.x <= w->pos[2] && g_mouse.y >= w->pos[1] && g_mouse.y <= w->pos[3])
 		{
@@ -67,7 +67,7 @@ void vpin(wg *w, inev *ie)
 			v->over = dfalse;
 	}
 
-	if (ie->type == INEV_MOUSEMOVE && !ie->intercepted)
+	if (ie->type == IE_MOUSEMOVE && !ie->intercepted)
 	{
 		if (g_mouse.x >= w->pos[0] && g_mouse.x <= w->pos[2] && g_mouse.y >= w->pos[1] && g_mouse.y <= w->pos[3])
 			v->over = dtrue;
@@ -85,7 +85,7 @@ void vpin(wg *w, inev *ie)
 
 		return;
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		if (!v->over)
 			return;
@@ -99,7 +99,7 @@ void vpin(wg *w, inev *ie)
 			ie->intercepted = v->ldownf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		if (!v->over)
 			return;
@@ -113,7 +113,7 @@ void vpin(wg *w, inev *ie)
 			ie->intercepted = v->lupf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_RIGHT && !ie->intercepted)
+	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_RIGHT && !ie->intercepted)
 	{
 		if (!v->over)
 			return;
@@ -127,7 +127,7 @@ void vpin(wg *w, inev *ie)
 			ie->intercepted = v->rdownf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_RIGHT && !ie->intercepted)
+	else if (ie->type == IE_MOUSEUP && ie->key == MOUSE_RIGHT && !ie->intercepted)
 	{
 		if (!v->over)
 			return;
@@ -141,7 +141,7 @@ void vpin(wg *w, inev *ie)
 			ie->intercepted = v->rupf(w->extra, relx, rely, wd, ht);
 		}
 	}
-	else if (ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
+	else if (ie->type == IE_MOUSEWHEEL && !ie->intercepted)
 	{
 		if (!v->over)
 			return;

@@ -146,7 +146,7 @@ void dwgin(wg *bw, inev* ie)
 	if (pw->type == WG_DROPMENU && !pd->opened)
 		return;
 
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
+	if (ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
 		//mousemove();
 
@@ -183,7 +183,7 @@ void dwgin(wg *bw, inev* ie)
 		d->opened = dfalse;
 		d->over = dfalse;
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
@@ -200,7 +200,7 @@ void dwgin(wg *bw, inev* ie)
 			return;
 		}
 	}
-	else if (ie->type == INEV_MOUSEMOVE)
+	else if (ie->type == IE_MOUSEMOVE)
 	{
 		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{

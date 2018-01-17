@@ -510,7 +510,7 @@ int evproc(void *userdata, SDL_Event *e)
 			g_quit = dtrue;
 			break;
 		case SDL_KEYDOWN:
-			ie.type = INEV_KEYDOWN;
+			ie.type = IE_KEYDOWN;
 			ie.key = e->key.keysym.sym;
 			ie.scancode = e->key.keysym.scancode;
 			CHECKGL();
@@ -518,17 +518,17 @@ int evproc(void *userdata, SDL_Event *e)
 			/* Handle copy */
 			if( e->key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL )
 			{
-				ie.type = INEV_COPY;
+				ie.type = IE_COPY;
 			}
 			/* Handle paste */
 			if( e->key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL )
 			{
-				ie.type = INEV_PASTE;
+				ie.type = IE_PASTE;
 			}
 			/* Select all */
 			if( e->key.keysym.sym == SDLK_a && SDL_GetModState() & KMOD_CTRL )
 			{
-				ie.type = INEV_SELALL;
+				ie.type = IE_SELALL;
 			}
 
 			CHECKGL();
@@ -541,7 +541,7 @@ int evproc(void *userdata, SDL_Event *e)
 			g_keyin = ie.intercepted;
 			break;
 		case SDL_KEYUP:
-			ie.type = INEV_KEYUP;
+			ie.type = IE_KEYUP;
 			ie.key = e->key.keysym.sym;
 			ie.scancode = e->key.keysym.scancode;
 
@@ -556,7 +556,7 @@ int evproc(void *userdata, SDL_Event *e)
 			break;
 		case SDL_TEXTINPUT:
 			/* UTF8 */
-			ie.type = INEV_TEXTIN;
+			ie.type = IE_TEXTIN;
 			strcpy(ie.text, e->text.text);
 
 			CHECKGL();
@@ -565,7 +565,7 @@ int evproc(void *userdata, SDL_Event *e)
 			break;
 
 		case SDL_MOUSEWHEEL:
-			ie.type = INEV_MOUSEWHEEL;
+			ie.type = IE_MOUSEWHEEL;
 			ie.amount = e->wheel.y;
 
 			CHECKGL();
@@ -578,7 +578,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_LEFT:
 				g_mousekeys[MOUSE_LEFT] = dtrue;
 
-				ie.type = INEV_MOUSEDOWN;
+				ie.type = IE_MOUSEDOWN;
 				ie.key = MOUSE_LEFT;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -593,7 +593,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_RIGHT:
 				g_mousekeys[MOUSE_RIGHT] = dtrue;
 
-				ie.type = INEV_MOUSEDOWN;
+				ie.type = IE_MOUSEDOWN;
 				ie.key = MOUSE_RIGHT;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -606,7 +606,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_MIDDLE:
 				g_mousekeys[MOUSE_MIDDLE] = dtrue;
 
-				ie.type = INEV_MOUSEDOWN;
+				ie.type = IE_MOUSEDOWN;
 				ie.key = MOUSE_MIDDLE;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -624,7 +624,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_LEFT:
 				g_mousekeys[MOUSE_LEFT] = dfalse;
 
-				ie.type = INEV_MOUSEUP;
+				ie.type = IE_MOUSEUP;
 				ie.key = MOUSE_LEFT;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -637,7 +637,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_RIGHT:
 				g_mousekeys[MOUSE_RIGHT] = dfalse;
 
-				ie.type = INEV_MOUSEUP;
+				ie.type = IE_MOUSEUP;
 				ie.key = MOUSE_RIGHT;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -650,7 +650,7 @@ int evproc(void *userdata, SDL_Event *e)
 			case SDL_BUTTON_MIDDLE:
 				g_mousekeys[MOUSE_MIDDLE] = dfalse;
 
-				ie.type = INEV_MOUSEUP;
+				ie.type = IE_MOUSEUP;
 				ie.key = MOUSE_MIDDLE;
 				ie.amount = 1;
 				ie.x = g_mouse.x;
@@ -673,7 +673,7 @@ int evproc(void *userdata, SDL_Event *e)
 
 			if(mousepos())
 			{
-				ie.type = INEV_MOUSEMOVE;
+				ie.type = IE_MOUSEMOVE;
 				ie.x = g_mouse.x;
 				ie.y = g_mouse.y;
 				ie.dx = g_mouse.x - old.x;

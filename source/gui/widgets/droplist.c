@@ -36,6 +36,8 @@ void dlwinit(dlw *d, wg* parent, const char* name,
 	d->ldownu = dfalse;
 	d->ldownd = dfalse;
 	d->ldowna = -1;
+	d->ldownb = dfalse;
+	d->bover = dfalse;
 	bw->reframef = reframef;
 	wgreframe(bw);
 }
@@ -79,6 +81,7 @@ void dlwin(wg *bw, inev* ie)
 	int nops;
 	float h;
 	int i;
+	float bp[4];
 
 	d = (dlw*)bw;
 	pw = bw->parent;
@@ -92,6 +95,13 @@ void dlwin(wg *bw, inev* ie)
 
 		tp[0] = d->dpos[0];
 		tp[2] = d->dpos[2] - h;
+
+#define SQSP	2
+
+		bp[0] = d->dpos[2] - h + SQSP;
+		bp[1] = d->dpos[3] + (d->scroll / (float)d->noptions) * ((nops-1) * h / d->dpos[3]);
+		bp[2] = d->dpos[2] - SQSP;
+		bp[3] = d->dpos[3] + ((d->scroll + nops) / (float)d->noptions) * ((nops - 1) * h / d->dpos[3]);
 
 		if (g_mouse.x >= tp[0] && g_mouse.x <= tp[2])
 		{
@@ -108,7 +118,7 @@ void dlwin(wg *bw, inev* ie)
 
 	c:
 
-	if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	if (ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
@@ -135,7 +145,7 @@ void dlwin(wg *bw, inev* ie)
 		d->ldown = dfalse;
 		d->over = dfalse;
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
+	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		//mousemove();
 
@@ -159,7 +169,7 @@ void dlwin(wg *bw, inev* ie)
 			d->opened = dfalse;
 		}
 	}
-	else if (ie->type == INEV_MOUSEMOVE)
+	else if (ie->type == IE_MOUSEMOVE)
 	{
 		if (g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{
@@ -236,8 +246,6 @@ void dlwdraw(wg *bw)
 	memcpy(da, ua, sizeof(float) * 3 * 2);
 	for (i = 0; i < 3; ++i)
 		da[2 * i + 1] = h - (da[2 * i + 1] - d->dpos[1]) + d->dpos[1];
-
-#define SQSP	2
 
 	us[0] = d->dpos[2] - h + SQSP;
 	us[1] = d->dpos[1] + SQSP;
@@ -696,7 +704,7 @@ void DropList::inev(InEv* ie)
 		}
 	}
 
-	if (ie->type == INEV_MOUSEWHEEL && !ie->intercepted)
+	if (ie->type == IE_MOUSEWHEEL && !ie->intercepted)
 	{
 		if (opened)
 		{
@@ -705,7 +713,7 @@ void DropList::inev(InEv* ie)
 		}
 	}
 	// corpd fix
-	else if (ie->type == INEV_MOUSEMOVE && (!ie->intercepted || mousescroll))
+	else if (ie->type == IE_MOUSEMOVE && (!ie->intercepted || mousescroll))
 	{
 		if (g_mouse.x >= pos[0] && g_mouse.x <= pos[2] && g_mouse.y >= pos[1] && g_mouse.y <= pos[3])
 		{
@@ -813,7 +821,7 @@ void DropList::inev(InEv* ie)
 		mousedown[1] = g_mouse.y;
 		ie->intercepted = ectrue;
 	}
-	else if (ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
+	else if (ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		//InfoMess("dlld", "dlld");
 
@@ -897,7 +905,7 @@ void DropList::inev(InEv* ie)
 			return;
 		}
 	}
-	else if (ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT)
+	else if (ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT)
 	{
 		//InfoMess("dllu", "dllu");
 

@@ -37,6 +37,8 @@ struct dlw
 	dbool ldownu;
 	int ldowna;
 	int oover;
+	dbool ldownb;
+	dbool bover;
 };
 
 typedef struct dlw dlw;

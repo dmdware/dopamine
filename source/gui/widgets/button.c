@@ -66,7 +66,7 @@ void bwgin(wg *bw, inev* ie)
 
 	b = (bwg*)bw;
 
-	if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	if(ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
@@ -98,7 +98,7 @@ void bwgin(wg *bw, inev* ie)
 
 		b->over = dfalse;
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		//mousemove();
 
@@ -109,7 +109,7 @@ void bwgin(wg *bw, inev* ie)
 			return;	// intercept mouse event
 		}
 	}
-	else if(ie->type == INEV_MOUSEMOVE)
+	else if(ie->type == IE_MOUSEMOVE)
 	{
 		if(g_mouse.x >= bw->pos[0] && g_mouse.x <= bw->pos[2] && g_mouse.y >= bw->pos[1] && g_mouse.y <= bw->pos[3])
 		{

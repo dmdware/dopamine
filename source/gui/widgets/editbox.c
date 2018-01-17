@@ -175,7 +175,7 @@ void ebwin(ebw *eb, inev *ie)
 	highl = bw->highl;
 	val = ebwdrawvalue(eb);
 	
-	if(ie->type == INEV_MOUSEMOVE)
+	if(ie->type == IE_MOUSEMOVE)
 	{
 		if(!ie->intercepted)
 		{
@@ -219,7 +219,7 @@ void ebwin(ebw *eb, inev *ie)
 			}
 		}
 	}
-	else if(ie->type == INEV_MOUSEDOWN && ie->key == MOUSE_LEFT)
+	else if(ie->type == IE_MOUSEDOWN && ie->key == MOUSE_LEFT)
 	{
 		if(bw->opened)
 		{
@@ -248,7 +248,7 @@ void ebwin(ebw *eb, inev *ie)
 			}
 		}
 	}
-	else if(ie->type == INEV_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
+	else if(ie->type == IE_MOUSEUP && ie->key == MOUSE_LEFT && !ie->intercepted)
 	{
 		if(bw->ldown)
 		{
@@ -273,7 +273,7 @@ void ebwin(ebw *eb, inev *ie)
 			goto clean;
 		}
 	}
-	else if(ie->type == INEV_KEYDOWN && !ie->intercepted)
+	else if(ie->type == IE_KEYDOWN && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
@@ -399,7 +399,7 @@ void ebwin(ebw *eb, inev *ie)
 
 		ie->intercepted = dtrue;
 	}
-	else if(ie->type == INEV_KEYUP && !ie->intercepted)
+	else if(ie->type == IE_KEYUP && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
@@ -409,7 +409,7 @@ void ebwin(ebw *eb, inev *ie)
 
 		ie->intercepted = dtrue;
 	}
-	else if(ie->type == INEV_TEXTIN && !ie->intercepted)
+	else if(ie->type == IE_TEXTIN && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
@@ -434,7 +434,7 @@ void ebwin(ebw *eb, inev *ie)
 
 		ie->intercepted = dtrue;
 	}
-	else if(ie->type == INEV_PASTE && !ie->intercepted)
+	else if(ie->type == IE_PASTE && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
@@ -448,7 +448,7 @@ void ebwin(ebw *eb, inev *ie)
 
 		ebwpasteval(eb);
 	}
-	else if(ie->type == INEV_COPY && !ie->intercepted)
+	else if(ie->type == IE_COPY && !ie->intercepted)
 	{
 		if(!bw->opened)
 			goto clean;
@@ -462,7 +462,7 @@ void ebwin(ebw *eb, inev *ie)
 
 		ebwcopyval(eb);
 	}
-	else if(ie->type == INEV_SELALL && !ie->intercepted)
+	else if(ie->type == IE_SELALL && !ie->intercepted)
 	{
 		if(!opened)
 			goto clean;
