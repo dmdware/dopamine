@@ -203,8 +203,7 @@ void dlwin(wg *bw, inev* ie)
 
 		if (d->ldownb)
 		{
-			//d->scroll += ((float)ie->dy / ((nops-1) * h) * (float)nops);
-			d->scroll += ie->dy * nops / (float)((nops-1) * h);
+			d->scroll += ie->dy * d->noptions / (float)((nops-1) * h);
 			d->scroll = minf(d->noptions - nops, d->scroll);
 			d->scroll = maxf(0, d->scroll);
 			ie->intercepted = dtrue;
