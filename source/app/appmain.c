@@ -337,7 +337,7 @@ void loadname()
 	fclose(fp);
 }
 
-void writecfg()
+void savecfg()
 {
 	char cfgfull[DMD_MAX_PATH+1];
 	FILE* fp = fopen(cfgfull, "w");

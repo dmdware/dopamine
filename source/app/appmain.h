@@ -22,4 +22,6 @@ extern char g_viewmode;
 extern HINSTANCE g_hinst;
 #endif
 
+void savecfg();
+
 #endif
