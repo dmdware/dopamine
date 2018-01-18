@@ -141,7 +141,8 @@ void drawscene()
 	ms3d m;
 	int j;
 	char c[123];
-	pfrust(1, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld, gsa);
+	v3f t[3];
+	pfrust(g_currw, g_currh, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld, gsa);
 
 	gb = (wg*)&g_gui;
 
@@ -184,8 +185,14 @@ void drawscene()
 	glVertexPointer(3, GL_FLOAT, 0, (float*)&out[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	glVertexPointer(3, GL_FLOAT, 0, (float*)&m.mconv[0]);
-	glDrawArrays(GL_TRIANGLES, 0, m.m_numVertices);
+	for (j = 0; j < m.m_numTriangles; ++j)
+	{
+		t[0] = m.mconv[m.m_pTriangles[j].m_vertexIndices[0]];
+		t[1] = m.mconv[m.m_pTriangles[j].m_vertexIndices[1]];
+		t[2] = m.mconv[m.m_pTriangles[j].m_vertexIndices[2]];
+		glVertexPointer(3, GL_FLOAT, 0, (float*)&t[0]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+	}
 
 	endsh();
 	usesh(SH_COLOR3D);
