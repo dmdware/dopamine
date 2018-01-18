@@ -137,7 +137,7 @@ void drawscene()
 	v3f out[3];
 	glshader *s;
 	wg *gb;
-	toxy3(1, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld);
+	pfrust(1, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld);
 
 	gb = (wg*)&g_gui;
 

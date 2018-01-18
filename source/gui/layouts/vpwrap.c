@@ -10,20 +10,20 @@
 void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 {
 	glshader *s;
+	int fpi = (int)e;
 	v3f *v = &g_camf.view;
-	float extentx = 10.0f;// PROJ_RIGHT*((float)ws / hs) / 1;
-	float extenty = 10.0f;// PROJ_RIGHT / 1;
-	v3f ex = { extentx, extenty, extentx }, ey = { extentx, extenty, extentx };
-	v3f vmin = {ex.x * ax.x + v->x, ex.y * ax.y + v->y + ex.z * ax.z + v->z},
-		vmax = { ey.x * ax.x + v->x, ey.y * ax.y + v->y + ey.z * ax.z + v->z };
+	float extx = PROJ_RIGHT*((float)ws / hs) / 1;
+	float exty = PROJ_RIGHT / 1;
+	v3f ex = { extx, exty, extx }, ey = { extx, exty, extx };
+	v3f bx = { 1.0f - fabs(ax.x), 1.0f - fabs(ax.y), 1.0f - fabs(ax.z) };
+	v3f vmin = {-ex.x * bx.x + v->x, -ex.y * bx.y + v->y + -ex.z * bx.z + v->z},
+		vmax = { ey.x * bx.x + v->x, ey.y * bx.y + v->y + ey.z * bx.z + v->z };
 	v3f l[2];
 	float x, y, z;
 	float base = 50.0f;
-	g_zoom = 1.0f;
+	g_zoom = 1;
 	int pow2 = log(g_zoom) / log(2.0f);
 	float i = base / pow(2.0f, (float)pow2), j = i * 5.0f;
-	//i = 1;
-	//j = 2;
 	v3f vs = { (int)(vmin.x / i)*i, (int)(vmin.y / i)*i, (int)(vmin.z / i)*i },
 		ve = { (int)(vmax.x / i)*i, (int)(vmax.y / i)*i, (int)(vmax.z / i)*i };
 	v3f vs2 = { (int)(vmin.x / j)*j, (int)(vmin.y / j)*j, (int)(vmin.z / j)*j },
@@ -32,11 +32,11 @@ void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 	v3f up = {(fabs(ax.y)==1.0f),(fabs(ax.y) != 1.0f),0.0f };
 	v3f strafe = norm3f(cross3f(up,ax));
 	float d[12];
-	toxy3(1, 1, g_camf.view, pos, up, strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld);
+	ofrust(extx, exty, *v, pos, up, strafe, MAX_DISTANCE, MIN_DISTANCE, d, gpv, gpl, gpld);
 
 	s = g_shader + g_cursh;
 
-	glUniform4f(s->slot[SSLOT_COLOR], 0.1f, 0.1f, 0.1f, 0.3f);
+	glUniform4f(s->slot[SSLOT_COLOR], 0.1f, 0.1f, 0.1f, 0.6f);
 	glVertexPointer(3, GL_FLOAT, 0, l);
 
 	for (x = vs.x; x <= ve.x; x += i)
@@ -63,31 +63,31 @@ void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 				l[0].x = x - i/2.0f;
 				l[0].y = y;
 				l[0].z = z;
-				//l[0] = toclip(l[0]);
-				l[0].x = x + i/2.0f;
+				l[0] = toclip(l[0]);
+				l[1].x = x + i/2.0f;
 				l[1].y = y;
 				l[1].z = z;
-				////l[1] = toclip(l[1]);
+				l[1] = toclip(l[1]);
 				glDrawArrays(GL_LINES, 0, 2);
 
 				l[0].x = x;
 				l[0].y = y - i / 2.0f;
 				l[0].z = z;
-				//l[0] = toclip(l[0]);
-				l[0].x = x;
+				l[0] = toclip(l[0]);
+				l[1].x = x;
 				l[1].y = y + i / 2.0f;
 				l[1].z = z;
-				//l[1] = toclip(l[1]);
+				l[1] = toclip(l[1]);
 				glDrawArrays(GL_LINES, 0, 2);
 
 				l[0].x = x;
 				l[0].y = y;
 				l[0].z = z - i / 2.0f;
-				//l[0] = toclip(l[0]);
-				l[0].x = x;
+				l[0] = toclip(l[0]);
+				l[1].x = x;
 				l[1].y = y;
 				l[1].z = z + i / 2.0f;
-				//l[1] = toclip(l[1]);
+				l[1] = toclip(l[1]);
 				glDrawArrays(GL_LINES, 0, 2);
 			}
 		}

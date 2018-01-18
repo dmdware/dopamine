@@ -6,6 +6,8 @@
 #include "../math/3dmath.h"
 #include "../math/plane3f.h"
 #include "../sys/syswin.h"
+#include "../sys/utils.h"
+#include "../sys/debug.h"
 
 v3f gpv[8];
 v3f gpl[6];
@@ -159,7 +161,107 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	return vi;
 }
 
-void toxy3(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d, v3f *pv, v3f *pl, float *pld)
+void ofrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float *d, v3f *pv, v3f *pl, float *pld)
+{
+	v3f vvvv[3][2][2];
+	v3f tn[6][3];
+
+#define X	0
+#define Y	1
+#define Z	2
+#define NEARP	0
+#define FARP		1
+#define POS		0
+#define NEG		1
+
+	vvvv[X][NEARP][POS] = strafe;
+	v3fsub(&vvvv[Z][NEARP][POS], view, pos);
+	vvvv[Z][NEARP][POS] = norm3f(vvvv[Z][NEARP][POS]);
+	vvvv[Y][NEARP][POS] = norm3f(cross3f(vvvv[X][NEARP][POS], vvvv[Z][NEARP][POS]));
+	v3fmul(&vvvv[Y][NEARP][POS], vvvv[Y][NEARP][POS], wy/2.0f);
+	v3fmul(&vvvv[X][NEARP][POS], vvvv[X][NEARP][POS], wx/2.0f);
+
+	vvvv[X][FARP][POS] = vvvv[X][NEARP][POS];
+	vvvv[Y][FARP][POS] = vvvv[Y][NEARP][POS];
+	v3fmul(&vvvv[Z][FARP][POS], vvvv[Z][NEARP][POS], maxd);
+	v3fmul(&vvvv[Z][NEARP][POS], vvvv[Z][NEARP][POS], mind);
+
+	v3fmul(&vvvv[X][NEARP][NEG], vvvv[X][NEARP][POS], -1);
+	v3fmul(&vvvv[Y][NEARP][NEG], vvvv[Y][NEARP][POS], -1);
+	v3fmul(&vvvv[Z][NEARP][NEG], vvvv[Z][NEARP][POS], -1);
+	v3fmul(&vvvv[X][FARP][NEG], vvvv[X][FARP][POS], -1);
+	v3fmul(&vvvv[Y][FARP][NEG], vvvv[Y][FARP][POS], -1);
+	v3fmul(&vvvv[Z][FARP][NEG], vvvv[Z][FARP][POS], -1);
+
+	v3fadd(&pv[0], vvvv[X][FARP][NEG], vvvv[Y][FARP][POS]);
+	v3fadd(&pv[0], pv[0], vvvv[Z][FARP][POS]);
+	v3fadd(&pv[1], vvvv[X][FARP][POS], vvvv[Y][FARP][POS]);
+	v3fadd(&pv[1], pv[1], vvvv[Z][FARP][POS]);
+	v3fadd(&pv[2], vvvv[X][FARP][POS], vvvv[Y][FARP][NEG]);
+	v3fadd(&pv[2], pv[2], vvvv[Z][FARP][POS]);
+	v3fadd(&pv[3], vvvv[X][FARP][NEG], vvvv[Y][FARP][NEG]);
+	v3fadd(&pv[3], pv[3], vvvv[Z][FARP][POS]);
+	v3fadd(&pv[4], vvvv[X][NEARP][NEG], vvvv[Y][NEARP][POS]);
+	v3fadd(&pv[4], pv[4], vvvv[Z][NEARP][POS]);
+	v3fadd(&pv[5], vvvv[X][NEARP][POS], vvvv[Y][NEARP][POS]);
+	v3fadd(&pv[5], pv[5], vvvv[Z][NEARP][POS]);
+	v3fadd(&pv[6], vvvv[X][NEARP][POS], vvvv[Y][NEARP][NEG]);
+	v3fadd(&pv[6], pv[6], vvvv[Z][NEARP][POS]);
+	v3fadd(&pv[7], vvvv[X][NEARP][NEG], vvvv[Y][NEARP][NEG]);
+	v3fadd(&pv[7], pv[7], vvvv[Z][NEARP][POS]);
+
+#undef X
+#undef Y
+#undef Z
+#undef NEARP
+#undef FARP
+#undef POS
+#undef NEG
+
+	v3fadd(&pv[0], pv[0], pos);
+	v3fadd(&pv[1], pv[1], pos);
+	v3fadd(&pv[2], pv[2], pos);
+	v3fadd(&pv[3], pv[3], pos);
+	v3fadd(&pv[4], pv[4], pos);
+	v3fadd(&pv[5], pv[5], pos);
+	v3fadd(&pv[6], pv[6], pos);
+	v3fadd(&pv[7], pv[7], pos);
+
+	tn[0][0] = pv[0];
+	tn[0][1] = pv[1];
+	tn[0][2] = pv[2];
+	tn[1][0] = pv[5];
+	tn[1][1] = pv[4];
+	tn[1][2] = pv[6];
+	tn[2][0] = pv[1];
+	tn[2][1] = pv[0];
+	tn[2][2] = pv[4];
+	tn[3][0] = pv[2];
+	tn[3][1] = pv[1];
+	tn[3][2] = pv[5];
+	tn[4][0] = pv[3];
+	tn[4][1] = pv[2];
+	tn[4][2] = pv[7];
+	tn[5][0] = pv[4];
+	tn[5][1] = pv[0];
+	tn[5][2] = pv[3];
+
+	pl[0] = tnorm(tn[0]);
+	pl[1] = tnorm(tn[1]);
+	pl[2] = tnorm(tn[2]);
+	pl[3] = tnorm(tn[3]);
+	pl[4] = tnorm(tn[4]);
+	pl[5] = tnorm(tn[5]);
+
+	pld[0] = -dot3f(pl[0], tn[0][0]);
+	pld[1] = -dot3f(pl[1], tn[1][0]);
+	pld[2] = -dot3f(pl[2], tn[2][0]);
+	pld[3] = -dot3f(pl[3], tn[3][0]);
+	pld[4] = -dot3f(pl[4], tn[4][0]);
+	pld[5] = -dot3f(pl[5], tn[5][0]);
+}
+
+void pfrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d, v3f *pv, v3f *pl, float *pld)
 {
 	v3f vvvv[3][2][2];
 	float ta;
@@ -269,7 +371,7 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 	v3f pl[6];
 	float pld[6];
 
-	toxy3(wx, wy, view, pos, up, strafe, maxd, mind, fov, d, pv, pl, pld);
+	pfrust(wx, wy, view, pos, up, strafe, maxd, mind, fov, d, pv, pl, pld);
 
 	return toxy2(vi, wx, wy, pv, pl, pld, d);
 }
