@@ -17,10 +17,10 @@ void c3finit(c3f* c)
 {
 	c->view.x = 0;
 	c->view.y = 0;
-	c->view.z = 1;
+	c->view.z = 0;
 	c->pos.x = 0;
 	c->pos.y = 0;
-	c->pos.z = 0;
+	c->pos.z = -1;
 	c->strafe.x = 1;
 	c->strafe.y = 0;
 	c->strafe.z = 0;
