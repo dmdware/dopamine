@@ -171,12 +171,6 @@ void drawscene()
 	out[1] = toclip(*(v3f*)v[1]);
 	out[2] = toclip(*(v3f*)v[2]);
 
-	for (j = 0; j < 3; ++j)
-		fprintf(g_applog, "v%d %f,%f,%f -> %f,%f,%f\r\n", j, v[j][0], v[j][1], v[j][2], out[j].x, out[j].y, out[j].z);
-
-	if (g_keys[SDL_SCANCODE_E])
-		fprintf(g_applog, "^^^^^^^\r\n");
-
 	endsh();
 	usesh(SH_COLOR3D);
 	glDisable(GL_TEXTURE_2D);
