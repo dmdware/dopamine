@@ -24,6 +24,7 @@ typedef struct c3f c3f;
 
 void cpos3f(v3f *v, c3f *c);
 float yaw3f(c3f* c);
+void c3finit(c3f* c);
 
 extern c3f g_camf;
 

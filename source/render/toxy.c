@@ -5,6 +5,11 @@
 #include "toxy.h"
 #include "../math/3dmath.h"
 #include "../math/plane3f.h"
+#include "../sys/syswin.h"
+
+v3f gpv[8];
+v3f gpl[6];
+float gpld[6];
 
 float vol3f2(v3f a, v3f b, v3f c)
 {
@@ -154,13 +159,10 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	return vi;
 }
 
-v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d)
+void toxy3(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d, v3f *pv, v3f *pl, float *pld)
 {
-	v3f pv[8];
 	v3f vvvv[3][2][2];
 	float ta;
-	v3f pl[6];
-	float pld[6];
 	v3f tn[6][3];
 
 #define X	0
@@ -259,30 +261,21 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 	pld[3] = -dot3f(pl[3], tn[3][0]);
 	pld[4] = -dot3f(pl[4], tn[4][0]);
 	pld[5] = -dot3f(pl[5], tn[5][0]);
+}
+
+v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d)
+{
+	v3f pv[8];
+	v3f pl[6];
+	float pld[6];
+
+	toxy3(wx, wy, view, pos, up, strafe, maxd, mind, fov, d, pv, pl, pld);
 
 	return toxy2(vi, wx, wy, pv, pl, pld, d);
 }
 
 v3f toclip(v3f vi)
 {
-	v3f up, view, pos, side;
 	float d[12];
-
-	view.x = 0;
-	view.y = 0;
-	view.z = 1;
-
-	side.x = 1;
-	side.y = 0;
-	side.z = 0;
-
-	up.x = 0;
-	up.y = 1;
-	up.z = 0;
-
-	pos.x = 0;
-	pos.y = 0;
-	pos.z = 0;
-
-	return toxy(vi, 1, 1, view, pos, up, side, 10, 0.01f, 90.0f, d);
+	return toxy2(vi, 1, 1, gpv, gpl, gpld, d);
 }

@@ -4,35 +4,94 @@
 #include "../gui.h"
 #include "../draw2d.h"
 #include "../../render/toxy.h"
+#include "../../math/camf.h"
+#include "../../math/3dmath.h"
 
-int g_fpi[4] = { 0,1,2,3 };
-
-void drawgrid(void *e, int x, int y, int w, int h, float *crop)
+void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 {
 	glshader *s;
-	v3f vmin, vmax;
-	float extentx = PROJ_RIGHT*((float)w/h) / 1;
-	float extenty = PROJ_RIGHT / 1;
+	v3f *v = &g_camf.view;
+	float extentx = 10.0f;// PROJ_RIGHT*((float)ws / hs) / 1;
+	float extenty = 10.0f;// PROJ_RIGHT / 1;
 	v3f ex = { extentx, extenty, extentx }, ey = { extentx, extenty, extentx };
-	v3fadd(&vmin, g_camf.view, ex);
-	v3fadd(&vmax, g_camf.view, ey);
+	v3f vmin = {ex.x * ax.x + v->x, ex.y * ax.y + v->y + ex.z * ax.z + v->z},
+		vmax = { ey.x * ax.x + v->x, ey.y * ax.y + v->y + ey.z * ax.z + v->z };
 	v3f l[2];
+	float x, y, z;
+	float base = 50.0f;
+	g_zoom = 1.0f;
+	int pow2 = log(g_zoom) / log(2.0f);
+	float i = base / pow(2.0f, (float)pow2), j = i * 5.0f;
+	//i = 1;
+	//j = 2;
+	v3f vs = { (int)(vmin.x / i)*i, (int)(vmin.y / i)*i, (int)(vmin.z / i)*i },
+		ve = { (int)(vmax.x / i)*i, (int)(vmax.y / i)*i, (int)(vmax.z / i)*i };
+	v3f vs2 = { (int)(vmin.x / j)*j, (int)(vmin.y / j)*j, (int)(vmin.z / j)*j },
+		ve2 = { (int)(vmax.x / j)*j, (int)(vmax.y / j)*j, (int)(vmax.z / j)*j };
+	v3f pos = { v->x - ax.x, v->y - ax.y, v->z - ax.z };
+	v3f up = {(fabs(ax.y)==1.0f),(fabs(ax.y) != 1.0f),0.0f };
+	v3f strafe = norm3f(cross3f(up,ax));
+	float d[12];
+	toxy3(1, 1, g_camf.view, pos, up, strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld);
 
 	s = g_shader + g_cursh;
 
-	l[0].x = -0.2f;
-	l[0].y = 0.0f;
-	l[0].z = 0.3f;
-	l[1].x = 0.3f;
-	l[1].y = 0.1f;
-	l[1].z = 0.33f;
-
-	l[0] = toclip(l[0]);
-	l[1] = toclip(l[1]);
-
-	glUniform4f(s->slot[SSLOT_COLOR], 0.0f, 1.0f, 0.0f, 1.0f);
+	glUniform4f(s->slot[SSLOT_COLOR], 0.1f, 0.1f, 0.1f, 0.3f);
 	glVertexPointer(3, GL_FLOAT, 0, l);
-	glDrawArrays(GL_LINES, 0, 2);
+
+	for (x = vs.x; x <= ve.x; x += i)
+	{
+		for (y = vs.y; y <= ve.y; y += i)
+		{
+			for (z = vs.z; z <= ve.z; z += i)
+			{
+				l[0].x = x;
+				l[0].y = y;
+				l[0].z = z;
+				l[0] = toclip(l[0]);
+				glDrawArrays(GL_POINTS, 0, 1);
+			}
+		}
+	}
+
+	for (x = vs2.x; x <= ve2.x; x += j)
+	{
+		for (y = vs2.y; y <= ve2.y; y += j)
+		{
+			for (z = vs2.z; z <= ve2.z; z += j)
+			{
+				l[0].x = x - i/2.0f;
+				l[0].y = y;
+				l[0].z = z;
+				//l[0] = toclip(l[0]);
+				l[0].x = x + i/2.0f;
+				l[1].y = y;
+				l[1].z = z;
+				////l[1] = toclip(l[1]);
+				glDrawArrays(GL_LINES, 0, 2);
+
+				l[0].x = x;
+				l[0].y = y - i / 2.0f;
+				l[0].z = z;
+				//l[0] = toclip(l[0]);
+				l[0].x = x;
+				l[1].y = y + i / 2.0f;
+				l[1].z = z;
+				//l[1] = toclip(l[1]);
+				glDrawArrays(GL_LINES, 0, 2);
+
+				l[0].x = x;
+				l[0].y = y;
+				l[0].z = z - i / 2.0f;
+				//l[0] = toclip(l[0]);
+				l[0].x = x;
+				l[1].y = y;
+				l[1].z = z + i / 2.0f;
+				//l[1] = toclip(l[1]);
+				glDrawArrays(GL_LINES, 0, 2);
+			}
+		}
+	}
 
 #if 0
 	//draw only one layer of grid dots ...
@@ -185,6 +244,8 @@ void fpdraw(void *e, int x, int y, int w, int h)
 {
 	glshader* s;
 	float crop[4];
+	int fpi = (int)e;
+	v3f ax = {fpi==0, fpi==1, fpi==2};
 
 	crop[0] = 0;
 	crop[1] = 0;
@@ -210,14 +271,14 @@ void fpdraw(void *e, int x, int y, int w, int h)
 	glUniform1f(s->slot[SSLOT_WIDTH], (float)w);
 	glUniform1f(s->slot[SSLOT_HEIGHT], (float)h);
 
-	drawgrid(e, x, y, w, h, crop);
+	drawgrid(e, x, y, w, h, crop, ax);
 
 	endsh();
 }
 
 void szfp(wg* w)
 {
-	int fpi = *(int*)w->extra;
+	int fpi = (int)w->extra;
 	int x = fpi % 2;
 	int y = fpi / 2;
 
