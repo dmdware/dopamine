@@ -12,6 +12,7 @@
 v3f gpv[8];
 v3f gpl[6];
 float gpld[6];
+float gsa[12];
 
 float vol3f2(v3f a, v3f b, v3f c)
 {
@@ -49,22 +50,22 @@ float sa3f(v3f a, v3f b, v3f c)
 	return sqrtf(s * (s - a1) * (s - a2) * (s - a3));
 }
 
-v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *d)
+v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *d, float sa[12])
 {
 	float v[12];
 	int i;
-	v[0] = vol3f(vi, p[0], p[2], p[1]) / sa3f(p[0], p[2], p[1]);
-	v[1] = vol3f(vi, p[0], p[3], p[2]) / sa3f(p[0], p[3], p[2]);
-	v[2] = vol3f(vi, p[6], p[1], p[2]) / sa3f(p[1], p[2], p[6]);
-	v[3] = vol3f(vi, p[5], p[1], p[6]) / sa3f(p[1], p[6], p[5]);
-	v[4] = vol3f(vi, p[6], p[2], p[7]) / sa3f(p[2], p[6], p[7]);
-	v[5] = vol3f(vi, p[2], p[3], p[7]) / sa3f(p[7], p[3], p[2]);
-	v[6] = vol3f(vi, p[7], p[3], p[0]) / sa3f(p[7], p[3], p[0]);
-	v[7] = vol3f(vi, p[4], p[7], p[0]) / sa3f(p[7], p[0], p[4]);
-	v[8] = vol3f(vi, p[4], p[1], p[5]) / sa3f(p[1], p[5], p[4]);
-	v[9] = vol3f(vi, p[4], p[0], p[1]) / sa3f(p[0], p[1], p[4]);
-	v[10] = vol3f(vi, p[7], p[5], p[6]) / sa3f(p[6], p[5], p[7]);
-	v[11] = vol3f(vi, p[5], p[7], p[4]) / sa3f(p[5], p[4], p[7]);
+	v[0] = vol3f(vi, p[0], p[2], p[1]) / sa[0];
+	v[1] = vol3f(vi, p[0], p[3], p[2]) / sa[1];
+	v[2] = vol3f(vi, p[6], p[1], p[2]) / sa[2];
+	v[3] = vol3f(vi, p[5], p[1], p[6]) / sa[3];
+	v[4] = vol3f(vi, p[6], p[2], p[7]) / sa[4];
+	v[5] = vol3f(vi, p[2], p[3], p[7]) / sa[5];
+	v[6] = vol3f(vi, p[7], p[3], p[0]) / sa[6];
+	v[7] = vol3f(vi, p[4], p[7], p[0]) / sa[7];
+	v[8] = vol3f(vi, p[4], p[1], p[5]) / sa[8];
+	v[9] = vol3f(vi, p[4], p[0], p[1]) / sa[9];
+	v[10] = vol3f(vi, p[7], p[5], p[6]) / sa[10];
+	v[11] = vol3f(vi, p[5], p[7], p[4]) / sa[11];
 
 	//memcpy(d, v, sizeof(float) * 12);
 
@@ -161,7 +162,7 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	return vi;
 }
 
-void ofrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float *d, v3f *pv, v3f *pl, float *pld)
+void ofrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float *d, v3f *pv, v3f *pl, float *pld, float *sa)
 {
 	v3f vvvv[3][2][2];
 	v3f tn[6][3];
@@ -259,9 +260,22 @@ void ofrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float max
 	pld[3] = -dot3f(pl[3], tn[3][0]);
 	pld[4] = -dot3f(pl[4], tn[4][0]);
 	pld[5] = -dot3f(pl[5], tn[5][0]);
+
+	sa[0] = sa3f(pv[0], pv[2], pv[1]);
+	sa[1] = sa3f(pv[0], pv[3], pv[2]);
+	sa[2] = sa3f(pv[1], pv[2], pv[6]);
+	sa[3] = sa3f(pv[1], pv[6], pv[5]);
+	sa[4] = sa3f(pv[2], pv[6], pv[7]);
+	sa[5] = sa3f(pv[7], pv[3], pv[2]);
+	sa[6] = sa3f(pv[7], pv[3], pv[0]);
+	sa[7] = sa3f(pv[7], pv[0], pv[4]);
+	sa[8] = sa3f(pv[1], pv[5], pv[4]);
+	sa[9] = sa3f(pv[0], pv[1], pv[4]);
+	sa[10] = sa3f(pv[6], pv[5], pv[7]);
+	sa[11] = sa3f(pv[5], pv[4], pv[7]);
 }
 
-void pfrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d, v3f *pv, v3f *pl, float *pld)
+void pfrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d, v3f *pv, v3f *pl, float *pld, float *sa)
 {
 	v3f vvvv[3][2][2];
 	float ta;
@@ -363,6 +377,19 @@ void pfrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float max
 	pld[3] = -dot3f(pl[3], tn[3][0]);
 	pld[4] = -dot3f(pl[4], tn[4][0]);
 	pld[5] = -dot3f(pl[5], tn[5][0]);
+
+	sa[0] = sa3f(pv[0], pv[2], pv[1]);
+	sa[1] = sa3f(pv[0], pv[3], pv[2]);
+	sa[2] = sa3f(pv[1], pv[2], pv[6]);
+	sa[3] = sa3f(pv[1], pv[6], pv[5]);
+	sa[4] = sa3f(pv[2], pv[6], pv[7]);
+	sa[5] = sa3f(pv[7], pv[3], pv[2]);
+	sa[6] = sa3f(pv[7], pv[3], pv[0]);
+	sa[7] = sa3f(pv[7], pv[0], pv[4]);
+	sa[8] = sa3f(pv[1], pv[5], pv[4]);
+	sa[9] = sa3f(pv[0], pv[1], pv[4]);
+	sa[10] = sa3f(pv[6], pv[5], pv[7]);
+	sa[11] = sa3f(pv[5], pv[4], pv[7]);
 }
 
 v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float fov, float *d)
@@ -370,14 +397,15 @@ v3f toxy(v3f vi, float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, floa
 	v3f pv[8];
 	v3f pl[6];
 	float pld[6];
+	float sa[12];
 
-	pfrust(wx, wy, view, pos, up, strafe, maxd, mind, fov, d, pv, pl, pld);
+	pfrust(wx, wy, view, pos, up, strafe, maxd, mind, fov, d, pv, pl, pld, sa);
 
-	return toxy2(vi, wx, wy, pv, pl, pld, d);
+	return toxy2(vi, wx, wy, pv, pl, pld, d, sa);
 }
 
 v3f toclip(v3f vi)
 {
 	float d[12];
-	return toxy2(vi, 1, 1, gpv, gpl, gpld, d);
+	return toxy2(vi, 1, 1, gpv, gpl, gpld, d, gsa);
 }

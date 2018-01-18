@@ -31,7 +31,7 @@ void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 	v3f up = {(fabs(ax.y)==1.0f),(fabs(ax.y) != 1.0f),0.0f };
 	v3f strafe = norm3f(cross3f(up,ax));
 	float d[12];
-	ofrust(extx, exty, *v, pos, up, strafe, MAX_DISTANCE, MIN_DISTANCE, d, gpv, gpl, gpld);
+	ofrust(extx, exty, *v, pos, up, strafe, MAX_DISTANCE, MIN_DISTANCE, d, gpv, gpl, gpld, gsa);
 
 	s = g_shader + g_cursh;
 
