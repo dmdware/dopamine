@@ -23,7 +23,7 @@
 #define PROJ_RIGHT			600
 #define MIN_ZOOM		0.05f
 #define MAX_ZOOM		0.7f
-#define INI_ZOOM			0.05f
+#define INI_ZOOM			1.0f
 
 extern dbool g_quit;
 extern dbool g_bg;

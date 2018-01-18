@@ -16,12 +16,11 @@ void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 	float exty = PROJ_RIGHT / 1;
 	v3f ex = { extx, exty, extx }, ey = { extx, exty, extx };
 	v3f bx = { 1.0f - fabs(ax.x), 1.0f - fabs(ax.y), 1.0f - fabs(ax.z) };
-	v3f vmin = {-ex.x * bx.x + v->x, -ex.y * bx.y + v->y + -ex.z * bx.z + v->z},
-		vmax = { ey.x * bx.x + v->x, ey.y * bx.y + v->y + ey.z * bx.z + v->z };
+	v3f vmin = {-ex.x * bx.x + v->x, -ex.y * bx.y + v->y, -ex.z * bx.z + v->z},
+		vmax = { ey.x * bx.x + v->x, ey.y * bx.y + v->y, ey.z * bx.z + v->z };
 	v3f l[2];
 	float x, y, z;
 	float base = 50.0f;
-	g_zoom = 1;
 	int pow2 = log(g_zoom) / log(2.0f);
 	float i = base / pow(2.0f, (float)pow2), j = i * 5.0f;
 	v3f vs = { (int)(vmin.x / i)*i, (int)(vmin.y / i)*i, (int)(vmin.z / i)*i },
