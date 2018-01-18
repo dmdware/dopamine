@@ -54,6 +54,7 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 {
 	float v[12];
 	int i;
+	v3f vo;
 	v[0] = vol3f(vi, p[0], p[2], p[1]) / sa[0];
 	v[1] = vol3f(vi, p[0], p[3], p[2]) / sa[1];
 	v[2] = vol3f(vi, p[6], p[1], p[2]) / sa[2];
@@ -118,48 +119,114 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 		//v[i] = fabs(v[i]);
 
 #if 01
-	if (v[6] < 0 || v[7] < 0)
-	{
-		vi.x = wx * - (fabs(v[6]) + fabs(v[7])) / (- fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
-	}
-	else if (v[2] < 0 || v[3] < 0)
-	{
-		vi.x = wx * (1.0f + (fabs(v[2]) + fabs(v[3])) / (-fabs(v[2]) - fabs(v[3]) + v[6] + v[7]));
-	}
-	else
-	{
-		vi.x = wx * (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
-	}
 
-	if (v[8] < 0 || v[9] < 0)
+	//if ((v[6] < 0 || v[7] < 0) && (v[2] < 0 || v[3] < 0))
+	//{
+	//	vo.x = ((fabs(v[2]) + fabs(v[3])) / (fabs(v[2]) + fabs(v[3]) + fabs(v[6]) + fabs(v[7])));
+	//}
+	//else 
+
+	//if ((v[6] < 0 || v[7] < 0) && (v[8] < 0 || v[9] < 0))
 	{
-		vi.y = wy * -(fabs(v[8]) + fabs(v[9])) / (-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]);
+
+		//vo.x = -(fabs(v[6]) + fabs(v[7])) / (-fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
+		//vo.y = -(fabs(v[8]) + fabs(v[9])) / (-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]);
+
+		//fprintf(g_applog, "-- %f,%f,%f->%f,%f,%f\r\n", vi.x, vi.y, vi.z, vo.x, vo.y, vo.z);
 	}
-	else if (v[4] < 0 || v[5] < 0)
+	//else
 	{
-		vi.y = wy * (1.0f + (fabs(v[4]) + fabs(v[5])) / (-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]));
-	}
-	else
-	{
-		vi.y = wy * (v[8] + v[9]) / (v[4] + v[5] + v[8] + v[9]);
+		if (g_keys[SDL_SCANCODE_E])
+			fprintf(g_applog, "-------\r\n");
+		if (v[6] < 0 || v[7] < 0)
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "-x\r\n");
+			vo.x = -(fabs(v[6]) + fabs(v[7])) / fabs(-fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
+		}
+		else if (v[2] < 0 || v[3] < 0)
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "+x\r\n");
+			vo.x = (1.0f + (fabs(v[2]) + fabs(v[3])) / fabs(-fabs(v[2]) - fabs(v[3]) + v[6] + v[7]));
+		}
+		else
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "x\r\n");
+			vo.x = (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
+		}
+
+		//if ((v[8] < 0 || v[9] < 0) && (v[4] < 0 || v[5] < 0))
+		//{
+		//	vo.y = ((fabs(v[4]) + fabs(v[5])) / (fabs(v[4]) + fabs(v[5]) + fabs(v[8]) + fabs(v[9])));
+	//	}
+		//else 
+		if (v[8] < 0 || v[9] < 0)
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "-y\r\n");
+			vo.y = -(fabs(v[8]) + fabs(v[9])) / fabs(-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]);
+		}
+		else if (v[4] < 0 || v[5] < 0)
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "+y\r\n");
+			vo.y = (1.0f + (fabs(v[4]) + fabs(v[5])) / fabs(-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]));
+		}
+		else
+		{
+			if (g_keys[SDL_SCANCODE_E])
+				fprintf(g_applog, "y\r\n");
+			vo.y = (v[8] + v[9]) / (v[4] + v[5] + v[8] + v[9]);
+		}
 	}
 
 	if (v[10] < 0 || v[11] < 0)
 	{
-		vi.z = -((fabs(v[10]) + fabs(v[11])) / (v[0] + v[1] - fabs(v[10]) - fabs(v[11])));
+		if (g_keys[SDL_SCANCODE_E])
+			fprintf(g_applog, "-z\r\n");
+		vo.z = -((fabs(v[10]) + fabs(v[11])) / fabs((v[0]) + (v[1]) - fabs(v[10]) - fabs(v[11])));
+		//vo.z = 1.0f / (vo.z - vo.z);
+		//vo.x = 0.5f-(vo.x - 0.5f);
+		//vo.y = 0.5f-(vo.y - 0.5f);
 	}
 	else if (v[0] < 0 || v[1] < 0)
 	{
-		vi.z = (1.0f + (fabs(v[0]) + fabs(v[1])) / (v[10] + v[11] - fabs(v[0]) - fabs(v[1])));
+		if (g_keys[SDL_SCANCODE_E])
+			fprintf(g_applog, "+z\r\n");
+		vo.z = (1.0f + (fabs(v[0]) + fabs(v[1])) / fabs(v[10] + v[11] - fabs(v[0]) - fabs(v[1])));
 	}
 	else
 	{
-		vi.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
+		if (g_keys[SDL_SCANCODE_E])
+			fprintf(g_applog, "z\r\n");
+		vo.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
+	}
+
+	if (g_keys[SDL_SCANCODE_E])
+		fprintf(g_applog, "----------\r\n");
+
+#endif
+	//memcpy(&d[12], &vo, sizeof(float) * 3);
+
+	vo.x *= wx;
+	vo.y *= wy;
+	//vo.z = (vo.z - 1.0f) * 2.0f + 1.0f;
+	//vo.z = vo.z + 1.0f;
+#if 0
+	if (vo.z < 0)
+	{
+		fprintf(g_applog, "%f,%f,%f -> %f,%f,%f    %f,%f,%f   %f,%f,%f   %f,%f,%f  %f,%f,%f\r\n", vi.x, vi.y, vi.z, vo.x, vo.y, vo.z,
+			p[4].x, p[4].y, p[4].z,
+			p[5].x, p[5].y, p[5].z,
+			p[6].x, p[6].y, p[6].z,
+			p[7].x, p[7].y, p[7].z);
 	}
 #endif
-	//memcpy(&d[12], &vi, sizeof(float) * 3);
-
-	return vi;
+	//vi.z = vi.z - 0.1f;
+	
+	return vo;
 }
 
 void ofrust(float wx, float wy, v3f view, v3f pos, v3f up, v3f strafe, float maxd, float mind, float *d, v3f *pv, v3f *pl, float *pld, float *sa)

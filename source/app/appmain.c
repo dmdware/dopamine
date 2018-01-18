@@ -140,6 +140,7 @@ void drawscene()
 	wg *gb;
 	ms3d m;
 	int j;
+	char c[123];
 	pfrust(1, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld, gsa);
 
 	gb = (wg*)&g_gui;
@@ -170,6 +171,12 @@ void drawscene()
 	out[1] = toclip(*(v3f*)v[1]);
 	out[2] = toclip(*(v3f*)v[2]);
 
+	for (j = 0; j < 3; ++j)
+		fprintf(g_applog, "v%d %f,%f,%f -> %f,%f,%f\r\n", j, v[j][0], v[j][1], v[j][2], out[j].x, out[j].y, out[j].z);
+
+	if (g_keys[SDL_SCANCODE_E])
+		fprintf(g_applog, "^^^^^^^\r\n");
+
 	endsh();
 	usesh(SH_COLOR3D);
 	glDisable(GL_TEXTURE_2D);
@@ -190,9 +197,11 @@ void drawscene()
 	usesh(SH_COLOR3D);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
-	drawt(MAINFONT16, gb->crop, gb->crop, "alkj,sjdalksd", NULL, 0, -1, dtrue, dfalse);
+	sprintf(c, "%f", g_camf.pos.z);
+	drawt(MAINFONT16, gb->crop, gb->crop, c, NULL, 0, -1, dtrue, dfalse);
 
 	ms3dfree(&m);
 }

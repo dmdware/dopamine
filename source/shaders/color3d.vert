@@ -203,6 +203,6 @@
 "void main()"
 "{"
 "	ip = gl_Vertex.xyz;"
-"	gl_Position = gl_Vertex*vec4(2,2,2,1) - vec4(1,1,1,0);\r\n"
+"	gl_Position = gl_Vertex*vec4(2,2,2,1) - vec4(1,1,1,0); gl_Position.w = 1;\r\n"
 "	//gl_Position = vec4(toxy(gl_Vertex.xyz, width, height, view, pos, up, right, fard, neard, fov), 1);\r\n"
 "}"
