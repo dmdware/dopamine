@@ -154,6 +154,7 @@
     <ClInclude Include="..\..\..\source\png\pngstruct.h" />
     <ClInclude Include="..\..\..\source\render\anim.h" />
     <ClInclude Include="..\..\..\source\render\fbo.h" />
+    <ClInclude Include="..\..\..\source\render\ms3d.h" />
     <ClInclude Include="..\..\..\source\render\shader.h" />
     <ClInclude Include="..\..\..\source\render\sprite.h" />
     <ClInclude Include="..\..\..\source\render\toxy.h" />
@@ -456,6 +457,7 @@
     <ClCompile Include="..\..\..\source\png\pngwutil.c" />
     <ClCompile Include="..\..\..\source\render\anim.c" />
     <ClCompile Include="..\..\..\source\render\fbo.c" />
+    <ClCompile Include="..\..\..\source\render\ms3d.c" />
     <ClCompile Include="..\..\..\source\render\shader.c" />
     <ClCompile Include="..\..\..\source\render\sprite.c" />
     <ClCompile Include="..\..\..\source\render\toxy.c" />

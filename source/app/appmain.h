@@ -23,5 +23,6 @@ extern HINSTANCE g_hinst;
 #endif
 
 void savecfg();
+void drawscene();
 
 #endif

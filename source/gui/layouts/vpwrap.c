@@ -6,6 +6,7 @@
 #include "../../render/toxy.h"
 #include "../../math/camf.h"
 #include "../../math/3dmath.h"
+#include "../../app/appmain.h"
 
 void drawgrid(void *e, int xs, int ys, int ws, int hs, float *crop, v3f ax)
 {
@@ -269,10 +270,32 @@ void fpdraw(void *e, int x, int y, int w, int h)
 	s = g_shader + g_cursh;
 	glUniform1f(s->slot[SSLOT_WIDTH], (float)w);
 	glUniform1f(s->slot[SSLOT_HEIGHT], (float)h);
-
-	drawgrid(e, x, y, w, h, crop, ax);
-
+	switch (fpi)
+	{
+	case 0:
+	case 1:
+	case 2:
+		drawgrid(e, x, y, w, h, crop, ax);
+		break;
+	case 3:
+		break;
+	}
 	endsh();
+
+	usesh(SH_COLOR3D);
+	s = g_shader + g_cursh;
+	switch (fpi)
+	{
+	case 0:
+	case 1:
+	case 2:
+		break;
+	case 3:
+		drawscene();
+		break;
+	}
+	endsh();
+
 }
 
 void szfp(wg* w)

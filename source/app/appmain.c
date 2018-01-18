@@ -19,6 +19,7 @@
 #include "../sim/simvars.h"
 #include "../render/shader.h"
 #include "../render/toxy.h"
+#include "../render/ms3d.h"
 
 char g_appmode = APPMODE_LOGO;
 char g_viewmode = VIEWMODE_FIRST;
@@ -137,9 +138,21 @@ void drawscene()
 	v3f out[3];
 	glshader *s;
 	wg *gb;
+	ms3d m;
+	int j;
 	pfrust(1, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld, gsa);
 
 	gb = (wg*)&g_gui;
+
+	ms3dinit(&m);
+	ms3dload(&m, "mesh/asd.ms3d", NULL, NULL, NULL, NULL, dtrue);
+
+	for (j = 0; j < m.m_numVertices; ++j)
+	{
+		v3fmul(&m.mconv[j], m.mconv[j], 1.0f / 30.0f);
+		m.mconv[j].z += 0.3f;
+		m.mconv[j] = toclip(m.mconv[j]);
+	}
 
 #if 01
 	v[0][0] += (rand() % 5000 - 2500) / 250000.0f;
@@ -170,6 +183,9 @@ void drawscene()
 	glVertexPointer(3, GL_FLOAT, 0, (float*)&out[0]);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
+	glVertexPointer(3, GL_FLOAT, 0, (float*)&m.mconv[0]);
+	glDrawArrays(GL_TRIANGLES, 0, m.m_numVertices);
+
 	endsh();
 	usesh(SH_COLOR3D);
 	glEnable(GL_TEXTURE_2D);
@@ -177,6 +193,8 @@ void drawscene()
 	flatview(g_currw, g_currh, 1, 1, 1, 1);
 
 	drawt(MAINFONT16, gb->crop, gb->crop, "alkj,sjdalksd", NULL, 0, -1, dtrue, dfalse);
+
+	ms3dfree(&m);
 }
 
 void drawscenedepth()
