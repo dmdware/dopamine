@@ -20,6 +20,7 @@
 #include "../render/shader.h"
 #include "../render/toxy.h"
 #include "../render/ms3d.h"
+#include "../ed/ed.h"
 
 char g_appmode = APPMODE_LOGO;
 char g_viewmode = VIEWMODE_FIRST;
@@ -125,7 +126,7 @@ void update()
 		upsim();
 		break;
 	case APPMODE_EDITOR:
-//		uped();
+		uped();
 		break;
 	}
 }
@@ -142,7 +143,7 @@ void drawscene()
 	int j;
 	char c[123];
 	v3f t[3];
-	pfrust(g_currw, g_currh, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAX_DISTANCE, MIN_DISTANCE, 90.0f, d, gpv, gpl, gpld, gsa);
+	pfrust((float)g_currw / (float)g_currh, 1, g_camf.view, g_camf.pos, g_camf.up, g_camf.strafe, MAXD, 0.3f, 90, d, gpv, gpl, gpld, gsa);
 
 	gb = (wg*)&g_gui;
 

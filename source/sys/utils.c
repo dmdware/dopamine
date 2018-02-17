@@ -8,23 +8,32 @@ FILE *g_applog = NULL;
 
 void openlog(const char* file, int ver)
 {
-	char full[DMD_MAX_PATH+1];
+	char full[DMD_MAX_PATH + 1];
 	time_t     now = time(0);
 	struct tm  tstruct;
 	char       buf[80];
 	tstruct = *localtime(&now);
 
-	if(g_applog)
+	if (g_applog)
 		return;
 
 	fullwrite(file, full);
 	g_applog = fopen(full, "w");
 
-	if(!g_applog)
+	if (!g_applog)
 		return;
 
 	strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
 	fprintf(g_applog, "%s Version %d \r\n\r\n", buf, ver);
+}
+
+
+void filedatetime(char *c, int l)
+{
+	time_t     now = time(0);
+	struct tm  tstruct;
+	tstruct = *localtime(&now);
+	strftime(c, l, "%Y-%m-%d %H-%M-%S", &tstruct);
 }
 
 /* get a power of 2 number that is big enough to hold 'lowerbound' but does not exceed 2048 */
@@ -32,7 +41,7 @@ int max2pow(int lowerbound)
 {
 	int twopow = 2;
 
-	while( twopow < lowerbound
+	while (twopow < lowerbound
 #if 0
 		&& twopow < 2048
 #endif
@@ -46,7 +55,7 @@ int maxpow32(int lowerbound)
 {
 	int twopow = 32;
 
-	while( twopow < lowerbound
+	while (twopow < lowerbound
 #if 0
 		&& twopow < 2048
 #endif
@@ -60,71 +69,71 @@ unsigned __int64 getticks()
 {
 	//return time(0);
 #ifdef PLAT_WIN
-	
+
 	SYSTEMTIME st;
 	FILETIME ft;
 
 	//return GetTickCount64();
-	GetSystemTime (&st);
+	GetSystemTime(&st);
 	SystemTimeToFileTime(&st, &ft);
 	//LARGE_INTEGER lint;
 	//lint.HighPart = ft.dwHighDateTime;
-    //lint.LowPart = ft.dwLowDateTime;
+	//lint.LowPart = ft.dwLowDateTime;
 	//convert from 100-nanosecond intervals to milliseconds
-	return (*(unsigned __int64*)&ft)/(10*1000);
+	return (*(unsigned __int64*)&ft) / (10 * 1000);
 #else
 	struct timeval tv;
 
 	gettimeofday(&tv, NULL);
 
 	return
-    (unsigned __int64)(tv.tv_sec) * 1000 +
-    (unsigned __int64)(tv.tv_usec) / 1000;
+		(unsigned __int64)(tv.tv_sec) * 1000 +
+		(unsigned __int64)(tv.tv_usec) / 1000;
 #endif
 }
 
 void corslash(char *s)
 {
-	while(*s)
+	while (*s)
 	{
-		if(*s=='\\')
-			*s='/';
+		if (*s == '\\')
+			*s = '/';
 		++s;
 	}
 }
 
 void stripfile(char* in, char* out)
 {
-	char temp[DMD_MAX_PATH+1], *lastof;
+	char temp[DMD_MAX_PATH + 1], *lastof;
 	strcpy(temp, in);
 	corslash(temp);
 
 	lastof = strrchr(temp, '/');
-	if(!lastof)
+	if (!lastof)
 	{
 		strcpy(out, in);
 		return;
 	}
 
 	++lastof;
-	memcpy(out, in, (lastof-temp)+1);
+	memcpy(out, in, (lastof - temp) + 1);
 }
 
 void strippath(char* in, char* out)
 {
-	char temp[DMD_MAX_PATH+1], *lastof;
+	char temp[DMD_MAX_PATH + 1], *lastof;
 	strcpy(temp, in);
 	corslash(temp);
 
 	lastof = strrchr(temp, '/');
-	if(!lastof)
+	if (!lastof)
 	{
 		strcpy(out, in);
 		return;
 	}
 
 	++lastof;
-	memcpy(out, in+(lastof-temp), strlen(lastof)+1);
+	memcpy(out, in + (lastof - temp), strlen(lastof) + 1);
 }
 
 void stripext(char* in, char* out)
@@ -133,27 +142,27 @@ void stripext(char* in, char* out)
 
 	lastof = strrchr(in, '.');
 
-	if(!lastof)
+	if (!lastof)
 	{
 		strcpy(out, in);
 		return;
 	}
 
-	if(lastof == in)
+	if (lastof == in)
 	{
 		strcpy(out, "");
 		return;
 	}
 
 	--lastof;
-	memcpy(out, in, (lastof-in));
-	out[(lastof-in)+1] = 0;
+	memcpy(out, in, (lastof - in));
+	out[(lastof - in) + 1] = 0;
 }
 
 void makerel(const char* full, char* rel)
 {
-	char temp[DMD_MAX_PATH+1];
-	char exe[DMD_MAX_PATH+1];
+	char temp[DMD_MAX_PATH + 1];
+	char exe[DMD_MAX_PATH + 1];
 	char *pos;
 	strcpy(temp, full);
 	corslash(temp);
@@ -163,50 +172,50 @@ void makerel(const char* full, char* rel)
 
 	pos = strstr(temp, exe);
 
-	if(!pos)
+	if (!pos)
 	{
 		strcpy(rel, temp);
 		return;
 	}
 
-	memcpy(rel, pos+strlen(exe), strlen(pos)-strlen(exe)+1);
+	memcpy(rel, pos + strlen(exe), strlen(pos) - strlen(exe) + 1);
 }
 
 void fullwrite(const char* filename, char* full)
 {
 #ifdef PLAT_IOS
 	/*
-	 char exepath[SPE_MAX_PATH+1];
-	 GetModuleFileName(NULL, exepath, SPE_MAX_PATH);
-	 string path = stripfile(exepath);
-	 
-	 //char full[SPE_MAX_PATH+1];
-	 sprintf(full, "%s", path.c_str());
-	 
-	 char c = full[ strlen(full)-1 ];
-	 if(c != '\\' && c != '/')
-	 strcat(full, "\\");
-	 
-	 strcat(full, filename);*/
-	
+	char exepath[SPE_MAX_PATH+1];
+	GetModuleFileName(NULL, exepath, SPE_MAX_PATH);
+	string path = stripfile(exepath);
+
+	//char full[SPE_MAX_PATH+1];
+	sprintf(full, "%s", path.c_str());
+
+	char c = full[ strlen(full)-1 ];
+	if(c != '\\' && c != '/')
+	strcat(full, "\\");
+
+	strcat(full, filename);*/
+
 	//NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"];
 	//NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	//NSString *path = [paths objectAtIndex:0];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *path = [paths objectAtIndex:0];
-	sprintf(full, "%s/%s", [path cStringUsingEncoding:NSUTF8StringEncoding], filename);
-	
+	NSString *path = [paths objectAtIndex : 0];
+	sprintf(full, "%s/%s", [path cStringUsingEncoding : NSUTF8StringEncoding], filename);
+
 	//NSLog(@"full write %s", full);
 #else
-	
+
 	fullpath(filename, full);
 #endif
 }
 
 void fullpath(const char* file, char* full)
 {
-	char exe[DMD_MAX_PATH+1];
-	char path[DMD_MAX_PATH+1];
+	char exe[DMD_MAX_PATH + 1];
+	char path[DMD_MAX_PATH + 1];
 	char c;
 	exepath(exe);
 	stripfile(exe, path);
@@ -214,8 +223,8 @@ void fullpath(const char* file, char* full)
 	//char full[DMD_MAX_PATH+1];
 	strcpy(full, path);
 
-	c = full[ strlen(full)-1 ];
-	if(c != '\\' && c != '/')
+	c = full[strlen(full) - 1];
+	if (c != '\\' && c != '/')
 		strcat(full, "\\");
 	//strcat(full, "/");
 
@@ -229,7 +238,7 @@ void exepath(char* exe)
 #if 0
 #ifdef PLAT_WIN
 	//char buffer[WF_MAX_PATH+1];
-	GetModuleFileName(NULL, exepath, WF_MAX_PATH+1);
+	GetModuleFileName(NULL, exepath, WF_MAX_PATH + 1);
 	//std::string::size_type pos = std::string( buffer ).find_last_of( "\\/" );
 	//std::string strexepath = std::string( buffer ).substr( 0, pos);
 	//strcpy(exepath, strexepath.c_str());
@@ -237,8 +246,8 @@ void exepath(char* exe)
 	char szTmp[32];
 	//char buffer[WF_MAX_PATH+1];
 	sprintf(szTmp, "/proc/%d/exe", getpid());
-	int bytes = std::min((int)readlink(szTmp, exepath, WF_MAX_PATH+1), WF_MAX_PATH);
-	if(bytes >= 0)
+	int bytes = std::min((int)readlink(szTmp, exepath, WF_MAX_PATH + 1), WF_MAX_PATH);
+	if (bytes >= 0)
 		exepath[bytes] = '\0';
 	//std::string strexepath = stripfile(std::string(buffer));
 	//strcpy(exepath, strexepath.c_str());
@@ -247,23 +256,24 @@ void exepath(char* exe)
 	char *base = SDL_GetBasePath();
 #if 0
 	if (base_path) {
-        data_path = SDL_strdup(base_path);
-        SDL_free(base_path);
-    } else {
-        data_path = SDL_strdup("./");
-    }
+		data_path = SDL_strdup(base_path);
+		SDL_free(base_path);
+	}
+	else {
+		data_path = SDL_strdup("./");
+	}
 #endif
-	if(base)
+	if (base)
 	{
 		strcpy(exe, base);
 		SDL_free(base);
 	}
 #endif
 #endif
-	
+
 #ifdef PLAT_IOS
 	char *base = SDL_GetBasePath();
-	if(base)
+	if (base)
 	{
 		strcpy(exe, base);
 		SDL_free(base);
@@ -306,12 +316,12 @@ void warm(const char* title, const char* m)
 
 float maxf(const float a, const float b)
 {
-	return (((a)>(b))?(a):(b));
+	return (((a)>(b)) ? (a) : (b));
 }
 
 float minf(const float a, const float b)
 {
-	return (((a)<(b))?(a):(b));
+	return (((a)<(b)) ? (a) : (b));
 }
 
 int maxi(const int x, const int y)
@@ -329,7 +339,7 @@ int mini(const int x, const int y)
 int iabs(int v)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html
-	int const mask = v >> ( (sizeof(int) * CHAR_BIT) - 1 );
+	int const mask = v >> ((sizeof(int) * CHAR_BIT) - 1);
 	return (v + mask) ^ mask;
 }
 
@@ -349,14 +359,14 @@ int iceil(const int num, const int denom)
 {
 	int div, mul, rem;
 
-	if(denom  == 0)
+	if (denom == 0)
 		return 0;
 
 	div = num / denom;
 	mul = div * denom;
 	rem = num - mul;
 
-	if(rem > 0)
+	if (rem > 0)
 		div += 1;
 
 	return div;

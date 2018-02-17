@@ -9,7 +9,7 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
 	void(*click2)(int p), void(*click3)(wg* w),
-	dwg *prev, dwg *next)
+	dwg *prev, dwg *next, dbool hc, dbool c)
 {
 	wg *bw;
 	int length;
@@ -34,8 +34,75 @@ void dwginit(dwg *d, wg* parent, const char* name,
 	d->opened = dfalse;
 	d->prev = prev;
 	d->next = next;
+	d->hc = hc;
+	d->c = c;
 	wgreframe(bw);
-	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos);
+	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos, d->hc);
+}
+
+void msz(wg* bw)
+{
+	char i;
+	dwg *d;
+
+	d = (dwg*)bw;
+	i = 0;
+
+	while (d->prev)
+	{
+		d = d->prev;
+		++i;
+	}
+
+	bw->pos[0] = 100 * i;
+	bw->pos[1] = 0;
+	bw->pos[2] = 100 * i + 100;
+	bw->pos[3] = 22;
+}
+
+void dwgsz(wg* bw)
+{
+	char i;
+	lnode *n;
+	wg *pw;
+	dwg *pd;
+	wg *pww;
+	dwg *d;
+
+	pw = bw->parent;
+	pd = (dwg*)pw;
+	pww = pw->parent;
+	d = (dwg*)bw;
+
+	if (pw->type == WG_DROPMENU && pww->type != WG_DROPMENU)
+	{
+		bw->pos[0] = pw->pos[0];
+		bw->pos[2] = pw->pos[2];
+
+		for (n = pw->sub.head, i = 0; n; n = n->next, ++i)
+		{
+			if (*(wg**)&n->data[0] == bw)
+				break;
+		}
+
+		bw->pos[1] = i * (pw->pos[3] - pw->pos[1]) + pw->pos[3];
+		bw->pos[3] = (i + 1) * (pw->pos[3] - pw->pos[1]) + pw->pos[3];
+	}
+	else
+	{
+		bw->pos[0] = pw->pos[2];
+		bw->pos[2] = pw->pos[2] + 100;
+
+		for (n = pw->sub.head, i = 0; n; n = n->next, ++i)
+		{
+			if (*(wg**)&n->data[0] == bw)
+				break;
+		}
+
+		bw->pos[1] = i * (pw->pos[3] - pw->pos[1]) + pw->pos[1];
+		bw->pos[3] = (i + 1) * (pw->pos[3] - pw->pos[1]) + pw->pos[1];
+	}
+	cenlab((dwg*)bw, d->label, d->font, bw->pos, d->tpos, d->hc);
 }
 
 void dwgfree(wg* w)
@@ -161,6 +228,9 @@ void dwgin(wg *bw, inev* ie)
 			if (d->clickf3 != NULL)
 				d->clickf3(bw);
 
+			if(d->hc)
+				d->c = !d->c;
+
 			dwgclose(d);
 
 			ie->intercepted = dtrue;
@@ -246,6 +316,8 @@ void dwgdraw(wg *bw)
 	dwg *pd;
 	wg *pw;
 	float *crop;
+	float cp[4];
+	float h;
 
 	d = (dwg*)bw;
 	pw = bw->parent;
@@ -276,11 +348,39 @@ void dwgdraw(wg *bw)
 		tc = TCO;
 	}
 
+	if (d->hc)
+	{
+		cp[0] = bw->pos[0] + 3;
+		cp[1] = bw->pos[1] + 3;
+		h = bw->pos[3] - bw->pos[1];
+		cp[2] = bw->pos[0] + h - 6;
+		cp[3] = bw->pos[3] - 3;
+
+		subcrop(cp, d->tpos, d->tpos);
+
+		if (d->c)
+		{
+			glLineWidth(2.0f);
+			drawl(dc[0], dc[1], dc[2], dc[3], cp[0], (cp[1] + cp[3]) / 2.0f +1, (cp[0] + cp[2]) / 2.0f+1, cp[3], crop);
+			drawl(dc[0], dc[1], dc[2], dc[3], (cp[0] + cp[2]) / 2.0f+1, cp[3], cp[2]+1, cp[1], crop);
+
+			drawl(dc[0], dc[1], dc[2], dc[3], cp[0], (cp[1] + cp[3]) / 2.0f +1, (cp[0] + cp[2]) / 2.0f, cp[3]+1, crop);
+			drawl(dc[0], dc[1], dc[2], dc[3], (cp[0] + cp[2]) / 2.0f, cp[3]+1, cp[2], cp[1]+1, crop);
+
+			drawl(dc[0], dc[1], dc[2], dc[3], cp[0], (cp[1] + cp[3]) / 2.0f +1, (cp[0] + cp[2]) / 2.0f+1, cp[3]+1, crop);
+			drawl(dc[0], dc[1], dc[2], dc[3], (cp[0] + cp[2]) / 2.0f+1, cp[3]+1, cp[2]+1, cp[1]+1, crop);
+
+			drawl(tc[0], tc[1], tc[2], tc[3], cp[0], (cp[1]+cp[3])/2.0f, (cp[0]+cp[2])/2.0f, cp[3], crop);
+			drawl(tc[0], tc[1], tc[2], tc[3], (cp[0] + cp[2]) / 2.0f, cp[3], cp[2], cp[1], crop);
+			glLineWidth(1.0f);
+		}
+	}
+
 	drawsq(mc[0], mc[1], mc[2], mc[3], bw->pos[0], bw->pos[1], bw->pos[2], bw->pos[3], crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[0], bw->pos[3] - 1, crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0] + 1, bw->pos[1] + 1, bw->pos[0] + 1, bw->pos[3] - 1, crop);
 
-	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0], bw->pos[1], bw->pos[2] - 1, bw->pos[1], crop);
+	drawl(lc[0], lc[1], lc[2], lc[3], bw->pos[0] + 1, bw->pos[1] + 1, bw->pos[2] - 1, bw->pos[1] + 1, crop);
 
 	drawl(dc[0], dc[1], dc[2], dc[3], bw->pos[0] + 1, bw->pos[3], bw->pos[2], bw->pos[3], crop);
 

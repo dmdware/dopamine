@@ -17,8 +17,8 @@
 #define INI_BPP				32
 #define DRAW_FRAME_RATE		30
 #define SIM_FRAME_RATE		30
-#define MIN_DISTANCE		0.01f
-#define MAX_DISTANCE		13.0f
+#define MIND		0.01f
+#define MAXD		13.0f
 #define FIELD_OF_VIEW		90
 #define PROJ_RIGHT			600
 #define MIN_ZOOM		0.05f

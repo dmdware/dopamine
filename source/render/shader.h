@@ -51,11 +51,8 @@ typedef struct glshader glshader;
 #define SH_ORTHO				0
 #define SH_COLOR2D				1
 #define SH_COLOR3D				2
-#define SH_E					3
-#define SH_M					4
-#define SH_S					5
-#define SH_GRID					6
-#define SHADERS					7
+#define SH_GRID					3
+#define SHADERS					4
 
 extern glshader g_shader[SHADERS];
 extern signed char g_cursh;

@@ -50,6 +50,8 @@ float sa3f(v3f a, v3f b, v3f c)
 	return sqrtf(s * (s - a1) * (s - a2) * (s - a3));
 }
 
+float gvvv[12];
+
 v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *d, float sa[12])
 {
 	float v[12];
@@ -67,6 +69,9 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	v[9] = vol3f(vi, p[4], p[0], p[1]) / sa[9];
 	v[10] = vol3f(vi, p[7], p[5], p[6]) / sa[10];
 	v[11] = vol3f(vi, p[5], p[7], p[4]) / sa[11];
+
+	//memcpy(gvvv, v, 12 * sizeof(float));
+	//memset(gvvv, 0, 12 * sizeof(float));
 
 	//memcpy(d, v, sizeof(float) * 12);
 
@@ -138,15 +143,21 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 	{
 		if (v[6] < 0 || v[7] < 0)
 		{
-			vo.x = -(fabs(v[6]) + fabs(v[7])) / fabs(-fabs(v[6]) - fabs(v[7]) + v[2] + v[3]);
+			vo.x = ((v[6]) + (v[7])) / fabs((v[6]) + (v[7]) + v[2] + v[3]);
+			//gvvv[0] = 1;
+			//gvvv[1] = vo.x;
 		}
 		else if (v[2] < 0 || v[3] < 0)
 		{
-			vo.x = (1.0f + (fabs(v[2]) + fabs(v[3])) / fabs(-fabs(v[2]) - fabs(v[3]) + v[6] + v[7]));
+			vo.x = (1.0f + (-(v[2]) + -(v[3])) / fabs((v[2]) + (v[3]) + v[6] + v[7]));
+			//gvvv[0] = 2;
+			//gvvv[1] = vo.x;
 		}
 		else
 		{
 			vo.x = (v[6] + v[7]) / (v[6] + v[7] + v[2] + v[3]);
+			//gvvv[0] = 3;
+			//gvvv[1] = vo.x;
 		}
 
 		//if ((v[8] < 0 || v[9] < 0) && (v[4] < 0 || v[5] < 0))
@@ -156,32 +167,44 @@ v3f toxy2(v3f vi, float wx, float wy, v3f p[8], v3f pl[6], float pld[6], float *
 		//else 
 		if (v[8] < 0 || v[9] < 0)
 		{
-			vo.y = -(fabs(v[8]) + fabs(v[9])) / fabs(-fabs(v[8]) - fabs(v[9]) + v[4] + v[5]);
+			vo.y = ((v[8]) + (v[9])) / fabs((v[8]) + (v[9]) + v[4] + v[5]);
+			//gvvv[2] = 1;
+			//gvvv[3] = vo.y;
 		}
 		else if (v[4] < 0 || v[5] < 0)
 		{
-			vo.y = (1.0f + (fabs(v[4]) + fabs(v[5])) / fabs(-fabs(v[4]) - fabs(v[5]) + v[8] + v[9]));
+			vo.y = (1.0f + (-(v[4]) + -(v[5])) / fabs((v[4]) + (v[5]) + v[8] + v[9]));
+			//gvvv[2] = 2;
+			//gvvv[3] = vo.y;
 		}
 		else
 		{
 			vo.y = (v[8] + v[9]) / (v[4] + v[5] + v[8] + v[9]);
+			//gvvv[2] = 3;
+			//gvvv[3] = vo.y;
 		}
 	}
 
 	if (v[10] < 0 || v[11] < 0)
 	{
-		vo.z = -((fabs(v[10]) + fabs(v[11])) / fabs((v[0]) + (v[1]) - fabs(v[10]) - fabs(v[11])));
+		vo.z = (((v[10]) + (v[11])) / fabs((v[0]) + (v[1]) + (v[10]) + (v[11])));
 		//vo.z = 1.0f / (vo.z - vo.z);
 		//vo.x = 0.5f-(vo.x - 0.5f);
 		//vo.y = 0.5f-(vo.y - 0.5f);
+		//gvvv[4] = 1;
+		//gvvv[5] = vo.z;
 	}
 	else if (v[0] < 0 || v[1] < 0)
 	{
-		vo.z = (1.0f + (fabs(v[0]) + fabs(v[1])) / fabs(v[10] + v[11] - fabs(v[0]) - fabs(v[1])));
+		vo.z = (1.0f + (-(v[0]) + -(v[1])) / fabs(v[10] + v[11] + (v[0]) + (v[1])));
+		//gvvv[4] = 2;
+		//gvvv[5] = vo.z;
 	}
 	else
 	{
 		vo.z = ((v[10] + v[11]) / (v[0] + v[1] + v[10] + v[11]));
+		//gvvv[4] = 3;
+		//gvvv[5] = vo.z;
 	}
 
 #endif

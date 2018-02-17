@@ -48,7 +48,6 @@ void bwginit(bwg *b, wg* parent, const char* name, const char* filepath,
 	b->outf = out;
 	b->param = parm;
 	b->clickf3 = click3;
-	b->ldown = dfalse;
 	wgreframe(bw);
 }
 
@@ -266,7 +265,7 @@ void bwgdrawov(wg *bw)
 	}
 }
 
-void cenlab(bwg *b, char *label, char fi, float *pos, float *tpos)
+void cenlab(bwg *b, char *label, char fi, float *pos, float *tpos, dbool hc)
 {
 	font *f;
 	int texwidth;

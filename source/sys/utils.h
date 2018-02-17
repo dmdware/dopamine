@@ -13,6 +13,7 @@ int maxpow32(int lowerbound);
 unsigned __int64 getticks();
 void fullwrite(const char* file, char* full);
 void fullpath(const char* file, char* full);
+void filedatetime(char *c, int l);
 void makedir(const char* full);
 void errm(const char* title, const char* m);
 void infm(const char* title, const char* m);

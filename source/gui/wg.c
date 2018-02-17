@@ -22,6 +22,7 @@
 #include "widgets/vp.h"
 #include "widgets/dropmenu.h"
 #include "widgets/droplist.h"
+#include "widgets/winw.h"
 
 const float MC[4] = { MCR,MCG,MCB,MCA };
 const float LC[4] = { LCR,LCG,LCB,LCA };
@@ -32,11 +33,11 @@ const float LCO[4] = { LCRO,LCGO,LCBO,LCAO };
 const float DCO[4] = { DCRO,DCGO,DCBO,DCAO };
 const float TCO[4] = { TCRO,TCGO,TCBO,TCAO };
 
-void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw,dlwdraw};
-void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov,dlwdrawov};
-void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin,dlwin};
-void(*wgsubf[WGS]) (wg *bw) = { NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree,dlwfree};
-void(*wgsubr[WGS]) (wg *bw) = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,dlwsz };
+void(*wgsubd[WGS]) (wg* bw) = {NULL,imwdraw,NULL,bwgdraw,NULL,twgdraw,hpldraw,vpdraw,dwgdraw,dlwdraw,wwdraw};
+void(*wgsubdo[WGS]) (wg* bw) = { NULL,NULL,NULL,bwgdrawov,NULL,NULL,NULL,NULL,dwgdrawov,dlwdrawov,wwdrawov};
+void(*wgsubin[WGS]) (wg *bw, inev* ie) = {wggin,NULL,NULL,bwgin,NULL,NULL,hplin,vpin,dwgin,dlwin,wwin};
+void(*wgsubf[WGS]) (wg *bw) = { NULL,NULL,NULL,bwgfree,NULL,NULL,hplfree,vpfree,dwgfree,dlwfree,wwfree};
+void(*wgsubr[WGS]) (wg *bw) = { NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,dlwsz,wwsz };
 
 void wginit(wg* w)
 {

@@ -73,7 +73,8 @@ extern const float TCO[4];
 #define WG_VIEWPORT				7
 #define WG_DROPMENU				8
 #define WG_DROPLIST				9
-#define WGS						10
+#define WG_WIN					10
+#define WGS						11
 
 struct wg
 {

@@ -39,26 +39,26 @@ dbool cup3f(c3f *c)
 	if (c->f)
 	{
 		v3fsub(&v, c->view, c->pos);
-		v3fmul(&v, v, 1.0f * g_drawiv / mag3f(v));
+		v3fmul(&v, v, 1.0f * g_upiv / mag3f(v));
 		v3fadd(&c->view, c->view, v);
 		v3fadd(&c->pos, c->pos, v);
 	}
 	if (c->b)
 	{
 		v3fsub(&v, c->view, c->pos);
-		v3fmul(&v, v, -1.0f * g_drawiv / mag3f(v));
+		v3fmul(&v, v, -1.0f * g_upiv / mag3f(v));
 		v3fadd(&c->view, c->view, v);
 		v3fadd(&c->pos, c->pos, v);
 	}
 	if (c->l)
 	{
-		v3fmul(&v, c->strafe, -1.0f * g_drawiv / mag3f(c->strafe));
+		v3fmul(&v, c->strafe, -1.0f * g_upiv / mag3f(c->strafe));
 		v3fadd(&c->view, c->view, v);
 		v3fadd(&c->pos, c->pos, v);
 	}
 	if (c->r)
 	{
-		v3fmul(&v, c->strafe, 1.0f * g_drawiv / mag3f(c->strafe));
+		v3fmul(&v, c->strafe, 1.0f * g_upiv / mag3f(c->strafe));
 		v3fadd(&c->view, c->view, v);
 		v3fadd(&c->pos, c->pos, v);
 	}

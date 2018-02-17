@@ -94,6 +94,7 @@
     <ClInclude Include="..\..\..\source\algo\list.h" />
     <ClInclude Include="..\..\..\source\algo\vec.h" />
     <ClInclude Include="..\..\..\source\app\appmain.h" />
+    <ClInclude Include="..\..\..\source\ed\ed.h" />
     <ClInclude Include="..\..\..\source\glew\GL\glew.h" />
     <ClInclude Include="..\..\..\source\glew\GL\wglew.h" />
     <ClInclude Include="..\..\..\source\gui\cursor.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="..\..\..\source\gui\widgets\link.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\text.h" />
     <ClInclude Include="..\..\..\source\gui\widgets\vp.h" />
+    <ClInclude Include="..\..\..\source\gui\widgets\winw.h" />
     <ClInclude Include="..\..\..\source\jpeg\cderror.h" />
     <ClInclude Include="..\..\..\source\jpeg\cdjpeg.h" />
     <ClInclude Include="..\..\..\source\jpeg\jconfig.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="..\..\..\source\render\anim.h" />
     <ClInclude Include="..\..\..\source\render\fbo.h" />
     <ClInclude Include="..\..\..\source\render\ms3d.h" />
+    <ClInclude Include="..\..\..\source\render\screenshot.h" />
     <ClInclude Include="..\..\..\source\render\shader.h" />
     <ClInclude Include="..\..\..\source\render\sprite.h" />
     <ClInclude Include="..\..\..\source\render\toxy.h" />
@@ -357,6 +360,7 @@
     <ClCompile Include="..\..\..\source\algo\list.c" />
     <ClCompile Include="..\..\..\source\algo\vec.c" />
     <ClCompile Include="..\..\..\source\app\appmain.c" />
+    <ClCompile Include="..\..\..\source\ed\ed.c" />
     <ClCompile Include="..\..\..\source\glew\glew.c" />
     <ClCompile Include="..\..\..\source\gui\cursor.c" />
     <ClCompile Include="..\..\..\source\gui\draw2d.c" />
@@ -377,6 +381,7 @@
     <ClCompile Include="..\..\..\source\gui\widgets\link.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\text.c" />
     <ClCompile Include="..\..\..\source\gui\widgets\vp.c" />
+    <ClCompile Include="..\..\..\source\gui\widgets\winw.c" />
     <ClCompile Include="..\..\..\source\jpeg\jaricom.c" />
     <ClCompile Include="..\..\..\source\jpeg\jcapimin.c" />
     <ClCompile Include="..\..\..\source\jpeg\jcapistd.c" />
@@ -458,6 +463,7 @@
     <ClCompile Include="..\..\..\source\render\anim.c" />
     <ClCompile Include="..\..\..\source\render\fbo.c" />
     <ClCompile Include="..\..\..\source\render\ms3d.c" />
+    <ClCompile Include="..\..\..\source\render\screenshot.c" />
     <ClCompile Include="..\..\..\source\render\shader.c" />
     <ClCompile Include="..\..\..\source\render\sprite.c" />
     <ClCompile Include="..\..\..\source\render\toxy.c" />

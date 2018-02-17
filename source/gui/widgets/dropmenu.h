@@ -23,6 +23,9 @@ struct dwg
 	dbool opened;
 	struct dwg *prev;
 	struct dwg *next;
+
+	dbool hc;
+	dbool c;
 };
 
 typedef struct dwg dwg;
@@ -31,7 +34,7 @@ void dwginit(dwg *b, wg* parent, const char* name,
 	const char* label, char f, int parm,
 	void(*reframef)(wg* w), void(*click)(), 
 	void(*click2)(int p), void(*click3)(wg* w),
-	dwg *prev, dwg *next);
+	dwg *prev, dwg *next, dbool hc, dbool c);
 void dwgfree(wg* w);
 void dwgin(wg *bw, inev* ie);
 void dwgdraw(wg *bw);
@@ -39,5 +42,7 @@ void dwgdrawov(wg *bw);
 void dsz(wg *bw);
 void dwgopen(wg *bw);
 void dwgclose(wg *bw);
+void dwgsz(wg *bw);
+void msz(wg *bw);
 
 #endif

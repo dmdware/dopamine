@@ -12,7 +12,7 @@ void vpinit(vp* v, wg* parent, const char* n, void(*reframef)(wg* w),
 	void(*drawf)(void *e, int x, int y, int w, int h),
 	dbool(*ldownf)(void *e, int relx, int rely, int w, int h),
 	dbool(*lupf)(void *e, int relx, int rely, int w, int h),
-	dbool(*mmovef)(void *e, int relx, int rely, int w, int h),
+	dbool(*mmovef)(void *e, int relx, int rely, int w, int h, int dx, int dy),
 	dbool(*rdownf)(void *e, int relx, int rely, int w, int h),
 	dbool(*rupf)(void *e, int relx, int rely, int w, int h),
 	dbool(*mousewf)(void *e, int d),
@@ -80,7 +80,7 @@ void vpin(wg *w, inev *ie)
 			int rely = g_mouse.y - (int)w->pos[1];
 			int wd = (int)(w->pos[2] - w->pos[0]);
 			int ht = (int)(w->pos[3] - w->pos[1]);
-			/* ie->intercepted = v->*/ v->mmovef(w->extra, relx, rely, wd, ht);
+			/* ie->intercepted = v->*/ v->mmovef(w->extra, relx, rely, wd, ht, ie->dx, ie->dy);
 		}
 
 		return;
